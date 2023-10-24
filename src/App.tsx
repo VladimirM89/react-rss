@@ -1,5 +1,9 @@
-function App() {
-  return <h1>React App RS School</h1>;
+import { Component } from 'react';
+
+class App extends Component {
+  render() {
+    return <h1>React App with class components</h1>;
+  }
 }
 
 export default App;
