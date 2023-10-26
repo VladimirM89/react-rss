@@ -11,7 +11,11 @@ interface SearchParams {
 type State = {
   inputValue: string;
 };
-export class SearchBar extends Component<object, State> {
+
+type Props = {
+  saveToState: (items: SearchResponseInterface) => void;
+};
+export class SearchBar extends Component<Props, State> {
   state: Readonly<State> = {
     inputValue: '',
   };
@@ -23,12 +27,16 @@ export class SearchBar extends Component<object, State> {
     // this.getCharacters();
   }
 
-  async getCharacters(params: SearchParams | null = null): Promise<void> {
+  async getCharacters(params: SearchParams | null = null): Promise<SearchResponseInterface> {
     if (!!this.state.inputValue) {
-      const response = await searchApiAxios.get<SearchResponseInterface>(``, {
+      const response = await searchApiAxios.get<SearchResponseInterface>('', {
         params,
       });
       console.log('filtered chars', response.data);
+
+      this.props.saveToState(response.data);
+
+      return response.data;
     } else {
       const response = await searchApiAxios.get<SearchResponseInterface>('');
       const charactersCount = response.data.info.count;
@@ -37,6 +45,10 @@ export class SearchBar extends Component<object, State> {
 
       const allChars = await searchApiAxios.get<CharacterInterface>(`${stringOfIds}`);
       console.log('all chars:', allChars.data);
+
+      this.props.saveToState(response.data);
+
+      return response.data;
     }
   }
 
@@ -50,6 +62,9 @@ export class SearchBar extends Component<object, State> {
     this.getCharacters({
       name: this.state.inputValue,
     });
+
+    // console.log('search result: ', response);
+    // this.props.saveToState(response);
 
     this.inputRef.current?.blur();
     event.preventDefault();

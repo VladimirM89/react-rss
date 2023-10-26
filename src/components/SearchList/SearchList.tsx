@@ -1,13 +1,16 @@
 import { Component } from 'react';
+import { CharacterInterface } from '../../interfaces/SearchResponse';
 import { SearchItem } from '../SearchItem/SearchItem';
 
-export class SearchList extends Component {
+type Props = {
+  list: Array<CharacterInterface>;
+};
+
+export class SearchList extends Component<Props, object> {
   render() {
-    return (
-      <div>
-        <SearchItem />
-        <SearchItem />
-      </div>
-    );
+    const renderedList = this.props.list.map((item) => {
+      return <SearchItem key={item.id} item={item} />;
+    });
+    return <ul>{renderedList}</ul>;
   }
 }
