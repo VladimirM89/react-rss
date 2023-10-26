@@ -4,7 +4,6 @@ import { SearchList } from './components/SearchList/SearchList';
 import searchApiAxios from './api/SearchApi';
 import { SearchResponseInterface, CharacterInterface } from './interfaces/SearchResponse';
 import getAllCharacterIds from './utils/queryParams';
-import { ErrorBoundary } from './components/ErrorBoundary/ErrorBoundary';
 
 interface SearchParams {
   name?: string;
@@ -37,9 +36,7 @@ class App extends Component {
       <div>
         <h2>Rick and Morty Search App</h2>
         <SearchBar />
-        <ErrorBoundary>
-          <SearchList />
-        </ErrorBoundary>
+        <SearchList />
       </div>
     );
   }

@@ -1,8 +1,9 @@
 import axios from 'axios';
+import { BASE_URL, SEARCH_TIMEOUT } from '../constants/stringConstants';
 
 const searchApiAxios = axios.create({
-  baseURL: 'https://rickandmortyapi.com/api/character/',
-  timeout: 1000,
+  baseURL: BASE_URL,
+  timeout: SEARCH_TIMEOUT,
 });
 
 export default searchApiAxios;
