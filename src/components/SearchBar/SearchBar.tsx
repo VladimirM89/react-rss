@@ -2,6 +2,11 @@ import { Component, createRef } from 'react';
 import searchApiAxios from '../../api/SearchApi';
 import { SearchResponseInterface, CharacterInterface } from '../../interfaces/SearchResponse';
 import getAllCharacterIds from '../../utils/queryParams';
+import {
+  getItemFromLocalStorage,
+  removeItemFromLocalStorage,
+  saveToLocalStorage,
+} from '../../utils/localStorage';
 
 interface SearchParams {
   name?: string;
@@ -17,14 +22,16 @@ type Props = {
 };
 export class SearchBar extends Component<Props, State> {
   state: Readonly<State> = {
-    inputValue: '',
+    inputValue: getItemFromLocalStorage('inputValue') || '',
   };
 
   inputRef: React.RefObject<HTMLInputElement> = createRef();
 
   async componentDidMount(): Promise<void> {
-    this.inputRef.current?.focus();
-    // this.getCharacters();
+    this.getCharacters({
+      name: this.state.inputValue,
+    });
+    // this.inputRef.current?.focus();
   }
 
   async getCharacters(params: SearchParams | null = null): Promise<SearchResponseInterface> {
@@ -52,6 +59,14 @@ export class SearchBar extends Component<Props, State> {
     }
   }
 
+  private handleStorage() {
+    if (!!this.state.inputValue) {
+      saveToLocalStorage('inputValue', this.state.inputValue);
+    } else {
+      removeItemFromLocalStorage('inputValue');
+    }
+  }
+
   private handleInput = (event: React.ChangeEvent<HTMLInputElement>): void => {
     this.setState({
       inputValue: event.target.value,
@@ -65,6 +80,8 @@ export class SearchBar extends Component<Props, State> {
 
     // console.log('search result: ', response);
     // this.props.saveToState(response);
+
+    this.handleStorage();
 
     this.inputRef.current?.blur();
     event.preventDefault();
