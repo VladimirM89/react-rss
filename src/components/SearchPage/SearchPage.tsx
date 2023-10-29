@@ -6,6 +6,8 @@ import {
   SearchInfoInterface,
   SearchResponseInterface,
 } from '../../interfaces/SearchResponse';
+import { ErrorButton } from '../ErrorButton/ErrorButton';
+import { ErrorBoundary } from '../ErrorBoundary/ErrorBoundary';
 
 type State = {
   characters: Array<CharacterInterface>;
@@ -36,8 +38,13 @@ export class SearchPage extends Component<object, State> {
   render() {
     return (
       <div>
-        <SearchBar saveToState={this.handleChangeState} />
-        <SearchList list={this.state.characters} />
+        <ErrorBoundary fallback={<b>Something went wrong</b>}>
+          <SearchBar saveToState={this.handleChangeState} />
+
+          <SearchList list={this.state.characters} />
+
+          <ErrorButton />
+        </ErrorBoundary>
       </div>
     );
   }

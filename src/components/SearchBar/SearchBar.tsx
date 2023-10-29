@@ -6,6 +6,7 @@ import {
   removeItemFromLocalStorage,
   saveToLocalStorage,
 } from '../../utils/localStorage';
+import { AxiosError } from 'axios';
 
 type State = {
   inputValue: string;
@@ -31,8 +32,11 @@ export class SearchBar extends Component<Props, State> {
         name: this.state.inputValue,
       });
       this.props.saveToState(response);
-    } catch (error) {
-      console.log('error: ', error);
+    } catch (error: unknown) {
+      console.log('Please enter correct name and try again');
+      const err = error as AxiosError;
+      console.log(err.name, err.message);
+      this.props.saveToState([]);
     }
   }
 
