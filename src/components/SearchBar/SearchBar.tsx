@@ -9,6 +9,7 @@ import {
 import { AxiosError } from 'axios';
 import cn from 'classnames';
 import styles from './SearchBar.module.scss';
+import { ERROR_TEXT_BY_API, SEARCH_VALUE } from '../../constants/stringConstants';
 
 type State = {
   inputValue: string;
@@ -20,7 +21,7 @@ type Props = {
 };
 export class SearchBar extends Component<Props, State> {
   state: Readonly<State> = {
-    inputValue: getItemFromLocalStorage('inputValue') || '',
+    inputValue: getItemFromLocalStorage(SEARCH_VALUE) || '',
     hasError: false,
   };
 
@@ -48,9 +49,9 @@ export class SearchBar extends Component<Props, State> {
 
   private handleStorage(): void {
     if (!!this.state.inputValue) {
-      saveToLocalStorage('inputValue', this.state.inputValue);
+      saveToLocalStorage(SEARCH_VALUE, this.state.inputValue);
     } else {
-      removeItemFromLocalStorage('inputValue');
+      removeItemFromLocalStorage(SEARCH_VALUE);
     }
   }
 
@@ -71,7 +72,7 @@ export class SearchBar extends Component<Props, State> {
 
   render() {
     if (this.state.hasError) {
-      throw new Error('Error Boundary from API');
+      throw new Error(ERROR_TEXT_BY_API);
     }
     return (
       <form className={styles.form_container} onSubmit={this.handleSearch}>

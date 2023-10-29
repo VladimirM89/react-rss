@@ -1,6 +1,7 @@
 import { Component, ReactElement, ReactNode } from 'react';
 import { removeItemFromLocalStorage } from '../../utils/localStorage';
 import styles from './ErrorBoundary.module.scss';
+import { SEARCH_VALUE } from '../../constants/stringConstants';
 
 type Props = {
   children: ReactNode;
@@ -18,7 +19,7 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   private handleReloadPage = (): void => {
-    removeItemFromLocalStorage('inputValue');
+    removeItemFromLocalStorage(SEARCH_VALUE);
     window.location.reload();
   };
 

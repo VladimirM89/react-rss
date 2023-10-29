@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import cn from 'classnames';
 import styles from './ErrorButton.module.scss';
+import { ERROR_TEXT_BY_CLICK } from '../../constants/stringConstants';
 
 type State = {
   hasError: boolean;
@@ -17,7 +18,7 @@ export class ErrorButton extends Component<object, State> {
 
   render() {
     if (this.state.hasError) {
-      throw new Error('Error Boundary by clicking button');
+      throw new Error(ERROR_TEXT_BY_CLICK);
     }
     return (
       <button className={cn(styles.error_btn, 'btn')} onClick={this.throwError}>
