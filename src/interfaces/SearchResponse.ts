@@ -3,7 +3,7 @@ export interface SearchResponseInterface {
   results: Array<CharacterInterface>;
 }
 
-interface SearchInfoInterface {
+export interface SearchInfoInterface {
   count: number;
   next: string | null;
   pages: number;

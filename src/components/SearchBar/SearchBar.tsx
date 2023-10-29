@@ -1,24 +1,18 @@
 import { Component, createRef } from 'react';
-import searchApiAxios from '../../api/SearchApi';
+import { getCharacters } from '../../api/SearchApi';
 import { SearchResponseInterface, CharacterInterface } from '../../interfaces/SearchResponse';
-import getAllCharacterIds from '../../utils/queryParams';
 import {
   getItemFromLocalStorage,
   removeItemFromLocalStorage,
   saveToLocalStorage,
 } from '../../utils/localStorage';
 
-interface SearchParams {
-  name?: string;
-  page?: number;
-}
-
 type State = {
   inputValue: string;
 };
 
 type Props = {
-  saveToState: (items: SearchResponseInterface) => void;
+  saveToState: (response: Array<CharacterInterface> | SearchResponseInterface) => void;
 };
 export class SearchBar extends Component<Props, State> {
   state: Readonly<State> = {
@@ -27,35 +21,18 @@ export class SearchBar extends Component<Props, State> {
 
   inputRef: React.RefObject<HTMLInputElement> = createRef();
 
-  async componentDidMount(): Promise<void> {
-    this.getCharacters({
-      name: this.state.inputValue,
-    });
-    // this.inputRef.current?.focus();
+  componentDidMount(): void {
+    this.getDataFromApi();
   }
 
-  async getCharacters(params: SearchParams | null = null): Promise<SearchResponseInterface> {
-    if (!!this.state.inputValue) {
-      const response = await searchApiAxios.get<SearchResponseInterface>('', {
-        params,
+  private async getDataFromApi(): Promise<void> {
+    try {
+      const response = await getCharacters({
+        name: this.state.inputValue,
       });
-      console.log('filtered chars', response.data);
-
-      this.props.saveToState(response.data);
-
-      return response.data;
-    } else {
-      const response = await searchApiAxios.get<SearchResponseInterface>('');
-      const charactersCount = response.data.info.count;
-
-      const stringOfIds = getAllCharacterIds(charactersCount);
-
-      const allChars = await searchApiAxios.get<CharacterInterface>(`${stringOfIds}`);
-      console.log('all chars:', allChars.data);
-
-      this.props.saveToState(response.data);
-
-      return response.data;
+      this.props.saveToState(response);
+    } catch (error) {
+      console.log('error: ', error);
     }
   }
 
@@ -74,12 +51,7 @@ export class SearchBar extends Component<Props, State> {
   };
 
   private handleSearch = (event: React.FormEvent<HTMLFormElement | HTMLButtonElement>): void => {
-    this.getCharacters({
-      name: this.state.inputValue,
-    });
-
-    // console.log('search result: ', response);
-    // this.props.saveToState(response);
+    this.getDataFromApi();
 
     this.handleStorage();
 
