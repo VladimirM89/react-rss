@@ -1,0 +1,7 @@
+.list_container {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 23rem);
+  grid-gap: 1rem;
+  justify-items: center;
+}

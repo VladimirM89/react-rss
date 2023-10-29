@@ -7,6 +7,8 @@ import {
   saveToLocalStorage,
 } from '../../utils/localStorage';
 import { AxiosError } from 'axios';
+import cn from 'classnames';
+import styles from './SearchBar.module.scss';
 
 type State = {
   inputValue: string;
@@ -72,17 +74,18 @@ export class SearchBar extends Component<Props, State> {
       throw new Error('Error Boundary from API');
     }
     return (
-      <div>
-        <form onSubmit={this.handleSearch}>
-          <input
-            type="text"
-            ref={this.inputRef}
-            value={this.state.inputValue}
-            onChange={this.handleInput}
-          />
-          <button type="submit">Search</button>
-        </form>
-      </div>
+      <form className={styles.form_container} onSubmit={this.handleSearch}>
+        <input
+          className={styles.search_input}
+          type="text"
+          ref={this.inputRef}
+          value={this.state.inputValue}
+          onChange={this.handleInput}
+        />
+        <button className={cn('btn', styles.search_btn)} type="submit">
+          Search
+        </button>
+      </form>
     );
   }
 }

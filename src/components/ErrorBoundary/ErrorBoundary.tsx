@@ -1,5 +1,7 @@
 import { Component, ReactElement, ReactNode } from 'react';
 import { removeItemFromLocalStorage } from '../../utils/localStorage';
+import styles from './ErrorBoundary.module.scss';
+
 type Props = {
   children: ReactNode;
   fallback: ReactElement;
@@ -24,10 +26,12 @@ export class ErrorBoundary extends Component<Props, State> {
   render() {
     if (this.state.hasError) {
       return (
-        <>
+        <div className={styles.container}>
           {this.props.fallback}
-          <button onClick={this.handleReloadPage}>Try Again</button>
-        </>
+          <button className="btn" onClick={this.handleReloadPage}>
+            Try Again
+          </button>
+        </div>
       );
     }
 
