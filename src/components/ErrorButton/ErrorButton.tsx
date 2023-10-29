@@ -1,12 +1,22 @@
 import { Component } from 'react';
 
-export class ErrorButton extends Component {
-  throwError() {
-    console.log('Show error');
-    throw Error('Throw error');
-  }
+type State = {
+  hasError: boolean;
+};
+
+export class ErrorButton extends Component<object, State> {
+  state: Readonly<State> = {
+    hasError: false,
+  };
+
+  private throwError = (): void => {
+    this.setState({ hasError: true });
+  };
 
   render() {
+    if (this.state.hasError) {
+      throw new Error('Error Boundary by clicking button');
+    }
     return <button onClick={this.throwError}>Show Error</button>;
   }
 }

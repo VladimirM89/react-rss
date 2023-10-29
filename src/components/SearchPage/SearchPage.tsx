@@ -42,7 +42,6 @@ export class SearchPage extends Component<object, State> {
           <SearchBar saveToState={this.handleChangeState} />
 
           <SearchList list={this.state.characters} />
-
           <ErrorButton />
         </ErrorBoundary>
       </div>

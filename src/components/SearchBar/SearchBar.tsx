@@ -10,6 +10,7 @@ import { AxiosError } from 'axios';
 
 type State = {
   inputValue: string;
+  hasError: boolean;
 };
 
 type Props = {
@@ -18,6 +19,7 @@ type Props = {
 export class SearchBar extends Component<Props, State> {
   state: Readonly<State> = {
     inputValue: getItemFromLocalStorage('inputValue') || '',
+    hasError: false,
   };
 
   inputRef: React.RefObject<HTMLInputElement> = createRef();
@@ -36,11 +38,13 @@ export class SearchBar extends Component<Props, State> {
       console.log('Please enter correct name and try again');
       const err = error as AxiosError;
       console.log(err.name, err.message);
+      this.setState({ hasError: true });
       this.props.saveToState([]);
+      this.setState({ inputValue: '' });
     }
   }
 
-  private handleStorage() {
+  private handleStorage(): void {
     if (!!this.state.inputValue) {
       saveToLocalStorage('inputValue', this.state.inputValue);
     } else {
@@ -64,6 +68,9 @@ export class SearchBar extends Component<Props, State> {
   };
 
   render() {
+    if (this.state.hasError) {
+      throw new Error('Error Boundary from API');
+    }
     return (
       <div>
         <form onSubmit={this.handleSearch}>
