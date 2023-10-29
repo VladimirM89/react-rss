@@ -25,7 +25,6 @@ export class SearchPage extends Component<object, State> {
 
   private handleChangeState = (response: Array<CharacterInterface> | SearchResponseInterface) => {
     if (Array.isArray(response)) {
-      console.log('Characters to save: ', response);
       this.setState({
         characters: response,
         info: null,

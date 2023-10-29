@@ -18,11 +18,8 @@ export async function getCharacters(
   const response = await searchApiAxios.get<SearchResponseInterface>('', {
     params,
   });
-  console.log('data from api: ', response.data);
 
   if ((params && params.name) || (params && params.page)) {
-    console.log('filtered chars', response.data);
-
     return response.data;
   } else {
     const charactersCount = response.data.info.count;
@@ -30,7 +27,6 @@ export async function getCharacters(
     const stringOfIds = getAllCharacterIds(charactersCount);
 
     const allChars = await searchApiAxios.get<Array<CharacterInterface>>(`${stringOfIds}`);
-    console.log('all chars:', allChars.data);
 
     return { info: response.data.info, results: allChars.data };
   }

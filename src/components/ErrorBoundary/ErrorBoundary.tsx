@@ -13,8 +13,7 @@ type State = {
 export class ErrorBoundary extends Component<Props, State> {
   state: State = { hasError: false };
 
-  static getDerivedStateFromError(error: Error): State {
-    console.log('error from getDerivedStateFromError', error);
+  static getDerivedStateFromError(): State {
     return { hasError: true };
   }
 
