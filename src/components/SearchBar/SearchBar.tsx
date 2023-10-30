@@ -38,7 +38,6 @@ export class SearchBar extends Component<Props, State> {
       const response = await getCharacters({
         name: this.state.inputValue,
       });
-      console.log('loading finished');
       this.props.saveToState(response);
     } catch (error: unknown) {
       console.log('Please enter correct name and try again');

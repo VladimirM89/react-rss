@@ -21,9 +21,11 @@ export class ErrorButton extends Component<object, State> {
       throw new Error(ERROR_TEXT_BY_CLICK);
     }
     return (
-      <button className={cn(styles.error_btn, 'btn')} onClick={this.throwError}>
-        Show Error
-      </button>
+      <div className="wrapper">
+        <button className={cn(styles.error_btn, 'btn')} onClick={this.throwError}>
+          Show Error
+        </button>
+      </div>
     );
   }
 }

@@ -1,3 +1,10 @@
-.header_title {
-  font-size: 3rem;
+.header {
+  &_wrapper {
+    text-align: center;
+    width: 100%;
+  }
+
+  &_title {
+    font-size: 3rem;
+  }
 }

@@ -29,7 +29,7 @@ export class ErrorBoundary extends Component<Props, State> {
         <div className={styles.container}>
           {this.props.fallback}
           <button className="btn" onClick={this.handleReloadPage}>
-            Try Again
+            Reload page
           </button>
         </div>
       );

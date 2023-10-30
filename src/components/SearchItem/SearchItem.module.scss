@@ -1,5 +1,5 @@
 .card_container {
-  width: 100%;
+  width: 24rem;
   height: 34rem;
   padding: 2rem;
   display: flex;
@@ -9,6 +9,11 @@
   color: var(--main-color);
   border-radius: 1rem;
   text-align: center;
+
+  @media screen and (max-width: 579px) {
+    width: 70%;
+    min-width: 24rem;
+  }
 }
 
 .character_image {

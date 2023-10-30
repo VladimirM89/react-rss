@@ -1,17 +1,17 @@
 import { Component } from 'react';
-import { SearchBar } from '../../../components/SearchBar/SearchBar';
-import { SearchList } from '../../../components/SearchList/SearchList';
+import { SearchBar } from '../../components/SearchBar/SearchBar';
+import { SearchList } from '../../components/SearchList/SearchList';
 import {
   CharacterInterface,
   SearchInfoInterface,
   SearchResponseInterface,
-} from '../../../interfaces/SearchResponse';
-import { ErrorButton } from '../../../components/ErrorButton/ErrorButton';
-import { ErrorBoundary } from '../../../components/ErrorBoundary/ErrorBoundary';
-import { Header } from '../../../components/Header/Header';
+} from '../../interfaces/SearchResponse';
+import { ErrorButton } from '../../components/ErrorButton/ErrorButton';
+import { ErrorBoundary } from '../../components/ErrorBoundary/ErrorBoundary';
+import { Header } from '../../components/Header/Header';
 import cn from 'classnames';
 import styles from './SearchPage.module.scss';
-import { LoaderComponent } from '../../../components/LoaderComponent/LoaderComponent';
+import { LoaderComponent } from '../../components/LoaderComponent/LoaderComponent';
 
 type State = {
   characters: Array<CharacterInterface>;
@@ -23,7 +23,7 @@ export class SearchPage extends Component<object, State> {
   state: Readonly<State> = {
     characters: [],
     info: null,
-    isLoading: false,
+    isLoading: true,
   };
 
   private handleChangeState = (response: Array<CharacterInterface> | SearchResponseInterface) => {
@@ -55,8 +55,14 @@ export class SearchPage extends Component<object, State> {
     return (
       <div className={styles.container}>
         <Header />
-        <main className={cn(styles.container, styles.content_container)}>
-          <ErrorBoundary fallback={<p className={styles.warning_message}>Something went wrong</p>}>
+        <main className={cn('wrapper', styles.main_wrapper)}>
+          <ErrorBoundary
+            fallback={
+              <p className={styles.warning_message}>
+                You enter incorrect name or press error button
+              </p>
+            }
+          >
             <SearchBar handleLoading={this.handleLoading} saveToState={this.handleChangeState} />
             {this.state.isLoading ? (
               <LoaderComponent />
