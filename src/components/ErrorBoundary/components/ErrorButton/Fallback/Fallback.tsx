@@ -12,7 +12,7 @@ export class Fallback extends Component {
 
   render() {
     return (
-      <div className={cn('wrapper', styles.fallback_container)}>
+      <div className={cn(styles.fallback_container)}>
         <p className={styles.warning_message}>You enter incorrect name or press error button</p>
         <button className="btn" onClick={this.handleReloadPage}>
           Reload page

@@ -56,8 +56,8 @@ export class SearchPage extends Component<object, State> {
     return (
       <div className={styles.container}>
         <Header />
-        <main className={cn('wrapper', styles.main_wrapper)}>
-          <ErrorBoundary fallback={<Fallback />}>
+        <ErrorBoundary fallback={<Fallback />}>
+          <main className={cn('wrapper', styles.main_wrapper)}>
             <SearchBar handleLoading={this.handleLoading} saveToState={this.handleChangeState} />
             {this.state.isLoading ? (
               <LoaderComponent />
@@ -67,8 +67,8 @@ export class SearchPage extends Component<object, State> {
                 <ErrorButton />
               </>
             )}
-          </ErrorBoundary>
-        </main>
+          </main>
+        </ErrorBoundary>
       </div>
     );
   }
