@@ -6,12 +6,13 @@ import {
   SearchInfoInterface,
   SearchResponseInterface,
 } from '../../interfaces/SearchResponse';
-import { ErrorButton } from '../../components/ErrorButton/ErrorButton';
+import { ErrorButton } from '../../components/ErrorBoundary/components/ErrorButton/ErrorButton';
 import { ErrorBoundary } from '../../components/ErrorBoundary/ErrorBoundary';
 import { Header } from '../../components/Header/Header';
 import cn from 'classnames';
 import styles from './SearchPage.module.scss';
 import { LoaderComponent } from '../../components/LoaderComponent/LoaderComponent';
+import { Fallback } from '../../components/ErrorBoundary/components/ErrorButton/Fallback/Fallback';
 
 type State = {
   characters: Array<CharacterInterface>;
@@ -56,13 +57,7 @@ export class SearchPage extends Component<object, State> {
       <div className={styles.container}>
         <Header />
         <main className={cn('wrapper', styles.main_wrapper)}>
-          <ErrorBoundary
-            fallback={
-              <p className={styles.warning_message}>
-                You enter incorrect name or press error button
-              </p>
-            }
-          >
+          <ErrorBoundary fallback={<Fallback />}>
             <SearchBar handleLoading={this.handleLoading} saveToState={this.handleChangeState} />
             {this.state.isLoading ? (
               <LoaderComponent />

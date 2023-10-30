@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import cn from 'classnames';
 import styles from './ErrorButton.module.scss';
-import { ERROR_TEXT_BY_CLICK } from '../../constants/stringConstants';
+import { ERROR_TEXT_BY_CLICK } from '../../../../constants/stringConstants';
 
 type State = {
   hasError: boolean;
