@@ -1,10 +1,7 @@
-import { Component } from 'react';
 import { SearchPage } from './pages/SearchPage/SearchPage';
 
-class App extends Component {
-  render() {
-    return <SearchPage />;
-  }
-}
+export const App = () => {
+  return <SearchPage />;
+};
 
 export default App;
