@@ -1,12 +1,14 @@
-.container {
+.fallback_container {
+  height: 30vh;
   display: flex;
   flex-direction: column;
   gap: 3rem;
   align-items: center;
+  justify-content: center;
 }
 
 .warning_message {
-  padding-top: 10rem;
+  text-align: center;
   font-size: 2rem;
   color: white;
 }
