@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { SearchPage } from './components/SearchPage/SearchPage';
+import { SearchPage } from './pages/SearchPage/SearchPage/SearchPage';
 
 class App extends Component {
   render() {

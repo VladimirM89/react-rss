@@ -18,6 +18,7 @@ type State = {
 
 type Props = {
   saveToState: (response: Array<CharacterInterface> | SearchResponseInterface) => void;
+  handleLoading: (value: boolean) => void;
 };
 export class SearchBar extends Component<Props, State> {
   state: Readonly<State> = {
@@ -27,15 +28,17 @@ export class SearchBar extends Component<Props, State> {
 
   inputRef: React.RefObject<HTMLInputElement> = createRef();
 
-  componentDidMount(): void {
+  componentDidMount() {
     this.getDataFromApi();
   }
 
   private async getDataFromApi(): Promise<void> {
     try {
+      this.props.handleLoading(true);
       const response = await getCharacters({
         name: this.state.inputValue,
       });
+      console.log('loading finished');
       this.props.saveToState(response);
     } catch (error: unknown) {
       console.log('Please enter correct name and try again');
