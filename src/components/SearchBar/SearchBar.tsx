@@ -1,4 +1,4 @@
-import { Component, createRef } from 'react';
+import { FC, useEffect, useRef, useState } from 'react';
 import { getCharacters } from '../../api/SearchApi';
 import { SearchResponseInterface, CharacterInterface } from '../../interfaces/SearchResponse';
 import {
@@ -9,86 +9,73 @@ import {
 import { AxiosError } from 'axios';
 import cn from 'classnames';
 import styles from './SearchBar.module.scss';
-import { ERROR_TEXT_BY_API, SEARCH_VALUE } from '../../constants/stringConstants';
+import { SEARCH_VALUE } from '../../constants/stringConstants';
 
-type State = {
-  inputValue: string;
-  hasError: boolean;
-};
-
-type Props = {
+type SearchBarProps = {
   saveToState: (response: Array<CharacterInterface> | SearchResponseInterface) => void;
   handleLoading: (value: boolean) => void;
+  handleResponse: (value: boolean) => void;
 };
-export class SearchBar extends Component<Props, State> {
-  state: Readonly<State> = {
-    inputValue: getItemFromLocalStorage(SEARCH_VALUE) || '',
-    hasError: false,
-  };
 
-  inputRef: React.RefObject<HTMLInputElement> = createRef();
+export const SearchBar: FC<SearchBarProps> = ({ saveToState, handleLoading, handleResponse }) => {
+  const [inputValue, setInputValue] = useState<string>(getItemFromLocalStorage(SEARCH_VALUE) || '');
 
-  componentDidMount() {
-    this.getDataFromApi();
-  }
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  private async getDataFromApi(): Promise<void> {
+  useEffect(() => {
+    getDataFromApi();
+  }, []);
+
+  const getDataFromApi = async (): Promise<void> => {
     try {
-      this.props.handleLoading(true);
+      handleLoading(true);
       const response = await getCharacters({
-        name: this.state.inputValue,
+        name: inputValue,
       });
-      this.props.saveToState(response);
+      saveToState(response);
     } catch (error: unknown) {
       console.log('Please enter correct name and try again');
       const err = error as AxiosError;
       console.log(err.name, err.message);
-      this.setState({ hasError: true });
-      this.props.saveToState([]);
-      this.setState({ inputValue: '' });
+      saveToState([]);
+      handleLoading(false);
+      handleResponse(true);
     }
-  }
+  };
 
-  private handleStorage(): void {
-    if (!!this.state.inputValue) {
-      saveToLocalStorage(SEARCH_VALUE, this.state.inputValue);
+  const handleStorage = (): void => {
+    if (!!inputValue) {
+      saveToLocalStorage(SEARCH_VALUE, inputValue);
     } else {
       removeItemFromLocalStorage(SEARCH_VALUE);
     }
-  }
-
-  private handleInput = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    this.setState({
-      inputValue: event.target.value,
-    });
   };
 
-  private handleSearch = (event: React.FormEvent<HTMLFormElement | HTMLButtonElement>): void => {
-    this.getDataFromApi();
+  const handleInput = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    setInputValue(event.target.value);
+  };
 
-    this.handleStorage();
+  const handleSearch = (event: React.FormEvent<HTMLFormElement | HTMLButtonElement>): void => {
+    getDataFromApi();
 
-    this.inputRef.current?.blur();
+    handleStorage();
+
+    inputRef.current?.blur();
     event.preventDefault();
   };
 
-  render() {
-    if (this.state.hasError) {
-      throw new Error(ERROR_TEXT_BY_API);
-    }
-    return (
-      <form className={styles.form_container} onSubmit={this.handleSearch}>
-        <input
-          className={styles.search_input}
-          type="text"
-          ref={this.inputRef}
-          value={this.state.inputValue}
-          onChange={this.handleInput}
-        />
-        <button className={cn('btn', styles.search_btn)} type="submit">
-          Search
-        </button>
-      </form>
-    );
-  }
-}
+  return (
+    <form className={styles.form_container} onSubmit={handleSearch}>
+      <input
+        className={styles.search_input}
+        type="text"
+        ref={inputRef}
+        value={inputValue}
+        onChange={handleInput}
+      />
+      <button className={cn('btn', styles.search_btn)} type="submit">
+        Search
+      </button>
+    </form>
+  );
+};
