@@ -1,31 +1,26 @@
-import { Component } from 'react';
+import { FC, useEffect, useState } from 'react';
 import cn from 'classnames';
 import styles from './ErrorButton.module.scss';
 import { ERROR_TEXT_BY_CLICK } from '../../../../constants/stringConstants';
 
-type State = {
-  hasError: boolean;
-};
+export const ErrorButton: FC = () => {
+  const [hasError, setHasError] = useState<boolean>(false);
 
-export class ErrorButton extends Component<object, State> {
-  state: Readonly<State> = {
-    hasError: false,
-  };
-
-  private throwError = (): void => {
-    this.setState({ hasError: true });
-  };
-
-  render() {
-    if (this.state.hasError) {
+  useEffect(() => {
+    if (hasError) {
       throw new Error(ERROR_TEXT_BY_CLICK);
     }
-    return (
-      <div className="wrapper">
-        <button className={cn(styles.error_btn, 'btn')} onClick={this.throwError}>
-          Show Error
-        </button>
-      </div>
-    );
-  }
-}
+  }, [hasError]);
+
+  const handleThrowError = (): void => {
+    setHasError((state) => !state);
+  };
+
+  return (
+    <div className="wrapper">
+      <button className={cn(styles.error_btn, 'btn')} onClick={handleThrowError}>
+        Show Error
+      </button>
+    </div>
+  );
+};
