@@ -6,7 +6,6 @@ import {
   removeItemFromLocalStorage,
   saveToLocalStorage,
 } from '../../utils/localStorage';
-import { AxiosError } from 'axios';
 import cn from 'classnames';
 import styles from './SearchBar.module.scss';
 import { SEARCH_VALUE } from '../../constants/stringConstants';
@@ -34,9 +33,6 @@ export const SearchBar: FC<SearchBarProps> = ({ saveToState, handleLoading, hand
       });
       saveToState(response);
     } catch (error: unknown) {
-      console.log('Please enter correct name and try again');
-      const err = error as AxiosError;
-      console.log(err.name, err.message);
       saveToState([]);
       handleLoading(false);
       handleResponse(true);

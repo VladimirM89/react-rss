@@ -8,7 +8,6 @@ import {
 } from '../../interfaces/SearchResponse';
 import { ErrorButton } from '../../components/ErrorBoundary/components/ErrorButton/ErrorButton';
 import { ErrorBoundary } from '../../components/ErrorBoundary/ErrorBoundary';
-import { Header } from '../../components/Header/Header';
 import cn from 'classnames';
 import styles from './SearchPage.module.scss';
 import { LoaderComponent } from '../../components/LoaderComponent/LoaderComponent';
@@ -56,7 +55,6 @@ export const SearchPage: FC = () => {
 
   return (
     <div className={styles.container}>
-      <Header />
       <ErrorBoundary fallback={<Fallback />}>
         <main className={cn('wrapper', styles.main_wrapper)}>
           <SearchBar
