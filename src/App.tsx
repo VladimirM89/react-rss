@@ -8,6 +8,7 @@ import {
 } from 'react-router-dom';
 import { RootLayout } from './components/Layouts/RootLayout';
 import { DetailLayout } from './components/Layouts/DetailLayout';
+import { NotFoundPage } from './pages/NotFoundPage/NotFoundPage';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -18,6 +19,7 @@ const router = createBrowserRouter(
         <Route path="1" element={<p>Detailed card 1</p>} />
         <Route path="2" element={<p>Detailed card 2</p>} />
       </Route>
+      <Route path="*" element={<NotFoundPage />} />
     </Route>
   )
 );
