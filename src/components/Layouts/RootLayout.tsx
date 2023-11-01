@@ -6,9 +6,14 @@ export const RootLayout: FC = () => {
   return (
     <>
       <Header />
-      <NavLink to={'/'}>Home</NavLink>
-      <NavLink to={'/item'}>Item</NavLink>
-      <Outlet />
+      <nav>
+        <NavLink to={'/'}>Home</NavLink>
+        <NavLink to={'/contact'}>contact</NavLink>
+        <NavLink to={'/details'}>details</NavLink>
+      </nav>
+      <main>
+        <Outlet />
+      </main>
     </>
   );
 };

@@ -56,7 +56,7 @@ export const SearchPage: FC = () => {
   return (
     <div className={styles.container}>
       <ErrorBoundary fallback={<Fallback />}>
-        <main className={cn('wrapper', styles.main_wrapper)}>
+        <div className={cn('wrapper', styles.main_wrapper)}>
           <SearchBar
             handleLoading={handleLoading}
             saveToState={handleChangeState}
@@ -76,62 +76,8 @@ export const SearchPage: FC = () => {
               )}
             </>
           )}
-        </main>
+        </div>
       </ErrorBoundary>
     </div>
   );
 };
-
-// export class SearchPage extends Component<object, State> {
-//   state: Readonly<State> = {
-//     characters: [],
-//     info: null,
-//     isLoading: true,
-//   };
-
-//   private handleChangeState = (response: Array<CharacterInterface> | SearchResponseInterface) => {
-//     setTimeout(() => {
-//       if (Array.isArray(response)) {
-//         this.setState({
-//           characters: response,
-//           info: null,
-//           isLoading: false,
-//         });
-//       } else {
-//         this.setState({
-//           characters: response.results,
-//           info: response.info,
-//           isLoading: false,
-//         });
-//       }
-//     }, 1000);
-//   };
-
-//   private handleLoading = (value: boolean) => {
-//     this.setState({
-//       ...this.state,
-//       isLoading: value,
-//     });
-//   };
-
-//   render() {
-//     return (
-//       <div className={styles.container}>
-//         <Header />
-//         <ErrorBoundary fallback={<Fallback />}>
-//           <main className={cn('wrapper', styles.main_wrapper)}>
-//             <SearchBar handleLoading={this.handleLoading} saveToState={this.handleChangeState} />
-//             {this.state.isLoading ? (
-//               <LoaderComponent />
-//             ) : (
-//               <>
-//                 <SearchList list={this.state.characters} />
-//                 <ErrorButton />
-//               </>
-//             )}
-//           </main>
-//         </ErrorBoundary>
-//       </div>
-//     );
-//   }
-// }
