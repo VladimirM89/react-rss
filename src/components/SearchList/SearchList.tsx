@@ -10,6 +10,7 @@ type SearchListProps = {
 };
 
 export const SearchList: FC<SearchListProps> = ({ list }) => {
+  console.log('search list render');
   const [searchParams] = useSearchParams();
   const searchParam = searchParams.get('search') || '';
 
@@ -24,6 +25,9 @@ export const SearchList: FC<SearchListProps> = ({ list }) => {
 
   const handleNavigate = (id: number) => {
     const search = handleSearchParam();
+
+    console.log('navigate to Details');
+
     navigate({
       pathname: '/',
       search: `${createSearchParams({

@@ -21,6 +21,7 @@ type State = {
 };
 
 export const SearchPage: FC = () => {
+  console.log('search page render');
   const [charactersInfo, setCharactersInfo] = useState<State>({
     characters: [],
     info: null,
@@ -71,8 +72,11 @@ export const SearchPage: FC = () => {
                 <NotFound />
               ) : (
                 <>
-                  <SearchList list={charactersInfo.characters} />
-                  <Outlet />
+                  <div style={{ display: 'flex' }}>
+                    <SearchList list={charactersInfo.characters} />
+                    <Outlet />
+                  </div>
+
                   <ErrorButton />
                 </>
               )}
