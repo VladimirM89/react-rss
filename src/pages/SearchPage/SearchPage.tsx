@@ -13,6 +13,7 @@ import styles from './SearchPage.module.scss';
 import { LoaderComponent } from '../../components/LoaderComponent/LoaderComponent';
 import { Fallback } from '../../components/ErrorBoundary/components/ErrorButton/Fallback/Fallback';
 import { NotFound } from '../../components/ErrorBoundary/components/NotFound/NotFound';
+import { Outlet } from 'react-router-dom';
 
 type State = {
   characters: Array<CharacterInterface>;
@@ -71,6 +72,7 @@ export const SearchPage: FC = () => {
               ) : (
                 <>
                   <SearchList list={charactersInfo.characters} />
+                  <Outlet />
                   <ErrorButton />
                 </>
               )}

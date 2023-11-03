@@ -1,14 +1,11 @@
 import { FC, useEffect, useRef, useState } from 'react';
 import { getCharacters } from '../../api/SearchApi';
 import { SearchResponseInterface, CharacterInterface } from '../../interfaces/SearchResponse';
-import {
-  getItemFromLocalStorage,
-  removeItemFromLocalStorage,
-  saveToLocalStorage,
-} from '../../utils/localStorage';
+import { removeItemFromLocalStorage, saveToLocalStorage } from '../../utils/localStorage';
 import cn from 'classnames';
 import styles from './SearchBar.module.scss';
 import { SEARCH_VALUE } from '../../constants/stringConstants';
+import { useSearchParams } from 'react-router-dom';
 
 type SearchBarProps = {
   saveToState: (response: Array<CharacterInterface> | SearchResponseInterface) => void;
@@ -17,15 +14,25 @@ type SearchBarProps = {
 };
 
 export const SearchBar: FC<SearchBarProps> = ({ saveToState, handleLoading, handleResponse }) => {
-  const [inputValue, setInputValue] = useState<string>(getItemFromLocalStorage(SEARCH_VALUE) || '');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const searchParam = searchParams.get('search') || '';
 
+  const [inputValue, setInputValue] = useState<string>(searchParam || '');
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
+    handleSearchParam();
     getDataFromApi();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const handleSearchParam = () => {
+    saveToLocalStorage(SEARCH_VALUE, searchParam);
+    setInputValue(searchParam);
+  };
+
   const getDataFromApi = async (): Promise<void> => {
+    // console.log('input Value: ', inputValue);
     try {
       handleLoading(true);
       const response = await getCharacters({
@@ -52,6 +59,7 @@ export const SearchBar: FC<SearchBarProps> = ({ saveToState, handleLoading, hand
   };
 
   const handleSearch = (event: React.FormEvent<HTMLFormElement | HTMLButtonElement>): void => {
+    setSearchParams({ search: inputValue });
     getDataFromApi();
 
     handleStorage();
