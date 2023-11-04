@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { SearchBar } from '../../components/SearchBar/SearchBar';
 import { SearchList } from '../../components/SearchList/SearchList';
 import {
@@ -13,21 +13,43 @@ import styles from './SearchPage.module.scss';
 import { LoaderComponent } from '../../components/LoaderComponent/LoaderComponent';
 import { Fallback } from '../../components/ErrorBoundary/components/ErrorButton/Fallback/Fallback';
 import { NotFound } from '../../components/ErrorBoundary/components/NotFound/NotFound';
-import { Outlet } from 'react-router-dom';
-
+import { Outlet, useSearchParams } from 'react-router-dom';
+import PaginationComponent from '../../components/PaginationComponent/PaginationComponent';
+import { getCharacters } from '../../api/SearchApi';
 type SearchPageState = {
   characters: Array<CharacterInterface>;
   pagination: PaginationInterface | null;
 };
 
 export const SearchPage: FC = () => {
-  // console.log('search page render');
+  const [searchParams] = useSearchParams();
   const [charactersInfo, setCharactersInfo] = useState<SearchPageState>({
     characters: [],
     pagination: null,
   });
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isNoItems, setisNoItems] = useState<boolean>(false);
+
+  useEffect(() => {
+    const searchParam = searchParams.get('search') || '';
+    getDataFromApi(searchParam);
+  }, []);
+
+  const getDataFromApi = async (value?: string): Promise<void> => {
+    try {
+      handleLoading(true);
+      const response = await getCharacters({
+        q: value,
+      });
+      handleChangeState(response);
+      if (response.data.length === 0) {
+        throw Error('No such item found');
+      }
+    } catch (error: unknown) {
+      handleLoading(false);
+      handleResponse(true);
+    }
+  };
 
   const handleChangeState = (response: SearchResponseInterface): void => {
     setCharactersInfo({
@@ -50,11 +72,7 @@ export const SearchPage: FC = () => {
     <div className={styles.container}>
       <ErrorBoundary fallback={<Fallback />}>
         <div className={cn('wrapper', styles.main_wrapper)}>
-          <SearchBar
-            handleLoading={handleLoading}
-            saveToState={handleChangeState}
-            handleResponse={handleResponse}
-          />
+          <SearchBar getDataFromApi={getDataFromApi} />
           {isLoading ? (
             <LoaderComponent />
           ) : (
@@ -67,6 +85,7 @@ export const SearchPage: FC = () => {
                     <SearchList list={charactersInfo.characters} />
                     <Outlet />
                   </div>
+                  <PaginationComponent pagination={charactersInfo.pagination} />
 
                   <ErrorButton />
                 </>

@@ -1,6 +1,4 @@
 import { FC, useEffect, useRef, useState } from 'react';
-import { getCharacters } from '../../api/SearchApi';
-import { SearchResponseInterface } from '../../interfaces/SearchResponse';
 import { removeItemFromLocalStorage, saveToLocalStorage } from '../../utils/localStorage';
 import cn from 'classnames';
 import styles from './SearchBar.module.scss';
@@ -8,12 +6,10 @@ import { SEARCH_VALUE } from '../../constants/stringConstants';
 import { useSearchParams } from 'react-router-dom';
 
 type SearchBarProps = {
-  saveToState: (response: SearchResponseInterface) => void;
-  handleLoading: (value: boolean) => void;
-  handleResponse: (value: boolean) => void;
+  getDataFromApi: (value?: string) => void;
 };
 
-export const SearchBar: FC<SearchBarProps> = ({ saveToState, handleLoading, handleResponse }) => {
+export const SearchBar: FC<SearchBarProps> = ({ getDataFromApi }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const searchParam = searchParams.get('search') || '';
 
@@ -22,31 +18,11 @@ export const SearchBar: FC<SearchBarProps> = ({ saveToState, handleLoading, hand
 
   useEffect(() => {
     handleSearchParam();
-    getDataFromApi();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSearchParam = () => {
     saveToLocalStorage(SEARCH_VALUE, searchParam);
     setInputValue(searchParam);
-  };
-
-  const getDataFromApi = async (): Promise<void> => {
-    console.log('input Value: ', inputValue);
-    try {
-      handleLoading(true);
-      const response = await getCharacters({
-        q: inputValue,
-      });
-      saveToState(response);
-      if (response.data.length === 0) {
-        throw Error('No such item found');
-      }
-    } catch (error: unknown) {
-      // saveToState([]);
-      handleLoading(false);
-      handleResponse(true);
-    }
   };
 
   const handleStorage = (): void => {
@@ -63,9 +39,8 @@ export const SearchBar: FC<SearchBarProps> = ({ saveToState, handleLoading, hand
 
   const handleSearch = (event: React.FormEvent<HTMLFormElement | HTMLButtonElement>): void => {
     setSearchParams({ search: inputValue });
-    getDataFromApi();
-
     handleStorage();
+    getDataFromApi(inputValue);
 
     inputRef.current?.blur();
     event.preventDefault();
