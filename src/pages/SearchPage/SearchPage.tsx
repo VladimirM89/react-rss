@@ -21,7 +21,7 @@ type State = {
 };
 
 export const SearchPage: FC = () => {
-  console.log('search page render');
+  // console.log('search page render');
   const [charactersInfo, setCharactersInfo] = useState<State>({
     characters: [],
     info: null,

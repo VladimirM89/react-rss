@@ -3,24 +3,29 @@ import { Await, defer, useLoaderData, useNavigate, useSearchParams } from 'react
 import { searchApiAxios } from '../../api/SearchApi';
 import { CharacterInterface } from '../../interfaces/SearchResponse';
 import { LoaderComponent } from '../LoaderComponent/LoaderComponent';
-import { Suspense, useEffect, useState } from 'react';
-import React from 'react';
+import { Suspense, useEffect, useRef, useState } from 'react';
+import styles from './DetailCard.module.scss';
+import cn from 'classnames';
+import useOutsideClick from '../../hooks/HandleOutsideClick';
 
 const DetailCard = () => {
   console.log('render Details components');
+  // const outsideRef = useRef<HTMLDivElement>(null);
+  const [isOverlay, setIsOverlay] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [searchParams, setSearchParams] = useSearchParams();
 
-  console.log(searchParams);
+  // console.log(searchParams);
 
-  const data = useLoaderData();
+  const data = useLoaderData() as { detailedCard: CharacterInterface };
+  const { detailedCard } = data;
 
-  useEffect(() => {
-    setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 500);
-  }, [data]);
+  // useEffect(() => {
+  //   setIsLoading(true);
+  //   setTimeout(() => {
+  //     setIsLoading(false);
+  //   }, 500);
+  // }, [data]);
 
   const navigate = useNavigate();
 
@@ -30,22 +35,54 @@ const DetailCard = () => {
       pathname: '/',
       search: searchValue ? `search=${searchValue}` : ``,
     });
+    setIsOverlay((prev) => !prev);
   };
+
+  const outsideRef = useOutsideClick(handleClose);
 
   return (
     <Suspense fallback={<LoaderComponent />}>
-      <Await resolve={data} errorElement={<p>Error in detail compoment</p>}>
-        {(data) => {
-          console.log(data);
+      <Await resolve={detailedCard} errorElement={<p>Error in detail compoment</p>}>
+        {(detailedCard) => {
+          // console.log(data);
           return (
             searchParams.has('details') && (
-              <div>
-                <p> Selested id: {data.detailedCard.id}</p>
-                <img src={data.detailedCard.image} />
-                <p>Name: {data.detailedCard.name}</p>
-                <p>Gender: {data.detailedCard.gender}</p>
-                <button onClick={handleClose}>close</button>
-              </div>
+              <>
+                <div className={isOverlay ? styles.overlay : ''}></div>
+                <div className={cn(styles.detail_card_container)} ref={outsideRef}>
+                  <button className={styles.close_btn} onClick={handleClose}>
+                    &#x2715;
+                  </button>
+                  <div className={styles.content_container}>
+                    <p className={styles.name}>{detailedCard.name}</p>
+                    <div className={styles.img_container}>
+                      <img src={detailedCard.image} />
+                    </div>
+
+                    <p className={styles.info_title}>info</p>
+                    <ul className={styles.info_container}>
+                      <li className={styles.description}>
+                        <span className={styles.description_text}>Status</span>
+                        <span className={styles.description_text}>{detailedCard.status}</span>
+                      </li>
+                      <li className={styles.description}>
+                        <span className={styles.description_text}>Gender</span>
+                        <span className={styles.description_text}>{detailedCard.gender}</span>
+                      </li>
+                      <li className={styles.description}>
+                        <span className={styles.description_text}>Species</span>
+                        <span className={styles.description_text}>{detailedCard.species}</span>
+                      </li>
+                      <li className={styles.description}>
+                        <span className={styles.description_text}>Location</span>
+                        <span className={styles.description_text}>
+                          {detailedCard.location.name}
+                        </span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </>
             )
           );
         }}
@@ -73,7 +110,7 @@ export const detailCardLoader = async ({ request }: { request: Request }) => {
   const url = new URL(request.url);
   const searchTerm = url.searchParams.get('details');
 
-  console.log('fetch details data');
+  // console.log('fetch details data');
 
   if (searchTerm) {
     const response = await searchApiAxios.get<CharacterInterface>(`${searchTerm}`);
