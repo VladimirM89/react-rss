@@ -3,7 +3,7 @@ import { SearchBar } from '../../components/SearchBar/SearchBar';
 import { SearchList } from '../../components/SearchList/SearchList';
 import {
   CharacterInterface,
-  SearchInfoInterface,
+  PaginationInterface,
   SearchResponseInterface,
 } from '../../interfaces/SearchResponse';
 import { ErrorButton } from '../../components/ErrorBoundary/components/ErrorButton/ErrorButton';
@@ -15,34 +15,25 @@ import { Fallback } from '../../components/ErrorBoundary/components/ErrorButton/
 import { NotFound } from '../../components/ErrorBoundary/components/NotFound/NotFound';
 import { Outlet } from 'react-router-dom';
 
-type State = {
+type SearchPageState = {
   characters: Array<CharacterInterface>;
-  info: SearchInfoInterface | null;
+  pagination: PaginationInterface | null;
 };
 
 export const SearchPage: FC = () => {
   // console.log('search page render');
-  const [charactersInfo, setCharactersInfo] = useState<State>({
+  const [charactersInfo, setCharactersInfo] = useState<SearchPageState>({
     characters: [],
-    info: null,
+    pagination: null,
   });
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isNoItems, setisNoItems] = useState<boolean>(false);
 
-  const handleChangeState = (
-    response: Array<CharacterInterface> | SearchResponseInterface
-  ): void => {
-    if (Array.isArray(response)) {
-      setCharactersInfo({
-        ...charactersInfo,
-        characters: response,
-      });
-    } else {
-      setCharactersInfo({
-        characters: response.results,
-        info: response.info,
-      });
-    }
+  const handleChangeState = (response: SearchResponseInterface): void => {
+    setCharactersInfo({
+      characters: response.data,
+      pagination: response.pagination,
+    });
     setIsLoading(false);
     setisNoItems(false);
   };

@@ -1,6 +1,6 @@
 import { FC, useEffect, useRef, useState } from 'react';
 import { getCharacters } from '../../api/SearchApi';
-import { SearchResponseInterface, CharacterInterface } from '../../interfaces/SearchResponse';
+import { SearchResponseInterface } from '../../interfaces/SearchResponse';
 import { removeItemFromLocalStorage, saveToLocalStorage } from '../../utils/localStorage';
 import cn from 'classnames';
 import styles from './SearchBar.module.scss';
@@ -8,7 +8,7 @@ import { SEARCH_VALUE } from '../../constants/stringConstants';
 import { useSearchParams } from 'react-router-dom';
 
 type SearchBarProps = {
-  saveToState: (response: Array<CharacterInterface> | SearchResponseInterface) => void;
+  saveToState: (response: SearchResponseInterface) => void;
   handleLoading: (value: boolean) => void;
   handleResponse: (value: boolean) => void;
 };
@@ -32,15 +32,18 @@ export const SearchBar: FC<SearchBarProps> = ({ saveToState, handleLoading, hand
   };
 
   const getDataFromApi = async (): Promise<void> => {
-    // console.log('input Value: ', inputValue);
+    console.log('input Value: ', inputValue);
     try {
       handleLoading(true);
       const response = await getCharacters({
-        name: inputValue,
+        q: inputValue,
       });
       saveToState(response);
+      if (response.data.length === 0) {
+        throw Error('No such item found');
+      }
     } catch (error: unknown) {
-      saveToState([]);
+      // saveToState([]);
       handleLoading(false);
       handleResponse(true);
     }

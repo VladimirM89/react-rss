@@ -1,15 +1,20 @@
 import axios from 'axios';
 import { BASE_URL } from '../constants/stringConstants';
-import { CharacterInterface, SearchResponseInterface } from '../interfaces/SearchResponse';
-import getAllCharacterIds from '../utils/queryParams';
+import {
+  CharacterInterface,
+  CharacterResponseInterface,
+  SearchResponseInterface,
+} from '../interfaces/SearchResponse';
+// import getAllCharacterIds from '../utils/queryParams';
 
 export const searchApiAxios = axios.create({
   baseURL: BASE_URL,
 });
 
 interface SearchParams {
-  name?: string;
+  q?: string;
   page?: number;
+  limit?: number;
 }
 
 export async function getCharacters(
@@ -19,15 +24,11 @@ export async function getCharacters(
     params,
   });
 
-  if ((params && params.name) || (params && params.page)) {
-    return response.data;
-  } else {
-    const charactersCount = response.data.info.count;
+  return response.data;
+}
 
-    const stringOfIds = getAllCharacterIds(charactersCount);
+export async function getOneCharacter(id: number): Promise<CharacterInterface> {
+  const response = await searchApiAxios.get<CharacterResponseInterface>(`${id}`);
 
-    const allChars = await searchApiAxios.get<Array<CharacterInterface>>(`${stringOfIds}`);
-
-    return { info: response.data.info, results: allChars.data };
-  }
+  return response.data.data;
 }

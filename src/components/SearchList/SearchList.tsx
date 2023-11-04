@@ -39,7 +39,7 @@ export const SearchList: FC<SearchListProps> = ({ list }) => {
 
   const renderedList = list.map((item: CharacterInterface) => {
     return (
-      <a key={item.id} onClick={() => handleNavigate(item.id)}>
+      <a key={item.mal_id} onClick={() => handleNavigate(item.mal_id)}>
         <SearchItem item={item} />
       </a>
     );

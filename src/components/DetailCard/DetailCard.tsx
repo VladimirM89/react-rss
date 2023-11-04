@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Await, defer, useLoaderData, useNavigate, useSearchParams } from 'react-router-dom';
-import { searchApiAxios } from '../../api/SearchApi';
-import { CharacterInterface } from '../../interfaces/SearchResponse';
+import { getOneCharacter, searchApiAxios } from '../../api/SearchApi';
+import { CharacterInterface, CharacterResponseInterface } from '../../interfaces/SearchResponse';
 import { LoaderComponent } from '../LoaderComponent/LoaderComponent';
 import { Suspense, useEffect, useRef, useState } from 'react';
 import styles from './DetailCard.module.scss';
@@ -49,35 +49,40 @@ const DetailCard = () => {
             searchParams.has('details') && (
               <>
                 <div className={isOverlay ? styles.overlay : ''}></div>
+
                 <div className={cn(styles.detail_card_container)} ref={outsideRef}>
                   <button className={styles.close_btn} onClick={handleClose}>
                     &#x2715;
                   </button>
+
                   <div className={styles.content_container}>
-                    <p className={styles.name}>{detailedCard.name}</p>
+                    <p className={styles.name}>
+                      {detailedCard.title || detailedCard.title_english}
+                    </p>
+
                     <div className={styles.img_container}>
-                      <img src={detailedCard.image} />
+                      <img src={detailedCard.images.jpg.image_url} />
                     </div>
 
-                    <p className={styles.info_title}>info</p>
                     <ul className={styles.info_container}>
+                      <li className={styles.description}>
+                        <span className={styles.description_text}>Duration</span>
+                        <span className={styles.description_text}>{detailedCard.duration}</span>
+                      </li>
+                      <li className={styles.description}>
+                        <span className={styles.description_text}>Age</span>
+                        <span className={styles.description_text}>{detailedCard.rating}</span>
+                      </li>
+                      <li className={styles.description}>
+                        <span className={styles.description_text}>Type</span>
+                        <span className={styles.description_text}>
+                          {detailedCard.type} {detailedCard.episodes} episode
+                          {detailedCard.episodes > 1 && 's'}
+                        </span>
+                      </li>
                       <li className={styles.description}>
                         <span className={styles.description_text}>Status</span>
                         <span className={styles.description_text}>{detailedCard.status}</span>
-                      </li>
-                      <li className={styles.description}>
-                        <span className={styles.description_text}>Gender</span>
-                        <span className={styles.description_text}>{detailedCard.gender}</span>
-                      </li>
-                      <li className={styles.description}>
-                        <span className={styles.description_text}>Species</span>
-                        <span className={styles.description_text}>{detailedCard.species}</span>
-                      </li>
-                      <li className={styles.description}>
-                        <span className={styles.description_text}>Location</span>
-                        <span className={styles.description_text}>
-                          {detailedCard.location.name}
-                        </span>
                       </li>
                     </ul>
                   </div>
@@ -108,14 +113,14 @@ export default DetailCard;
 
 export const detailCardLoader = async ({ request }: { request: Request }) => {
   const url = new URL(request.url);
-  const searchTerm = url.searchParams.get('details');
+  const detailsTerm = url.searchParams.get('details');
 
   // console.log('fetch details data');
 
-  if (searchTerm) {
-    const response = await searchApiAxios.get<CharacterInterface>(`${searchTerm}`);
+  if (detailsTerm) {
+    const response = await getOneCharacter(Number(detailsTerm));
     return defer({
-      detailedCard: response.data,
+      detailedCard: response,
     });
 
     // return response.data;

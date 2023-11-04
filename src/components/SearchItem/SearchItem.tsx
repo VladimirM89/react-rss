@@ -7,13 +7,16 @@ type SearchItemProps = {
 };
 
 export const SearchItem: FC<SearchItemProps> = ({ item }) => {
-  const { name, image, gender, species } = item;
+  // const { title_english, images.jpg.small_image_url } = item;
   return (
     <li className={styles.card_container}>
-      <img className={styles.character_image} src={image} alt={name} />
-      <p className={styles.character_name}>Name: {name}</p>
-      <p>Gender: {gender}</p>
-      <p className={styles.character_gender}>Species: {species}</p>
+      <img
+        className={styles.character_image}
+        src={item.images.jpg.image_url}
+        alt={item.title || item.title_english}
+      />
+      <p className={styles.character_name}>{item.title || item.title_english}</p>
+      <p className={styles.character_name}>Rating: {item.score}</p>
     </li>
   );
 };
