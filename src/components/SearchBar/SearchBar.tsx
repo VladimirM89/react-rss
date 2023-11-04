@@ -6,7 +6,7 @@ import { SEARCH_VALUE } from '../../constants/stringConstants';
 import { useSearchParams } from 'react-router-dom';
 
 type SearchBarProps = {
-  getDataFromApi: (value?: string) => void;
+  getDataFromApi: (params: { value?: string; page?: number; limit?: number }) => void;
 };
 
 export const SearchBar: FC<SearchBarProps> = ({ getDataFromApi }) => {
@@ -40,7 +40,7 @@ export const SearchBar: FC<SearchBarProps> = ({ getDataFromApi }) => {
   const handleSearch = (event: React.FormEvent<HTMLFormElement | HTMLButtonElement>): void => {
     setSearchParams({ search: inputValue });
     handleStorage();
-    getDataFromApi(inputValue);
+    getDataFromApi({ value: inputValue });
 
     inputRef.current?.blur();
     event.preventDefault();

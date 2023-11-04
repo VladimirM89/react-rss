@@ -22,7 +22,7 @@ type SearchPageState = {
 };
 
 export const SearchPage: FC = () => {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [charactersInfo, setCharactersInfo] = useState<SearchPageState>({
     characters: [],
     pagination: null,
@@ -32,14 +32,27 @@ export const SearchPage: FC = () => {
 
   useEffect(() => {
     const searchParam = searchParams.get('search') || '';
-    getDataFromApi(searchParam);
+    const pageParam = Number(searchParams.get('page')) || charactersInfo.pagination?.current_page;
+    const limitParam =
+      Number(searchParams.get('limit')) || charactersInfo.pagination?.items.per_page;
+    getDataFromApi({ value: searchParam, page: pageParam, limit: limitParam });
+    setSearchParams({
+      search: searchParam,
+    });
   }, []);
 
-  const getDataFromApi = async (value?: string): Promise<void> => {
+  const getDataFromApi = async (params: {
+    value?: string;
+    page?: number;
+    limit?: number;
+  }): Promise<void> => {
     try {
       handleLoading(true);
+      const { value, page, limit } = params;
       const response = await getCharacters({
         q: value,
+        page: page,
+        limit: limit,
       });
       handleChangeState(response);
       if (response.data.length === 0) {
@@ -85,7 +98,10 @@ export const SearchPage: FC = () => {
                     <SearchList list={charactersInfo.characters} />
                     <Outlet />
                   </div>
-                  <PaginationComponent pagination={charactersInfo.pagination} />
+                  <PaginationComponent
+                    pagination={charactersInfo.pagination}
+                    getDataFromApi={getDataFromApi}
+                  />
 
                   <ErrorButton />
                 </>
