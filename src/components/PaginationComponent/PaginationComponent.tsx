@@ -1,4 +1,5 @@
-import { ChangeEvent, FC, useState } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import { ChangeEvent, FC, useEffect, useRef, useState } from 'react';
 import styles from './PaginationComponent.module.scss';
 import { PaginationInterface } from '../../interfaces/SearchResponseInterfaces';
 import cn from 'classnames';
@@ -15,8 +16,20 @@ const PaginationComponent: FC<PaginationProps> = ({ pagination, getDataFromApi }
   const [limit, setLimit] = useState<number>(pagination!.items.per_page);
   const [searchParams] = useSearchParams();
 
+  const incrementButtonRef = useRef<HTMLButtonElement>(null);
+  const decrementButtonRef = useRef<HTMLButtonElement>(null);
+
   const searchParam = searchParams.get('q') || '';
   const pageParam = Number(searchParams.get('page')) || 1;
+
+  useEffect(() => {
+    if (currentPage === 1) {
+      decrementButtonRef.current?.setAttribute('disabled', 'true');
+    }
+    if (currentPage === pagination!.last_visible_page) {
+      incrementButtonRef.current?.setAttribute('disabled', 'true');
+    }
+  }, []);
 
   const renderList = (): Array<number> | null => {
     if (pagination) {
@@ -27,16 +40,29 @@ const PaginationComponent: FC<PaginationProps> = ({ pagination, getDataFromApi }
   };
 
   const handleChangePage = (page: number) => {
-    // const searchParam = searchParams.get('q') || '';
-    // const limitParam = searchParams.get('limit');
     setCurrentPage(page);
     getDataFromApi({ q: searchParam, page, limit });
   };
 
   const handleChangeLimit = (event: ChangeEvent<HTMLSelectElement>) => {
-    // console.log('limit ', event.target.value);
     setLimit(Number(event.target.value));
     getDataFromApi({ q: searchParam, page: pageParam, limit: Number(event.target.value) });
+  };
+
+  const handleDecrementPage = () => {
+    if (currentPage === 1) {
+      decrementButtonRef.current?.setAttribute('disabled', 'true');
+    } else {
+      handleChangePage(currentPage - 1);
+    }
+  };
+
+  const handleIncrementPage = () => {
+    if (currentPage === pagination!.last_visible_page) {
+      incrementButtonRef.current?.setAttribute('disabled', 'true');
+    } else {
+      handleChangePage(currentPage + 1);
+    }
   };
 
   return (
@@ -51,10 +77,32 @@ const PaginationComponent: FC<PaginationProps> = ({ pagination, getDataFromApi }
         </select>
       </div>
 
-      {pagination!.last_visible_page > 5 ? (
+      {pagination!.last_visible_page > 3 ? (
         <div className={styles.page_container}>
-          <button className={styles.pagination_btn}>&#8592;</button>
-          more than 5<button className={styles.pagination_btn}>&#8594;</button>
+          <button
+            className={styles.pagination_btn}
+            ref={decrementButtonRef}
+            onClick={handleDecrementPage}
+          >
+            &#8592;
+          </button>
+          <button className={styles.pagination_btn} onClick={handleDecrementPage}>
+            {pagination && pagination.current_page > 1 && pagination.current_page - 1}
+          </button>
+          <button className={cn(styles.pagination_btn, styles.active)}>
+            {pagination?.current_page}
+          </button>
+          <button className={styles.pagination_btn} onClick={handleIncrementPage}>
+            {pagination && pagination.has_next_page && pagination!.current_page + 1}
+          </button>
+
+          <button
+            className={styles.pagination_btn}
+            ref={incrementButtonRef}
+            onClick={handleIncrementPage}
+          >
+            &#8594;
+          </button>
         </div>
       ) : (
         <div className={styles.page_container}>

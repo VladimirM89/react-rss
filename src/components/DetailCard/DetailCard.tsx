@@ -107,13 +107,44 @@ const DetailCard = () => {
 
     // searchParams.has('details') &&
     // (!isLoading ? (
-    //   <div>
-    //     <p> Selested id: {data.id}</p>
-    //     <img src={data.image} />
-    //     <p>Name: {data.name}</p>
-    //     <p>Gender: {data.gender}</p>
-    //     <button onClick={handleClose}>close</button>
-    //   </div>
+    //   <>
+    //     <div className={isOverlay ? styles.overlay : ''}></div>{' '}
+    //     <div className={cn(styles.detail_card_container)} ref={outsideRef}>
+    //       {' '}
+    //       <button className={styles.close_btn} onClick={handleClose}>
+    //         &#x2715;{' '}
+    //       </button>{' '}
+    //       <div className={styles.content_container}>
+    //         {' '}
+    //         <p className={styles.name}>{detailedCard.title || detailedCard.title_english} </p>{' '}
+    //         <div className={styles.img_container}>
+    //           <img src={detailedCard.images.jpg.image_url} />{' '}
+    //         </div>{' '}
+    //         <ul className={styles.info_container}>
+    //           {' '}
+    //           <li className={styles.description}>
+    //             <span className={styles.description_text}>Duration</span>
+    //             <span className={styles.description_text}>{detailedCard.duration}</span>{' '}
+    //           </li>{' '}
+    //           <li className={styles.description}>
+    //             <span className={styles.description_text}>Age</span>
+    //             <span className={styles.description_text}>{detailedCard.rating}</span>{' '}
+    //           </li>{' '}
+    //           <li className={styles.description}>
+    //             <span className={styles.description_text}>Type</span>{' '}
+    //             <span className={styles.description_text}>
+    //               {detailedCard.type} {detailedCard.episodes} episode{' '}
+    //               {detailedCard.episodes > 1 && 's'}{' '}
+    //             </span>{' '}
+    //           </li>{' '}
+    //           <li className={styles.description}>
+    //             <span className={styles.description_text}>Status</span>
+    //             <span className={styles.description_text}>{detailedCard.status}</span>{' '}
+    //           </li>{' '}
+    //         </ul>{' '}
+    //       </div>{' '}
+    //     </div>{' '}
+    //   </>
     // ) : (
     //   <LoaderComponent />
     // ))

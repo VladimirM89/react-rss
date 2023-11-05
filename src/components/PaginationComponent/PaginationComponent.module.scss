@@ -1,13 +1,22 @@
 .pagination_container {
   display: flex;
   gap: 3rem;
+  align-items: center;
   color: var(--font-secondary-color);
   font-weight: 600;  font-size: 1.6rem;
+
+  @media screen and (max-width: 579px) {
+    flex-direction: column;
+  }
 }
 
 .pagination_btn{
   padding: 0.5rem;
   background-color: transparent;
+
+  &:disabled {
+    display: none
+  }
 }
 
 .limit_container {
