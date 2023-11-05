@@ -4,36 +4,30 @@ import cn from 'classnames';
 import styles from './SearchList.module.scss';
 import { FC } from 'react';
 import { createSearchParams, useNavigate, useSearchParams } from 'react-router-dom';
+import { customCreateSearchParams } from '../../utils/queryParams';
 
 type SearchListProps = {
   list: Array<CharacterInterface>;
 };
 
 export const SearchList: FC<SearchListProps> = ({ list }) => {
-  // console.log('search list render');
   const [searchParams] = useSearchParams();
-  const searchParam = searchParams.get('q') || '';
-
-  const handleSearchParam = () => {
-    if (searchParam.length) {
-      return { search: searchParam };
-    }
-    return null;
-  };
+  const searchParam = searchParams.get('q');
+  const pageParam = searchParams.get('page');
+  const limitParam = searchParams.get('limit');
 
   const navigate = useNavigate();
 
   const handleNavigate = (id: number) => {
-    const search = handleSearchParam();
-
-    // console.log('navigate to Details');
+    const checkedParams = customCreateSearchParams({
+      q: searchParam || '',
+      page: Number(pageParam),
+      limit: Number(limitParam),
+    });
 
     navigate({
       pathname: '/',
-      search: `${createSearchParams({
-        ...search,
-        details: id.toString(),
-      })}`,
+      search: createSearchParams({ ...checkedParams, details: `${id}` }).toString(),
     });
   };
 

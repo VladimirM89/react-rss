@@ -1,6 +1,6 @@
 import { SearchParams } from '../interfaces/ParamsInterfaces';
 
-export const createSearchParams = (params: SearchParams) => {
+export const customCreateSearchParams = (params: SearchParams) => {
   const newParams: { q?: string; page?: string; limit?: string } = {};
   if (params.q) {
     newParams.q = params.q;

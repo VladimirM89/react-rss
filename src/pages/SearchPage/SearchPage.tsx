@@ -17,7 +17,7 @@ import { NotFound } from '../../components/ErrorBoundary/components/NotFound/Not
 import { Outlet, useSearchParams } from 'react-router-dom';
 import PaginationComponent from '../../components/PaginationComponent/PaginationComponent';
 import { getCharacters } from '../../api/SearchApi';
-import { createSearchParams } from '../../utils/queryParams';
+import { customCreateSearchParams } from '../../utils/queryParams';
 import { SearchParams } from '../../interfaces/ParamsInterfaces';
 type SearchPageState = {
   characters: Array<CharacterInterface>;
@@ -38,7 +38,7 @@ export const SearchPage: FC = () => {
     const searchParam = searchParams.get('q') || '';
     const pageParam = Number(searchParams.get('page'));
     const limitParam = Number(searchParams.get('limit'));
-    const initialParams = createSearchParams({
+    const initialParams = customCreateSearchParams({
       q: searchParam,
       page: pageParam,
       limit: limitParam,
@@ -61,7 +61,7 @@ export const SearchPage: FC = () => {
         page: page,
         limit: limit,
       });
-      const paramsToSet = createSearchParams(params);
+      const paramsToSet = customCreateSearchParams(params);
       // console.log('params to set ', paramsToSet);
       setSearchParams(paramsToSet);
       handleChangeState(response);

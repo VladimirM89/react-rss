@@ -14,15 +14,12 @@ import { Suspense, useEffect, useRef, useState } from 'react';
 import styles from './DetailCard.module.scss';
 import cn from 'classnames';
 import useOutsideClick from '../../hooks/HandleOutsideClick';
+import { customCreateSearchParams } from '../../utils/queryParams';
 
 const DetailCard = () => {
-  // console.log('render Details components');
-  // const outsideRef = useRef<HTMLDivElement>(null);
   const [isOverlay, setIsOverlay] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [searchParams, setSearchParams] = useSearchParams();
-
-  // console.log(searchParams);
 
   const data = useLoaderData() as { detailedCard: CharacterInterface };
   const { detailedCard } = data;
@@ -37,18 +34,19 @@ const DetailCard = () => {
   const navigate = useNavigate();
 
   const handleClose = (): void => {
-    const searchValue = searchParams.get('q') || '';
-    const pageValue = searchParams.get('page') || '';
-    const limitValue = searchParams.get('limit') || '';
+    const searchValue = searchParams.get('q');
+    const pageValue = searchParams.get('page');
+    const limitValue = searchParams.get('limit');
+    const paramsToSet = customCreateSearchParams({
+      q: searchValue || '',
+      page: Number(pageValue),
+      limit: Number(limitValue),
+    });
     navigate({
       pathname: '/',
-      // search: searchValue ? `search=${searchValue}` : ``,
-      search: createSearchParams({
-        q: searchValue,
-        page: pageValue,
-        limit: limitValue,
-      }).toString(),
+      search: createSearchParams(paramsToSet).toString(),
     });
+    setSearchParams(paramsToSet);
     setIsOverlay((prev) => !prev);
   };
 
@@ -58,7 +56,6 @@ const DetailCard = () => {
     <Suspense fallback={<LoaderComponent />}>
       <Await resolve={detailedCard} errorElement={<p>Error in detail compoment</p>}>
         {(detailedCard) => {
-          // console.log(data);
           return (
             searchParams.has('details') && (
               <>
@@ -128,8 +125,6 @@ export default DetailCard;
 export const detailCardLoader = async ({ request }: { request: Request }) => {
   const url = new URL(request.url);
   const detailsTerm = url.searchParams.get('details');
-
-  // console.log('fetch details data');
 
   if (detailsTerm) {
     const response = await getOneCharacter(Number(detailsTerm));
