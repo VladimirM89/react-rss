@@ -1,0 +1,17 @@
+.fallback_container {
+  width: 90%;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 1rem;
+  background-color: var(--bg-card-color);
+}
+
+.warning_message {
+  text-align: center;
+  font-size: 2rem;
+  color: var(--accent-color);
+}
