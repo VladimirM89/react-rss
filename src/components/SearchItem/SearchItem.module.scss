@@ -24,6 +24,13 @@
   margin: 1rem auto;
 }
 
+.description_container {
+  min-height: 32%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
 .character_name {
   font-size: 1.8rem;
   font-weight: 500;

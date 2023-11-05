@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { FC, useEffect, useState } from 'react';
 import { SearchBar } from '../../components/SearchBar/SearchBar';
 import { SearchList } from '../../components/SearchList/SearchList';
@@ -5,7 +6,7 @@ import {
   CharacterInterface,
   PaginationInterface,
   SearchResponseInterface,
-} from '../../interfaces/SearchResponse';
+} from '../../interfaces/SearchResponseInterfaces';
 import { ErrorButton } from '../../components/ErrorBoundary/components/ErrorButton/ErrorButton';
 import { ErrorBoundary } from '../../components/ErrorBoundary/ErrorBoundary';
 import cn from 'classnames';
@@ -16,6 +17,8 @@ import { NotFound } from '../../components/ErrorBoundary/components/NotFound/Not
 import { Outlet, useSearchParams } from 'react-router-dom';
 import PaginationComponent from '../../components/PaginationComponent/PaginationComponent';
 import { getCharacters } from '../../api/SearchApi';
+import { createSearchParams } from '../../utils/queryParams';
+import { SearchParams } from '../../interfaces/ParamsInterfaces';
 type SearchPageState = {
   characters: Array<CharacterInterface>;
   pagination: PaginationInterface | null;
@@ -31,29 +34,36 @@ export const SearchPage: FC = () => {
   const [isNoItems, setisNoItems] = useState<boolean>(false);
 
   useEffect(() => {
-    const searchParam = searchParams.get('search') || '';
-    const pageParam = Number(searchParams.get('page')) || charactersInfo.pagination?.current_page;
-    const limitParam =
-      Number(searchParams.get('limit')) || charactersInfo.pagination?.items.per_page;
-    getDataFromApi({ value: searchParam, page: pageParam, limit: limitParam });
-    setSearchParams({
-      search: searchParam,
+    // console.log('start use effect');
+    const searchParam = searchParams.get('q') || '';
+    const pageParam = Number(searchParams.get('page'));
+    const limitParam = Number(searchParams.get('limit'));
+    const initialParams = createSearchParams({
+      q: searchParam,
+      page: pageParam,
+      limit: limitParam,
     });
+    getDataFromApi({
+      q: initialParams.q,
+      page: Number(initialParams.page),
+      limit: Number(initialParams.limit),
+    });
+    setSearchParams(initialParams);
   }, []);
 
-  const getDataFromApi = async (params: {
-    value?: string;
-    page?: number;
-    limit?: number;
-  }): Promise<void> => {
+  const getDataFromApi = async (params: SearchParams): Promise<void> => {
     try {
       handleLoading(true);
-      const { value, page, limit } = params;
+      const { q, page, limit } = params;
+
       const response = await getCharacters({
-        q: value,
+        q: q,
         page: page,
         limit: limit,
       });
+      const paramsToSet = createSearchParams(params);
+      // console.log('params to set ', paramsToSet);
+      setSearchParams(paramsToSet);
       handleChangeState(response);
       if (response.data.length === 0) {
         throw Error('No such item found');

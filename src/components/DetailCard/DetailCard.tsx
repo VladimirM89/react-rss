@@ -1,7 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Await, defer, useLoaderData, useNavigate, useSearchParams } from 'react-router-dom';
+import {
+  Await,
+  createSearchParams,
+  defer,
+  useLoaderData,
+  useNavigate,
+  useSearchParams,
+} from 'react-router-dom';
 import { getOneCharacter, searchApiAxios } from '../../api/SearchApi';
-import { CharacterInterface, CharacterResponseInterface } from '../../interfaces/SearchResponse';
+import { CharacterInterface } from '../../interfaces/SearchResponseInterfaces';
 import { LoaderComponent } from '../LoaderComponent/LoaderComponent';
 import { Suspense, useEffect, useRef, useState } from 'react';
 import styles from './DetailCard.module.scss';
@@ -9,7 +16,7 @@ import cn from 'classnames';
 import useOutsideClick from '../../hooks/HandleOutsideClick';
 
 const DetailCard = () => {
-  console.log('render Details components');
+  // console.log('render Details components');
   // const outsideRef = useRef<HTMLDivElement>(null);
   const [isOverlay, setIsOverlay] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -30,10 +37,17 @@ const DetailCard = () => {
   const navigate = useNavigate();
 
   const handleClose = (): void => {
-    const searchValue = searchParams.get('search');
+    const searchValue = searchParams.get('q') || '';
+    const pageValue = searchParams.get('page') || '';
+    const limitValue = searchParams.get('limit') || '';
     navigate({
       pathname: '/',
-      search: searchValue ? `search=${searchValue}` : ``,
+      // search: searchValue ? `search=${searchValue}` : ``,
+      search: createSearchParams({
+        q: searchValue,
+        page: pageValue,
+        limit: limitValue,
+      }).toString(),
     });
     setIsOverlay((prev) => !prev);
   };

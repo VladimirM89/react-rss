@@ -1,17 +1,19 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { FC, useEffect, useRef, useState } from 'react';
 import { removeItemFromLocalStorage, saveToLocalStorage } from '../../utils/localStorage';
 import cn from 'classnames';
 import styles from './SearchBar.module.scss';
 import { SEARCH_VALUE } from '../../constants/stringConstants';
 import { useSearchParams } from 'react-router-dom';
+import { SearchParams } from '../../interfaces/ParamsInterfaces';
 
 type SearchBarProps = {
-  getDataFromApi: (params: { value?: string; page?: number; limit?: number }) => void;
+  getDataFromApi: (params: SearchParams) => void;
 };
 
 export const SearchBar: FC<SearchBarProps> = ({ getDataFromApi }) => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const searchParam = searchParams.get('search') || '';
+  const searchParam = searchParams.get('q') || '';
 
   const [inputValue, setInputValue] = useState<string>(searchParam || '');
   const inputRef = useRef<HTMLInputElement>(null);
@@ -38,9 +40,9 @@ export const SearchBar: FC<SearchBarProps> = ({ getDataFromApi }) => {
   };
 
   const handleSearch = (event: React.FormEvent<HTMLFormElement | HTMLButtonElement>): void => {
-    setSearchParams({ search: inputValue });
+    setSearchParams({ q: inputValue });
     handleStorage();
-    getDataFromApi({ value: inputValue });
+    getDataFromApi({ q: inputValue });
 
     inputRef.current?.blur();
     event.preventDefault();

@@ -4,24 +4,25 @@ import {
   CharacterInterface,
   CharacterResponseInterface,
   SearchResponseInterface,
-} from '../interfaces/SearchResponse';
-// import getAllCharacterIds from '../utils/queryParams';
+} from '../interfaces/SearchResponseInterfaces';
+import { SearchParams } from '../interfaces/ParamsInterfaces';
 
 export const searchApiAxios = axios.create({
   baseURL: BASE_URL,
 });
 
-interface SearchParams {
-  q?: string;
-  page?: number;
-  limit?: number;
-}
-
 export async function getCharacters(
   params: SearchParams | null = null
 ): Promise<SearchResponseInterface> {
+  const checkedParams: SearchParams = {};
+
+  if (params) {
+    if (params.q) checkedParams.q = params.q;
+    if (params.page) checkedParams.page = params.page;
+    if (params.limit) checkedParams.limit = params.limit;
+  }
   const response = await searchApiAxios.get<SearchResponseInterface>('', {
-    params,
+    params: checkedParams,
   });
 
   return response.data;

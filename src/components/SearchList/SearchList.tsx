@@ -1,4 +1,4 @@
-import { CharacterInterface } from '../../interfaces/SearchResponse';
+import { CharacterInterface } from '../../interfaces/SearchResponseInterfaces';
 import { SearchItem } from '../SearchItem/SearchItem';
 import cn from 'classnames';
 import styles from './SearchList.module.scss';
@@ -12,7 +12,7 @@ type SearchListProps = {
 export const SearchList: FC<SearchListProps> = ({ list }) => {
   // console.log('search list render');
   const [searchParams] = useSearchParams();
-  const searchParam = searchParams.get('search') || '';
+  const searchParam = searchParams.get('q') || '';
 
   const handleSearchParam = () => {
     if (searchParam.length) {
