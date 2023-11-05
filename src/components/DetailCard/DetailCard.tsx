@@ -17,7 +17,6 @@ import useOutsideClick from '../../hooks/HandleOutsideClick';
 import { customCreateSearchParams } from '../../utils/queryParams';
 
 const DetailCard = () => {
-  // const [isOverlay, setIsOverlay] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -47,68 +46,59 @@ const DetailCard = () => {
       search: createSearchParams(paramsToSet).toString(),
     });
     setSearchParams(paramsToSet);
-    // setIsOverlay((prev) => !prev);
   };
 
   const outsideRef = useOutsideClick(handleClose);
 
   return (
     // <Suspense fallback={<LoaderComponent />}>
-    //   <Await resolve={detailedCard} errorElement={<p>Error in detail compoment</p>}>
-    //     {(detailedCard) => {
-    //       return (
-    //         searchParams.has('details') && (
-    //           <>
-    //             <div className={isOverlay ? styles.overlay : ''}></div>
+    //   {searchParams.has('details') && (
+    //     <>
+    //       <div className={searchParams.has('details') ? styles.overlay : ''}></div>
 
-    //             <div className={cn(styles.detail_card_container)} ref={outsideRef}>
-    //               <button className={styles.close_btn} onClick={handleClose}>
-    //                 &#x2715;
-    //               </button>
+    //       <div className={cn(styles.detail_card_container)} ref={outsideRef}>
+    //         <button className={styles.close_btn} onClick={handleClose}>
+    //           &#x2715;
+    //         </button>
 
-    //               <div className={styles.content_container}>
-    //                 <p className={styles.name}>
-    //                   {detailedCard.title || detailedCard.title_english}
-    //                 </p>
+    //         <div className={styles.content_container}>
+    //           <p className={styles.name}>{detailedCard.title || detailedCard.title_english}</p>
 
-    //                 <div className={styles.img_container}>
-    //                   <img src={detailedCard.images.jpg.image_url} />
-    //                 </div>
+    //           <div className={styles.img_container}>
+    //             <img src={detailedCard.images.jpg.image_url} />
+    //           </div>
 
-    //                 <ul className={styles.info_container}>
-    //                   <li className={styles.description}>
-    //                     <span className={styles.description_text}>Duration</span>
-    //                     <span className={styles.description_text}>{detailedCard.duration}</span>
-    //                   </li>
-    //                   <li className={styles.description}>
-    //                     <span className={styles.description_text}>Age</span>
-    //                     <span className={styles.description_text}>{detailedCard.rating}</span>
-    //                   </li>
-    //                   <li className={styles.description}>
-    //                     <span className={styles.description_text}>Type</span>
-    //                     <span className={styles.description_text}>
-    //                       {detailedCard.type} {detailedCard.episodes} episode
-    //                       {detailedCard.episodes > 1 && 's'}
-    //                     </span>
-    //                   </li>
-    //                   <li className={styles.description}>
-    //                     <span className={styles.description_text}>Status</span>
-    //                     <span className={styles.description_text}>{detailedCard.status}</span>
-    //                   </li>
-    //                 </ul>
-    //               </div>
-    //             </div>
-    //           </>
-    //         )
-    //       );
-    //     }}
-    //   </Await>
+    //           <ul className={styles.info_container}>
+    //             <li className={styles.description}>
+    //               <span className={styles.description_text}>Duration</span>
+    //               <span className={styles.description_text}>{detailedCard.duration}</span>
+    //             </li>
+    //             <li className={styles.description}>
+    //               <span className={styles.description_text}>Age</span>
+    //               <span className={styles.description_text}>{detailedCard.rating}</span>
+    //             </li>
+    //             <li className={styles.description}>
+    //               <span className={styles.description_text}>Type</span>
+    //               <span className={styles.description_text}>
+    //                 {detailedCard.type} {detailedCard.episodes} episode
+    //                 {detailedCard.episodes > 1 && 's'}
+    //               </span>
+    //             </li>
+    //             <li className={styles.description}>
+    //               <span className={styles.description_text}>Status</span>
+    //               <span className={styles.description_text}>{detailedCard.status}</span>
+    //             </li>
+    //           </ul>
+    //         </div>
+    //       </div>
+    //     </>
+    //   )}
     // </Suspense>
 
     searchParams.has('details') &&
-    (!isLoading ? (
+    (searchParams.has('details') ? (
       <>
-        {/* <div className={isOverlay ? styles.overlay : ''}></div> */}
+        <div className={searchParams.has('details') ? styles.overlay : ''}></div>
         <div></div>
         <div className={cn(styles.detail_card_container)} ref={outsideRef}>
           <button className={styles.close_btn} onClick={handleClose}>
@@ -157,16 +147,13 @@ export const detailCardLoader = async ({ request }: { request: Request }) => {
 
   if (detailsTerm) {
     const response = await getOneCharacter(Number(detailsTerm));
+
     return defer({
       detailedCard: response,
     });
-
-    // return response.data;
   }
 
   return defer({
     detailedCard: null,
   });
-
-  // return null;
 };
