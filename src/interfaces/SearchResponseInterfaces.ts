@@ -36,22 +36,22 @@ export interface CharacterInterface {
   members: number;
   favorites: number;
   synopsis: string;
-  background: string;
+  background: string | null;
   season: string;
   year: number;
   broadcast: {
-    day: string;
-    time: string;
-    timezone: string;
+    day: string | null;
+    time: string | null;
+    timezone: string | null;
     string: string;
   };
   producers: Array<AuthorsInterface>;
   licensors: Array<AuthorsInterface>;
   studios: Array<AuthorsInterface>;
   genres: Array<AuthorsInterface>;
-  explicit_genres: Array<AuthorsInterface>;
-  themes: Array<AuthorsInterface>;
-  demographics: Array<AuthorsInterface>;
+  explicit_genres: Array<AuthorsInterface> | never[];
+  themes: Array<AuthorsInterface> | never[];
+  demographics: Array<AuthorsInterface> | never[];
 }
 
 interface ImagesInterface {
@@ -66,8 +66,8 @@ interface AiredInterface {
   prop: {
     from: DateInterface;
     to: DateInterface;
-    string: string;
   };
+  string: string;
 }
 
 interface TrailerInterface {

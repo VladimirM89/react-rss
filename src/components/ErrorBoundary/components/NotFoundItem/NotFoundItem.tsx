@@ -1,7 +1,7 @@
 import { FC } from 'react';
-import styles from './NotFound.module.scss';
+import styles from './NotFoundItem.module.scss';
 
-export const NotFound: FC = () => {
+export const NotFoundItem: FC = () => {
   return (
     <div className={styles.container}>
       <p className={styles.description}>Item not found...</p>

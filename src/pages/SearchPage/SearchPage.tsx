@@ -13,7 +13,7 @@ import cn from 'classnames';
 import styles from './SearchPage.module.scss';
 import { LoaderComponent } from '../../components/LoaderComponent/LoaderComponent';
 import { Fallback } from '../../components/ErrorBoundary/components/ErrorButton/Fallback/Fallback';
-import { NotFound } from '../../components/ErrorBoundary/components/NotFound/NotFound';
+import { NotFoundItem } from '../../components/ErrorBoundary/components/NotFoundItem/NotFoundItem';
 import { Outlet, useSearchParams } from 'react-router-dom';
 import PaginationComponent from '../../components/PaginationComponent/PaginationComponent';
 import { getCharacters } from '../../api/SearchApi';
@@ -34,7 +34,6 @@ export const SearchPage: FC = () => {
   const [isNoItems, setisNoItems] = useState<boolean>(false);
 
   useEffect(() => {
-    // console.log('start use effect');
     const searchParam = searchParams.get('q') || '';
     const pageParam = Number(searchParams.get('page'));
     const limitParam = Number(searchParams.get('limit'));
@@ -62,7 +61,6 @@ export const SearchPage: FC = () => {
         limit: limit,
       });
       const paramsToSet = customCreateSearchParams(params);
-      // console.log('params to set ', paramsToSet);
       setSearchParams(paramsToSet);
       handleChangeState(response);
       if (response.data.length === 0) {
@@ -101,7 +99,7 @@ export const SearchPage: FC = () => {
           ) : (
             <>
               {isNoItems ? (
-                <NotFound />
+                <NotFoundItem />
               ) : (
                 <>
                   <div style={{ display: 'flex' }}>
