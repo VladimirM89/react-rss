@@ -14,10 +14,8 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<RootLayout />}>
       <Route path="/" element={<SearchPage />}>
-        {/* <Route path="/" element={<DetailLayout />}> */}
         <Route index loader={detailCardLoader} element={<DetailCard />} />
       </Route>
-      {/* </Route> */}
       <Route path="*" element={<NotFoundPage />} />
     </Route>
   )

@@ -1,17 +1,20 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { ChangeEvent, FC, useEffect, useRef, useState } from 'react';
 import styles from './PaginationComponent.module.scss';
-import { PaginationInterface } from '../../interfaces/SearchResponseInterfaces';
+// import { PaginationInterface } from '../../interfaces/SearchResponseInterfaces';
 import cn from 'classnames';
 import { useSearchParams } from 'react-router-dom';
 import { SearchParams } from '../../interfaces/ParamsInterfaces';
+import { useSeacrhContext } from '../../context/SearchContext';
 
 type PaginationProps = {
-  pagination: PaginationInterface | null;
+  // pagination: PaginationInterface | null;
   getDataFromApi: (params: SearchParams) => void;
 };
 
-const PaginationComponent: FC<PaginationProps> = ({ pagination, getDataFromApi }) => {
+const PaginationComponent: FC<PaginationProps> = ({ getDataFromApi }) => {
+  const { charactersInfo } = useSeacrhContext();
+  const pagination = charactersInfo.pagination;
   const [currentPage, setCurrentPage] = useState<number>(pagination?.current_page || 1);
   const [limit, setLimit] = useState<number>(pagination!.items.per_page);
   const [searchParams] = useSearchParams();
@@ -20,7 +23,7 @@ const PaginationComponent: FC<PaginationProps> = ({ pagination, getDataFromApi }
   const decrementButtonRef = useRef<HTMLButtonElement>(null);
 
   const searchParam = searchParams.get('q') || '';
-  const pageParam = Number(searchParams.get('page')) || 1;
+  // const pageParam = Number(searchParams.get('page')) || 1;
 
   useEffect(() => {
     if (currentPage === 1) {
@@ -46,7 +49,7 @@ const PaginationComponent: FC<PaginationProps> = ({ pagination, getDataFromApi }
 
   const handleChangeLimit = (event: ChangeEvent<HTMLSelectElement>) => {
     setLimit(Number(event.target.value));
-    getDataFromApi({ q: searchParam, page: pageParam, limit: Number(event.target.value) });
+    getDataFromApi({ q: searchParam, page: 1, limit: Number(event.target.value) });
   };
 
   const handleDecrementPage = () => {

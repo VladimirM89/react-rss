@@ -19,12 +19,18 @@ import PaginationComponent from '../../components/PaginationComponent/Pagination
 import { getCharacters } from '../../api/SearchApi';
 import { customCreateSearchParams } from '../../utils/queryParams';
 import { SearchParams } from '../../interfaces/ParamsInterfaces';
+import SearchProvider from '../../context/SearchContext';
+// import SearchContext from '../../context/SearchContext';
+
 type SearchPageState = {
   characters: Array<CharacterInterface>;
   pagination: PaginationInterface | null;
 };
 
 export const SearchPage: FC = () => {
+  // const [charactersInfo, setCharactersInfo] = useState<>([]);
+  const [inputValue, setInputValue] = useState<string>('');
+
   const [searchParams, setSearchParams] = useSearchParams();
   const [charactersInfo, setCharactersInfo] = useState<SearchPageState>({
     characters: [],
@@ -91,33 +97,42 @@ export const SearchPage: FC = () => {
 
   return (
     <div className={styles.container}>
-      <ErrorBoundary fallback={<Fallback />}>
-        <div className={cn('wrapper', styles.main_wrapper)}>
-          <SearchBar getDataFromApi={getDataFromApi} />
-          {isLoading ? (
-            <LoaderComponent />
-          ) : (
-            <>
-              {isNoItems ? (
-                <NotFoundItem />
-              ) : (
-                <>
-                  <div style={{ display: 'flex' }}>
-                    <SearchList list={charactersInfo.characters} />
-                    <Outlet />
-                  </div>
-                  <PaginationComponent
-                    pagination={charactersInfo.pagination}
-                    getDataFromApi={getDataFromApi}
-                  />
+      <SearchProvider
+        value={{
+          charactersInfo,
+          setCharactersInfo,
+          inputValue,
+          setInputValue,
+        }}
+      >
+        <ErrorBoundary fallback={<Fallback />}>
+          <div className={cn('wrapper', styles.main_wrapper)}>
+            <SearchBar getDataFromApi={getDataFromApi} />
+            {isLoading ? (
+              <LoaderComponent />
+            ) : (
+              <>
+                {isNoItems ? (
+                  <NotFoundItem />
+                ) : (
+                  <>
+                    <div style={{ display: 'flex' }}>
+                      <SearchList />
+                      <Outlet />
+                    </div>
+                    <PaginationComponent
+                      // pagination={charactersInfo.pagination}
+                      getDataFromApi={getDataFromApi}
+                    />
 
-                  <ErrorButton />
-                </>
-              )}
-            </>
-          )}
-        </div>
-      </ErrorBoundary>
+                    <ErrorButton />
+                  </>
+                )}
+              </>
+            )}
+          </div>
+        </ErrorBoundary>
+      </SearchProvider>
     </div>
   );
 };
