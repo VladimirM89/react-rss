@@ -5,10 +5,6 @@ import styles from './SearchList.module.scss';
 import { FC } from 'react';
 import { useSeacrhContext } from '../../context/SearchContext';
 
-// type SearchListProps = {
-//   list: Array<CharacterInterface>;
-// };
-
 export const SearchList: FC = () => {
   const { charactersInfo } = useSeacrhContext();
   const renderedList = charactersInfo.characters.map((item: CharacterInterface) => {

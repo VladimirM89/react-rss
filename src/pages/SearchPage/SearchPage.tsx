@@ -28,7 +28,6 @@ type SearchPageState = {
 };
 
 export const SearchPage: FC = () => {
-  // const [charactersInfo, setCharactersInfo] = useState<>([]);
   const [inputValue, setInputValue] = useState<string>('');
 
   const [searchParams, setSearchParams] = useSearchParams();
@@ -103,11 +102,12 @@ export const SearchPage: FC = () => {
           setCharactersInfo,
           inputValue,
           setInputValue,
+          getDataFromApi,
         }}
       >
         <ErrorBoundary fallback={<Fallback />}>
           <div className={cn('wrapper', styles.main_wrapper)}>
-            <SearchBar getDataFromApi={getDataFromApi} />
+            <SearchBar />
             {isLoading ? (
               <LoaderComponent />
             ) : (
@@ -120,10 +120,7 @@ export const SearchPage: FC = () => {
                       <SearchList />
                       <Outlet />
                     </div>
-                    <PaginationComponent
-                      // pagination={charactersInfo.pagination}
-                      getDataFromApi={getDataFromApi}
-                    />
+                    <PaginationComponent />
 
                     <ErrorButton />
                   </>

@@ -5,13 +5,10 @@ import cn from 'classnames';
 import styles from './SearchBar.module.scss';
 import { SEARCH_VALUE } from '../../constants/stringConstants';
 import { useSearchParams } from 'react-router-dom';
-import { SearchParams } from '../../interfaces/ParamsInterfaces';
+import { useSeacrhContext } from '../../context/SearchContext';
 
-type SearchBarProps = {
-  getDataFromApi: (params: SearchParams) => void;
-};
-
-export const SearchBar: FC<SearchBarProps> = ({ getDataFromApi }) => {
+export const SearchBar: FC = () => {
+  const { getDataFromApi } = useSeacrhContext();
   const [searchParams, setSearchParams] = useSearchParams();
   const searchParam = searchParams.get('q') || '';
 

@@ -1,21 +1,19 @@
 import { createContext, useContext } from 'react';
 import { CharacterInterface, PaginationInterface } from '../interfaces/SearchResponseInterfaces';
+import { SearchParams } from '../interfaces/ParamsInterfaces';
 
 export type SearchContextType = {
   charactersInfo: SearchState;
   setCharactersInfo: (newCharInfo: SearchState) => void;
   inputValue: string;
   setInputValue: (newInputValue: string) => void;
+  getDataFromApi: (params: SearchParams) => Promise<void>;
 };
 
 type SearchState = {
   characters: Array<CharacterInterface>;
   pagination: PaginationInterface | null;
 };
-
-// type ContextProps = {
-//   children: ReactNode;
-// };
 
 const SearchContext = createContext<SearchContextType | null>(null);
 

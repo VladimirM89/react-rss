@@ -1,19 +1,11 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { ChangeEvent, FC, useEffect, useRef, useState } from 'react';
 import styles from './PaginationComponent.module.scss';
-// import { PaginationInterface } from '../../interfaces/SearchResponseInterfaces';
 import cn from 'classnames';
 import { useSearchParams } from 'react-router-dom';
-import { SearchParams } from '../../interfaces/ParamsInterfaces';
 import { useSeacrhContext } from '../../context/SearchContext';
 
-type PaginationProps = {
-  // pagination: PaginationInterface | null;
-  getDataFromApi: (params: SearchParams) => void;
-};
-
-const PaginationComponent: FC<PaginationProps> = ({ getDataFromApi }) => {
-  const { charactersInfo } = useSeacrhContext();
+const PaginationComponent: FC = () => {
+  const { charactersInfo, getDataFromApi } = useSeacrhContext();
   const pagination = charactersInfo.pagination;
   const [currentPage, setCurrentPage] = useState<number>(pagination?.current_page || 1);
   const [limit, setLimit] = useState<number>(pagination!.items.per_page);
@@ -23,7 +15,6 @@ const PaginationComponent: FC<PaginationProps> = ({ getDataFromApi }) => {
   const decrementButtonRef = useRef<HTMLButtonElement>(null);
 
   const searchParam = searchParams.get('q') || '';
-  // const pageParam = Number(searchParams.get('page')) || 1;
 
   useEffect(() => {
     if (currentPage === 1) {
