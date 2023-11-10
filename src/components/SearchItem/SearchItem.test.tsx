@@ -228,5 +228,6 @@ describe('SearchItem component tests', () => {
 
     const item = screen.getByRole('listitem');
     await user.click(item);
+    screen.debug();
   });
 });

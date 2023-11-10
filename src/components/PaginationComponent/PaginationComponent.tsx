@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { ChangeEvent, FC, useEffect, useRef, useState } from 'react';
 import styles from './PaginationComponent.module.scss';
 import cn from 'classnames';

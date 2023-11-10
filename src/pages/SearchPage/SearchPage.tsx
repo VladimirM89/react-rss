@@ -13,7 +13,7 @@ import cn from 'classnames';
 import styles from './SearchPage.module.scss';
 import { LoaderComponent } from '../../components/LoaderComponent/LoaderComponent';
 import { Fallback } from '../../components/ErrorBoundary/components/ErrorButton/Fallback/Fallback';
-import { NotFoundItem } from '../../components/ErrorBoundary/components/NotFoundItem/NotFoundItem';
+// import { NotFoundItem } from '../../components/ErrorBoundary/components/NotFoundItem/NotFoundItem';
 import { Outlet, useSearchParams } from 'react-router-dom';
 import PaginationComponent from '../../components/PaginationComponent/PaginationComponent';
 import { getCharacters } from '../../api/SearchApi';
@@ -36,7 +36,7 @@ export const SearchPage: FC = () => {
     pagination: null,
   });
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [isNoItems, setisNoItems] = useState<boolean>(false);
+  // const [isNoItems, setisNoItems] = useState<boolean>(false);
 
   useEffect(() => {
     const searchParam = searchParams.get('q') || '';
@@ -68,12 +68,12 @@ export const SearchPage: FC = () => {
       const paramsToSet = customCreateSearchParams(params);
       setSearchParams(paramsToSet);
       handleChangeState(response);
-      if (response.data.length === 0) {
+      if (response.data.length) {
         throw Error('No such item found');
       }
     } catch (error: unknown) {
       handleLoading(false);
-      handleResponse(true);
+      // handleResponse(true);
     }
   };
 
@@ -83,16 +83,16 @@ export const SearchPage: FC = () => {
       pagination: response.pagination,
     });
     setIsLoading(false);
-    setisNoItems(false);
+    // setisNoItems(false);
   };
 
   const handleLoading = (value: boolean) => {
     setIsLoading(value);
   };
 
-  const handleResponse = (value: boolean) => {
-    setisNoItems(value);
-  };
+  // const handleResponse = (value: boolean) => {
+  //   // setisNoItems(value);
+  // };
 
   return (
     <div className={styles.container}>
@@ -112,16 +112,13 @@ export const SearchPage: FC = () => {
               <LoaderComponent />
             ) : (
               <>
-                {isNoItems ? (
-                  <NotFoundItem />
-                ) : (
+                <div style={{ display: 'flex' }}>
+                  <SearchList />
+                  <Outlet />
+                </div>
+                {!!charactersInfo.characters.length && (
                   <>
-                    <div style={{ display: 'flex' }}>
-                      <SearchList />
-                      <Outlet />
-                    </div>
                     <PaginationComponent />
-
                     <ErrorButton />
                   </>
                 )}

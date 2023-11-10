@@ -12,7 +12,7 @@ export const Fallback: FC = () => {
 
   return (
     <div className={cn(styles.fallback_container)}>
-      <p className={styles.warning_message}>You enter incorrect name or press error button</p>
+      <p className={styles.warning_message}>You have pressed error button</p>
       <button className="btn" onClick={handleReloadPage}>
         Reload page
       </button>
