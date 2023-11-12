@@ -39,11 +39,11 @@ export const SearchItem: FC<SearchItemProps> = ({ item }) => {
       <img
         className={styles.character_image}
         src={item.images.jpg.image_url}
-        alt={item.title || item.title_english}
+        alt={item.title || (item.title_english && item.title_english.slice(0, 50)) || ''}
       />
       <div className={styles.description_container}>
         <p className={styles.character_name}>
-          {item.title.slice(0, 50) || item.title_english.slice(0, 50)}
+          {item.title.slice(0, 50) || (item.title_english && item.title_english.slice(0, 50)) || ''}
         </p>
         <p className={styles.character_name}>Rating: {item.score}</p>
       </div>
