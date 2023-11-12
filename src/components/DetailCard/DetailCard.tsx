@@ -108,7 +108,7 @@ const DetailCard = () => {
             &#x2715;
           </button>
           <div className={styles.content_container}>
-            <p className={styles.name}>{detailedCard.title || detailedCard.title_english} </p>
+            <p className={styles.name}>{detailedCard.title} </p>
             <div className={styles.img_container}>
               <img src={detailedCard.images.jpg.image_url} />
             </div>
