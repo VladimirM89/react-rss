@@ -73,7 +73,7 @@ const PaginationComponent: FC = () => {
       </div>
 
       {pagination!.last_visible_page > 3 ? (
-        <div className={styles.page_container}>
+        <div data-testid="pages" className={styles.page_container}>
           <button
             className={styles.pagination_btn}
             ref={decrementButtonRef}
@@ -81,13 +81,21 @@ const PaginationComponent: FC = () => {
           >
             &#8592;
           </button>
-          <button className={styles.pagination_btn} onClick={handleDecrementPage}>
+          <button
+            data-testid="page-button"
+            className={styles.pagination_btn}
+            onClick={handleDecrementPage}
+          >
             {pagination && pagination.current_page > 1 && pagination.current_page - 1}
           </button>
-          <button className={cn(styles.pagination_btn, styles.active)}>
+          <button data-testid="page-button" className={cn(styles.pagination_btn, styles.active)}>
             {pagination?.current_page}
           </button>
-          <button className={styles.pagination_btn} onClick={handleIncrementPage}>
+          <button
+            data-testid="page-button"
+            className={styles.pagination_btn}
+            onClick={handleIncrementPage}
+          >
             {pagination && pagination.has_next_page && pagination!.current_page + 1}
           </button>
 
@@ -100,10 +108,11 @@ const PaginationComponent: FC = () => {
           </button>
         </div>
       ) : (
-        <div className={styles.page_container}>
+        <div data-testid="pages" className={styles.page_container}>
           {renderList()!.map((item) => {
             return (
               <button
+                data-testid="page-button"
                 className={cn(styles.pagination_btn, item === currentPage && styles.active)}
                 key={item}
                 onClick={() => handleChangePage(item)}

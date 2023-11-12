@@ -18,7 +18,7 @@ export interface CharacterInterface {
   approved: boolean;
   titles: Array<TitleInterface>;
   title: string;
-  title_english: string;
+  title_english: string | null;
   title_japanese: string;
   title_synonyms: Array<string>;
   type: string;
@@ -31,19 +31,19 @@ export interface CharacterInterface {
   rating: string;
   score: number;
   scored_by: number;
-  rank: number;
+  rank: number | null;
   popularity: number;
   members: number;
   favorites: number;
   synopsis: string;
   background: string | null;
-  season: string;
-  year: number;
+  season: string | null;
+  year: number | null;
   broadcast: {
     day: string | null;
     time: string | null;
     timezone: string | null;
-    string: string;
+    string: string | null;
   };
   producers: Array<AuthorsInterface>;
   licensors: Array<AuthorsInterface>;
@@ -62,18 +62,18 @@ interface ImagesInterface {
 
 interface AiredInterface {
   from: string;
-  to: string;
+  to: string | null;
   prop: {
-    from: DateInterface;
-    to: DateInterface;
+    from: DateInterface | null;
+    to: DateInterface | null;
   };
   string: string;
 }
 
 interface TrailerInterface {
-  youtube_id: string;
-  url: string;
-  embed_url: string;
+  youtube_id: string | null;
+  url: string | null;
+  embed_url: string | null;
 }
 
 interface TitleInterface {
@@ -82,9 +82,9 @@ interface TitleInterface {
 }
 
 interface DateInterface {
-  day: number;
-  month: number;
-  year: number;
+  day: number | null;
+  month: number | null;
+  year: number | null;
 }
 
 interface AuthorsInterface {
