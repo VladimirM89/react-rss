@@ -1,7 +1,7 @@
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import { SearchList } from './SearchList';
-import { BrowserRouter } from 'react-router-dom';
-import SearchProvider from '../../context/SearchContext';
+import { SearchContextType } from '../../context/SearchContext';
+import { renderComponentWithProvider } from '../../test/test-utils/test-utils';
 
 const data = [
   {
@@ -514,38 +514,34 @@ const data = [
 ];
 
 describe('Search component', () => {
+  const testContextValue: SearchContextType = {
+    charactersInfo: {
+      characters: data,
+      pagination: null,
+    },
+    setCharactersInfo: vi.fn(),
+    inputValue: '',
+    setInputValue: vi.fn(),
+    getDataFromApi: vi.fn(),
+  };
+
   it('Search component renders list if list ', () => {
-    render(
-      <BrowserRouter>
-        <SearchProvider value={{ charactersInfo: { characters: data, pagination: null } }}>
-          <SearchList />
-        </SearchProvider>
-      </BrowserRouter>
-    );
+    renderComponentWithProvider(<SearchList />, testContextValue);
     const list = screen.getByRole('list');
     expect(list).toBeInTheDocument();
   });
 
   it('Verify that the component renders the specified number of cards', async () => {
-    render(
-      <BrowserRouter>
-        <SearchProvider value={{ charactersInfo: { characters: data, pagination: null } }}>
-          <SearchList />
-        </SearchProvider>
-      </BrowserRouter>
-    );
+    renderComponentWithProvider(<SearchList />, testContextValue);
     const list = await screen.findAllByRole('listitem');
     expect(list).toHaveLength(3);
   });
 
   it('Check that an appropriate message is displayed if no cards are present', async () => {
-    render(
-      <BrowserRouter>
-        <SearchProvider value={{ charactersInfo: { characters: [], pagination: null } }}>
-          <SearchList />
-        </SearchProvider>
-      </BrowserRouter>
-    );
+    renderComponentWithProvider(<SearchList />, {
+      ...testContextValue,
+      charactersInfo: { characters: [], pagination: null },
+    });
     const notFoundElement = screen.getByText(/ITEM NOT FOUND/i);
     expect(notFoundElement).toBeInTheDocument();
   });

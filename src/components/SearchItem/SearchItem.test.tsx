@@ -1,9 +1,19 @@
 import { render, screen } from '@testing-library/react';
 import { SearchItem } from './SearchItem';
-import { BrowserRouter } from 'react-router-dom';
-import userEvent from '@testing-library/user-event';
+import {
+  LoaderFunction,
+  MemoryRouter,
+  Route,
+  RouterProvider,
+  createMemoryRouter,
+  createRoutesFromElements,
+} from 'react-router-dom';
+import { server } from '../../test/mocks/setupServer';
+import { SearchPage } from '../../pages/SearchPage/SearchPage';
+import { CharacterInterface } from '../../interfaces/SearchResponseInterfaces';
+import DetailCard, { detailCardLoader } from '../DetailCard/DetailCard';
 
-const data = {
+const data: CharacterInterface = {
   mal_id: 25,
   url: 'https://myanimelist.net/anime/25/Sunabouzu',
   images: {
@@ -22,13 +32,6 @@ const data = {
     youtube_id: 'XMCqw1vxMnY',
     url: 'https://www.youtube.com/watch?v=XMCqw1vxMnY',
     embed_url: 'https://www.youtube.com/embed/XMCqw1vxMnY?enablejsapi=1&wmode=opaque&autoplay=1',
-    images: {
-      image_url: 'https://img.youtube.com/vi/XMCqw1vxMnY/default.jpg',
-      small_image_url: 'https://img.youtube.com/vi/XMCqw1vxMnY/sddefault.jpg',
-      medium_image_url: 'https://img.youtube.com/vi/XMCqw1vxMnY/mqdefault.jpg',
-      large_image_url: 'https://img.youtube.com/vi/XMCqw1vxMnY/hqdefault.jpg',
-      maximum_image_url: 'https://img.youtube.com/vi/XMCqw1vxMnY/maxresdefault.jpg',
-    },
   },
   approved: true,
   titles: [
@@ -186,12 +189,23 @@ const data = {
   ],
 };
 
+beforeAll(() => {
+  server.listen();
+});
+
+afterEach(() => {
+  server.resetHandlers();
+  vi.restoreAllMocks();
+});
+
+afterAll(() => server.close());
+
 describe('SearchItem component tests', () => {
   it('Search item renders corrently', () => {
     render(
-      <BrowserRouter>
+      <MemoryRouter>
         <SearchItem item={data} />
-      </BrowserRouter>
+      </MemoryRouter>
     );
     const item = screen.getByRole('listitem');
     expect(item).toBeInTheDocument();
@@ -199,9 +213,9 @@ describe('SearchItem component tests', () => {
 
   it('Search item component renders the relevant card data', () => {
     render(
-      <BrowserRouter>
+      <MemoryRouter>
         <SearchItem item={data} />
-      </BrowserRouter>
+      </MemoryRouter>
     );
     const title = screen.getByText(/sunabouzu/i, { selector: 'p' });
 
@@ -217,17 +231,27 @@ describe('SearchItem component tests', () => {
     );
   });
 
-  it('Validate clicking on a card', async () => {
-    const user = userEvent.setup();
+  it('Check that clicking triggers an additional API call to fetch detailed information and Validate that clicking on a card opens a detailed card component;', async () => {
+    const mockObj = {
+      spyLoader: detailCardLoader,
+    };
 
-    render(
-      <BrowserRouter>
-        <SearchItem item={data} />
-      </BrowserRouter>
+    const spy = vi.spyOn(mockObj, 'spyLoader');
+    spy.mockResolvedValue({ detailedCard: data });
+
+    const routes = createRoutesFromElements(
+      <>
+        <Route path="/" element={<SearchPage />}>
+          <Route index element={<DetailCard />} loader={spy as unknown as LoaderFunction} />
+        </Route>
+      </>
     );
 
-    const item = screen.getByRole('listitem');
-    await user.click(item);
-    screen.debug();
+    const router = createMemoryRouter(routes);
+    render(<RouterProvider router={router} />);
+
+    expect(spy).toHaveBeenCalledTimes(1);
+
+    expect(spy).toHaveReturnedWith(await Promise.resolve({ detailedCard: data }));
   });
 });

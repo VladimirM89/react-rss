@@ -48,6 +48,7 @@ export const SearchBar: FC = () => {
   return (
     <form className={styles.form_container} onSubmit={handleSearch}>
       <input
+        data-testid="search-input"
         className={styles.search_input}
         type="text"
         ref={inputRef}

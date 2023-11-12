@@ -13,14 +13,14 @@ import cn from 'classnames';
 import styles from './SearchPage.module.scss';
 import { LoaderComponent } from '../../components/LoaderComponent/LoaderComponent';
 import { Fallback } from '../../components/ErrorBoundary/components/ErrorButton/Fallback/Fallback';
-// import { NotFoundItem } from '../../components/ErrorBoundary/components/NotFoundItem/NotFoundItem';
 import { Outlet, useSearchParams } from 'react-router-dom';
 import PaginationComponent from '../../components/PaginationComponent/PaginationComponent';
 import { getCharacters } from '../../api/SearchApi';
 import { customCreateSearchParams } from '../../utils/queryParams';
 import { SearchParams } from '../../interfaces/ParamsInterfaces';
 import SearchProvider from '../../context/SearchContext';
-// import SearchContext from '../../context/SearchContext';
+import { getItemFromLocalStorage, saveToLocalStorage } from '../../utils/localStorage';
+import { SEARCH_VALUE } from '../../constants/stringConstants';
 
 type SearchPageState = {
   characters: Array<CharacterInterface>;
@@ -28,22 +28,28 @@ type SearchPageState = {
 };
 
 export const SearchPage: FC = () => {
-  const [inputValue, setInputValue] = useState<string>('');
-
   const [searchParams, setSearchParams] = useSearchParams();
+  const searchParam = searchParams.get('q');
+
+  const [inputValue, setInputValue] = useState<string>(
+    searchParam || getItemFromLocalStorage(SEARCH_VALUE) || ''
+  );
+
   const [charactersInfo, setCharactersInfo] = useState<SearchPageState>({
     characters: [],
     pagination: null,
   });
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  // const [isNoItems, setisNoItems] = useState<boolean>(false);
 
   useEffect(() => {
-    const searchParam = searchParams.get('q') || '';
+    const searchParam = searchParams.get('q');
     const pageParam = Number(searchParams.get('page'));
     const limitParam = Number(searchParams.get('limit'));
+    if (searchParam?.length) {
+      saveToLocalStorage(SEARCH_VALUE, '');
+    }
     const initialParams = customCreateSearchParams({
-      q: searchParam,
+      q: inputValue,
       page: pageParam,
       limit: limitParam,
     });
@@ -73,7 +79,6 @@ export const SearchPage: FC = () => {
       }
     } catch (error: unknown) {
       handleLoading(false);
-      // handleResponse(true);
     }
   };
 
@@ -83,16 +88,11 @@ export const SearchPage: FC = () => {
       pagination: response.pagination,
     });
     setIsLoading(false);
-    // setisNoItems(false);
   };
 
   const handleLoading = (value: boolean) => {
     setIsLoading(value);
   };
-
-  // const handleResponse = (value: boolean) => {
-  //   // setisNoItems(value);
-  // };
 
   return (
     <div className={styles.container}>

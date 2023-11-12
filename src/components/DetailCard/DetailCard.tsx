@@ -99,8 +99,11 @@ const DetailCard = () => {
     (searchParams.has('details') ? (
       <>
         <div className={searchParams.has('details') ? styles.overlay : ''}></div>
-        <div></div>
-        <div className={cn(styles.detail_card_container)} ref={outsideRef}>
+        <div
+          data-testid="detail-block"
+          className={cn(styles.detail_card_container)}
+          ref={outsideRef}
+        >
           <button className={styles.close_btn} onClick={handleClose}>
             &#x2715;
           </button>
@@ -148,12 +151,19 @@ export const detailCardLoader = async ({ request }: { request: Request }) => {
   if (detailsTerm) {
     const response = await getOneCharacter(Number(detailsTerm));
 
-    return defer({
+    return {
       detailedCard: response,
-    });
+    };
+    // return defer({
+    //   detailedCard: response,
+    // });
   }
 
-  return defer({
+  return {
     detailedCard: null,
-  });
+  };
+
+  // return defer({
+  //   detailedCard: null,
+  // });
 };

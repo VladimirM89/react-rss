@@ -31,6 +31,7 @@ export const SearchItem: FC<SearchItemProps> = ({ item }) => {
 
   return (
     <li
+      data-testid="card-link"
       className={styles.card_container}
       key={item.mal_id}
       onClick={() => handleNavigate(item.mal_id)}
