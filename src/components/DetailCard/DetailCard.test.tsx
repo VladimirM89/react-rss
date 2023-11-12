@@ -559,11 +559,7 @@ describe('Detail Card', () => {
     expect(items.length).not.toBe(0);
     expect(items[0]).not.toBeUndefined();
 
-    screen.debug();
-
     await user.click(items[0]);
-
-    screen.debug();
 
     expect(screen.getByTestId('detail-block')).toBeInTheDocument();
     expect(screen.getByText('24 min per ep')).toBeInTheDocument();

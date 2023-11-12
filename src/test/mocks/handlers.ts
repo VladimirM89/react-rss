@@ -177,8 +177,6 @@ export const handlers = [
 
   http.get(`${BASE_URL}/1`, ({ request }) => {
     // Simulate a successful response with mock data
-    console.log('___________________________________________-get request');
-
     const url = new URL(request.url);
     const detailsParam = url.searchParams.get('details');
 

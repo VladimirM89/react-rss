@@ -61,7 +61,7 @@ const PaginationComponent: FC = () => {
   };
 
   return (
-    <div className={styles.pagination_container}>
+    <div data-testid="pagination" className={styles.pagination_container}>
       <div className={styles.limit_container}>
         <p>Item per page: </p>
         <select value={limit} onChange={handleChangeLimit} className={styles.options_container}>
