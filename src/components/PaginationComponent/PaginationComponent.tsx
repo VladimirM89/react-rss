@@ -3,25 +3,42 @@ import { ChangeEvent, FC, useEffect, useRef, useState } from 'react';
 import styles from './PaginationComponent.module.scss';
 import cn from 'classnames';
 import { useSearchParams } from 'react-router-dom';
-import { useSeacrhContext } from '../../context/SearchContext';
+import { customCreateSearchParams } from '../../utils/queryParams';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { PaginationSlice } from '../../store/reducers/PaginationSlice';
 
 const PaginationComponent: FC = () => {
-  const { charactersInfo, getDataFromApi } = useSeacrhContext();
-  const pagination = charactersInfo.pagination;
-  const [currentPage, setCurrentPage] = useState<number>(pagination?.current_page || 1);
-  const [limit, setLimit] = useState<number>(pagination!.items.per_page);
+  const { pagination } = useAppSelector((state) => state.charactersInfoReducer);
+  const { changePage, changeLimit } = PaginationSlice.actions;
+  const dispatch = useAppDispatch();
+
   const [searchParams] = useSearchParams();
+  const searchParam = searchParams.get('q') || '';
+  const pageParam = searchParams.get('page') || '';
+  const limitParam = searchParams.get('limit') || '';
+
+  const [page, setPage] = useState<number>(Number(pageParam) || 1);
+  const [limit, setLimit] = useState<number>(
+    Number(limitParam) || (pagination && pagination?.items.per_page) || 25
+  );
 
   const incrementButtonRef = useRef<HTMLButtonElement>(null);
   const decrementButtonRef = useRef<HTMLButtonElement>(null);
 
-  const searchParam = searchParams.get('q') || '';
+  const editedQueryParams = customCreateSearchParams({
+    q: searchParam,
+    page: page.toString(),
+    limit: limit.toString(),
+  });
+
+  console.log(editedQueryParams);
+  // const { data, isLoading, isSuccess } = useGetAllCharactersQuery();
 
   useEffect(() => {
-    if (currentPage === 1) {
+    if (page === 1) {
       decrementButtonRef.current?.setAttribute('disabled', 'true');
     }
-    if (currentPage === pagination!.last_visible_page) {
+    if (pagination && page === pagination.last_visible_page) {
       incrementButtonRef.current?.setAttribute('disabled', 'true');
     }
   }, []);
@@ -35,95 +52,101 @@ const PaginationComponent: FC = () => {
   };
 
   const handleChangePage = (page: number) => {
-    setCurrentPage(page);
-    getDataFromApi({ q: searchParam, page, limit });
+    setPage(page);
+    // getDataFromApi({ q: searchParam, page, limit });
+    dispatch(changePage(page));
   };
 
   const handleChangeLimit = (event: ChangeEvent<HTMLSelectElement>) => {
     setLimit(Number(event.target.value));
-    getDataFromApi({ q: searchParam, page: 1, limit: Number(event.target.value) });
+    setPage(1);
+    // getDataFromApi({ q: searchParam, page: 1, limit: Number(event.target.value) });
+    dispatch(changeLimit(Number(event.target.value)));
+    dispatch(changePage(1));
   };
 
   const handleDecrementPage = () => {
-    if (currentPage === 1) {
+    if (page === 1) {
       decrementButtonRef.current?.setAttribute('disabled', 'true');
     } else {
-      handleChangePage(currentPage - 1);
+      handleChangePage(Number(page) - 1);
     }
   };
 
   const handleIncrementPage = () => {
-    if (currentPage === pagination!.last_visible_page) {
+    if (pagination && page === pagination.last_visible_page) {
       incrementButtonRef.current?.setAttribute('disabled', 'true');
     } else {
-      handleChangePage(currentPage + 1);
+      handleChangePage(Number(page) + 1);
     }
   };
 
   return (
-    <div data-testid="pagination" className={styles.pagination_container}>
-      <div className={styles.limit_container}>
-        <p>Item per page: </p>
-        <select value={limit} onChange={handleChangeLimit} className={styles.options_container}>
-          <option value={10}>10</option>
-          <option value={15}>15</option>
-          <option value={20}>20</option>
-          <option value={25}>25</option>
-        </select>
+    pagination && (
+      <div data-testid="pagination" className={styles.pagination_container}>
+        <div className={styles.limit_container}>
+          <p>Item per page: </p>
+          <select value={limit} onChange={handleChangeLimit} className={styles.options_container}>
+            <option value={10}>10</option>
+            <option value={15}>15</option>
+            <option value={20}>20</option>
+            <option value={25}>25</option>
+          </select>
+        </div>
+
+        {pagination.last_visible_page && pagination.last_visible_page > 3 ? (
+          <div data-testid="pages" className={styles.page_container}>
+            <button
+              className={styles.pagination_btn}
+              ref={decrementButtonRef}
+              onClick={handleDecrementPage}
+            >
+              &#8592;
+            </button>
+            <button
+              data-testid="page-button"
+              className={styles.pagination_btn}
+              onClick={handleDecrementPage}
+            >
+              {pagination && pagination.current_page > 1 && pagination.current_page - 1}
+            </button>
+            <button data-testid="page-button" className={cn(styles.pagination_btn, styles.active)}>
+              {pagination.current_page}
+            </button>
+            <button
+              data-testid="page-button"
+              className={styles.pagination_btn}
+              onClick={handleIncrementPage}
+            >
+              {pagination && pagination.has_next_page && pagination.current_page + 1}
+            </button>
+
+            <button
+              className={styles.pagination_btn}
+              ref={incrementButtonRef}
+              onClick={handleIncrementPage}
+            >
+              &#8594;
+            </button>
+          </div>
+        ) : (
+          <div data-testid="pages" className={styles.page_container}>
+            {renderList()!.map((item) => {
+              return (
+                <button
+                  data-testid="page-button"
+                  className={cn(styles.pagination_btn, item === page && styles.active)}
+                  key={item}
+                  onClick={() => handleChangePage(item)}
+                >
+                  {item}
+                </button>
+              );
+            })}
+          </div>
+        )}
       </div>
-
-      {pagination!.last_visible_page > 3 ? (
-        <div data-testid="pages" className={styles.page_container}>
-          <button
-            className={styles.pagination_btn}
-            ref={decrementButtonRef}
-            onClick={handleDecrementPage}
-          >
-            &#8592;
-          </button>
-          <button
-            data-testid="page-button"
-            className={styles.pagination_btn}
-            onClick={handleDecrementPage}
-          >
-            {pagination && pagination.current_page > 1 && pagination.current_page - 1}
-          </button>
-          <button data-testid="page-button" className={cn(styles.pagination_btn, styles.active)}>
-            {pagination?.current_page}
-          </button>
-          <button
-            data-testid="page-button"
-            className={styles.pagination_btn}
-            onClick={handleIncrementPage}
-          >
-            {pagination && pagination.has_next_page && pagination!.current_page + 1}
-          </button>
-
-          <button
-            className={styles.pagination_btn}
-            ref={incrementButtonRef}
-            onClick={handleIncrementPage}
-          >
-            &#8594;
-          </button>
-        </div>
-      ) : (
-        <div data-testid="pages" className={styles.page_container}>
-          {renderList()!.map((item) => {
-            return (
-              <button
-                data-testid="page-button"
-                className={cn(styles.pagination_btn, item === currentPage && styles.active)}
-                key={item}
-                onClick={() => handleChangePage(item)}
-              >
-                {item}
-              </button>
-            );
-          })}
-        </div>
-      )}
-    </div>
+    )
   );
 };
 

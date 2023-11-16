@@ -7,7 +7,7 @@ import {
   useNavigate,
   useSearchParams,
 } from 'react-router-dom';
-import { getOneCharacter, searchApiAxios } from '../../api/SearchApi';
+import { searchApiAxios } from '../../api/SearchApi';
 import { CharacterInterface } from '../../interfaces/SearchResponseInterfaces';
 import { LoaderComponent } from '../LoaderComponent/LoaderComponent';
 import { Suspense, useEffect, useRef, useState } from 'react';
@@ -38,14 +38,14 @@ const DetailCard = () => {
     const limitValue = searchParams.get('limit');
     const paramsToSet = customCreateSearchParams({
       q: searchValue || '',
-      page: Number(pageValue),
-      limit: Number(limitValue),
+      page: pageValue || '',
+      limit: limitValue || '',
     });
     navigate({
       pathname: '/',
-      search: createSearchParams(paramsToSet).toString(),
+      search: createSearchParams(paramsToSet.toString()).toString(),
     });
-    setSearchParams(paramsToSet);
+    setSearchParams(paramsToSet.toString());
   };
 
   const outsideRef = useOutsideClick(handleClose);
@@ -148,16 +148,16 @@ export const detailCardLoader = async ({ request }: { request: Request }) => {
   const url = new URL(request.url);
   const detailsTerm = url.searchParams.get('details');
 
-  if (detailsTerm) {
-    const response = await getOneCharacter(Number(detailsTerm));
+  // if (detailsTerm) {
+  //   const response =  await getOneCharacter(Number(detailsTerm));
 
-    return {
-      detailedCard: response,
-    };
-    // return defer({
-    //   detailedCard: response,
-    // });
-  }
+  //   return {
+  //     detailedCard: response,
+  //   };
+  //   // return defer({
+  //   //   detailedCard: response,
+  //   // });
+  // }
 
   return {
     detailedCard: null,

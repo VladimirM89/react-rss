@@ -5,15 +5,23 @@ import cn from 'classnames';
 import styles from './SearchBar.module.scss';
 import { SEARCH_VALUE } from '../../constants/stringConstants';
 import { useSearchParams } from 'react-router-dom';
-import { useSeacrhContext } from '../../context/SearchContext';
+import { useAppSelector } from '../../hooks/redux';
+import { useDispatch } from 'react-redux';
+import { SearchValueSlice } from '../../store/reducers/SearchValueSlice';
 
 export const SearchBar: FC = () => {
-  const { getDataFromApi } = useSeacrhContext();
+  const { searchValue } = useAppSelector((state) => state.searchValueReducer);
+  const dispatch = useDispatch();
+  const { update } = SearchValueSlice.actions;
+  console.log('search list. searchValue: ', searchValue);
+
   const [searchParams, setSearchParams] = useSearchParams();
   const searchParam = searchParams.get('q') || '';
+  console.log('search list. searchParam: ', searchParam);
 
   const [inputValue, setInputValue] = useState<string>(searchParam || '');
   const inputRef = useRef<HTMLInputElement>(null);
+  console.log('search list. InputValue: ', inputValue);
 
   useEffect(() => {
     handleSearchParam();
@@ -22,6 +30,7 @@ export const SearchBar: FC = () => {
   const handleSearchParam = () => {
     saveToLocalStorage(SEARCH_VALUE, searchParam);
     setInputValue(searchParam);
+    dispatch(update(inputValue));
   };
 
   const handleStorage = (): void => {
@@ -39,7 +48,8 @@ export const SearchBar: FC = () => {
   const handleSearch = (event: React.FormEvent<HTMLFormElement | HTMLButtonElement>): void => {
     setSearchParams({ q: inputValue });
     handleStorage();
-    getDataFromApi({ q: inputValue });
+    dispatch(update(inputValue));
+    // getDataFromApi({ q: inputValue });
 
     inputRef.current?.blur();
     event.preventDefault();

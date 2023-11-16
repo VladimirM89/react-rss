@@ -1,6 +1,6 @@
 export interface SearchResponseInterface {
   data: Array<CharacterInterface>;
-  pagination: PaginationInterface;
+  pagination: PaginationInterface | null;
 }
 
 export interface CharacterResponseInterface {

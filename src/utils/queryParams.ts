@@ -1,6 +1,6 @@
 import { SearchParams } from '../interfaces/ParamsInterfaces';
 
-export const customCreateSearchParams = (params: SearchParams) => {
+export const customCreateSearchParams = (params: SearchParams): SearchParams => {
   const newParams: { q?: string; page?: string; limit?: string } = {};
   if (params.q) {
     newParams.q = params.q;
@@ -10,19 +10,19 @@ export const customCreateSearchParams = (params: SearchParams) => {
   }
   if (params.limit) {
     newParams.limit = params.limit.toString();
-    if (params.limit < 10) {
+    if (Number(params.limit) < 10) {
       newParams.limit = '10';
       return newParams;
     }
-    if (params.limit > 10 && params.limit < 15) {
+    if (Number(params.limit) > 10 && Number(params.limit) < 15) {
       newParams.limit = '15';
       return newParams;
     }
-    if (params.limit > 15 && params.limit < 20) {
+    if (Number(params.limit) > 15 && Number(params.limit) < 20) {
       newParams.limit = '20';
       return newParams;
     }
-    if ((params.limit > 20 && params.limit < 25) || params.limit > 25) {
+    if ((Number(params.limit) > 20 && Number(params.limit) < 25) || Number(params.limit) > 25) {
       newParams.limit = '25';
       return newParams;
     }

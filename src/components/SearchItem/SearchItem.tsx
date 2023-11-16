@@ -19,8 +19,8 @@ export const SearchItem: FC<SearchItemProps> = ({ item }) => {
   const handleNavigate = (id: number) => {
     const checkedParams = customCreateSearchParams({
       q: searchParam || '',
-      page: Number(pageParam),
-      limit: Number(limitParam),
+      page: pageParam || '',
+      limit: limitParam || '',
     });
 
     navigate({

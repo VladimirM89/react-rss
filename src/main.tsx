@@ -12,6 +12,8 @@ import DetailCard, { detailCardLoader } from './components/DetailCard/DetailCard
 import { RootLayout } from './components/Layouts/RootLayout';
 import { NotFoundPage } from './pages/NotFoundPage/NotFoundPage';
 import { SearchPage } from './pages/SearchPage/SearchPage';
+import { Provider } from 'react-redux';
+import { setuptStore } from './store/store';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -24,8 +26,12 @@ const router = createBrowserRouter(
   )
 );
 
+const store = setuptStore();
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
   </React.StrictMode>
 );
