@@ -8,7 +8,7 @@ import {
   Route,
   RouterProvider,
 } from 'react-router-dom';
-import DetailCard, { detailCardLoader } from './components/DetailCard/DetailCard';
+import DetailCard from './components/DetailCard/DetailCard';
 import { RootLayout } from './components/Layouts/RootLayout';
 import { NotFoundPage } from './pages/NotFoundPage/NotFoundPage';
 import { SearchPage } from './pages/SearchPage/SearchPage';
@@ -19,7 +19,7 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<RootLayout />}>
       <Route path="/" element={<SearchPage />}>
-        <Route index loader={detailCardLoader} element={<DetailCard />} />
+        <Route index element={<DetailCard />} />
       </Route>
       <Route path="*" element={<NotFoundPage />} />
     </Route>

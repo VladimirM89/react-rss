@@ -1,34 +1,33 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
-  Await,
+  URLSearchParamsInit,
   createSearchParams,
-  defer,
-  useLoaderData,
   useNavigate,
   useSearchParams,
 } from 'react-router-dom';
-import { searchApiAxios } from '../../api/SearchApi';
-import { CharacterInterface } from '../../interfaces/SearchResponseInterfaces';
+import { useGetCharacterByIdQuery } from '../../api/SearchApi';
+
 import { LoaderComponent } from '../LoaderComponent/LoaderComponent';
-import { Suspense, useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './DetailCard.module.scss';
 import cn from 'classnames';
 import useOutsideClick from '../../hooks/HandleOutsideClick';
 import { customCreateSearchParams } from '../../utils/queryParams';
 
 const DetailCard = () => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [searchParams, setSearchParams] = useSearchParams();
+  const detailParam = searchParams.get('details');
+  const [skip, setSkip] = useState<boolean>(true);
+  console.log('details params ', detailParam);
 
-  const data = useLoaderData() as { detailedCard: CharacterInterface };
-  const { detailedCard } = data;
+  const { data, isLoading } = useGetCharacterByIdQuery(Number(detailParam), {
+    skip,
+  });
 
   useEffect(() => {
-    setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 500);
-  }, [data]);
+    if (Number(detailParam) !== 0) {
+      setSkip(false);
+    }
+  }, [detailParam]);
 
   const navigate = useNavigate();
 
@@ -43,60 +42,17 @@ const DetailCard = () => {
     });
     navigate({
       pathname: '/',
-      search: createSearchParams(paramsToSet.toString()).toString(),
+      search: createSearchParams(paramsToSet as URLSearchParamsInit).toString(),
     });
-    setSearchParams(paramsToSet.toString());
+    console.log('params ', paramsToSet);
+    setSearchParams(paramsToSet as URLSearchParamsInit);
   };
 
   const outsideRef = useOutsideClick(handleClose);
 
   return (
-    // <Suspense fallback={<LoaderComponent />}>
-    //   {searchParams.has('details') && (
-    //     <>
-    //       <div className={searchParams.has('details') ? styles.overlay : ''}></div>
-
-    //       <div className={cn(styles.detail_card_container)} ref={outsideRef}>
-    //         <button className={styles.close_btn} onClick={handleClose}>
-    //           &#x2715;
-    //         </button>
-
-    //         <div className={styles.content_container}>
-    //           <p className={styles.name}>{detailedCard.title || detailedCard.title_english}</p>
-
-    //           <div className={styles.img_container}>
-    //             <img src={detailedCard.images.jpg.image_url} />
-    //           </div>
-
-    //           <ul className={styles.info_container}>
-    //             <li className={styles.description}>
-    //               <span className={styles.description_text}>Duration</span>
-    //               <span className={styles.description_text}>{detailedCard.duration}</span>
-    //             </li>
-    //             <li className={styles.description}>
-    //               <span className={styles.description_text}>Age</span>
-    //               <span className={styles.description_text}>{detailedCard.rating}</span>
-    //             </li>
-    //             <li className={styles.description}>
-    //               <span className={styles.description_text}>Type</span>
-    //               <span className={styles.description_text}>
-    //                 {detailedCard.type} {detailedCard.episodes} episode
-    //                 {detailedCard.episodes > 1 && 's'}
-    //               </span>
-    //             </li>
-    //             <li className={styles.description}>
-    //               <span className={styles.description_text}>Status</span>
-    //               <span className={styles.description_text}>{detailedCard.status}</span>
-    //             </li>
-    //           </ul>
-    //         </div>
-    //       </div>
-    //     </>
-    //   )}
-    // </Suspense>
-
-    searchParams.has('details') &&
-    (searchParams.has('details') ? (
+    data?.data &&
+    (!isLoading ? (
       <>
         <div className={searchParams.has('details') ? styles.overlay : ''}></div>
         <div
@@ -108,29 +64,29 @@ const DetailCard = () => {
             &#x2715;
           </button>
           <div className={styles.content_container}>
-            <p className={styles.name}>{detailedCard.title} </p>
+            <p className={styles.name}>{data?.data.title} </p>
             <div className={styles.img_container}>
-              <img src={detailedCard.images.jpg.image_url} />
+              <img src={data?.data.images.jpg.image_url} />
             </div>
             <ul className={styles.info_container}>
               <li className={styles.description}>
                 <span className={styles.description_text}>Duration</span>
-                <span className={styles.description_text}>{detailedCard.duration}</span>
+                <span className={styles.description_text}>{data?.data.duration}</span>
               </li>
               <li className={styles.description}>
                 <span className={styles.description_text}>Age</span>
-                <span className={styles.description_text}>{detailedCard.rating}</span>
+                <span className={styles.description_text}>{data?.data.rating}</span>
               </li>
               <li className={styles.description}>
                 <span className={styles.description_text}>Type</span>
                 <span className={styles.description_text}>
-                  {detailedCard.type} {detailedCard.episodes} episode
-                  {detailedCard.episodes > 1 && 's'}
+                  {data?.data.type} {data?.data.episodes} episode
+                  {data?.data.episodes > 1 && 's'}
                 </span>
               </li>
               <li className={styles.description}>
                 <span className={styles.description_text}>Status</span>
-                <span className={styles.description_text}>{detailedCard.status}</span>
+                <span className={styles.description_text}>{data?.data.status}</span>
               </li>
             </ul>
           </div>
@@ -143,27 +99,3 @@ const DetailCard = () => {
 };
 
 export default DetailCard;
-
-export const detailCardLoader = async ({ request }: { request: Request }) => {
-  const url = new URL(request.url);
-  const detailsTerm = url.searchParams.get('details');
-
-  // if (detailsTerm) {
-  //   const response =  await getOneCharacter(Number(detailsTerm));
-
-  //   return {
-  //     detailedCard: response,
-  //   };
-  //   // return defer({
-  //   //   detailedCard: response,
-  //   // });
-  // }
-
-  return {
-    detailedCard: null,
-  };
-
-  // return defer({
-  //   detailedCard: null,
-  // });
-};

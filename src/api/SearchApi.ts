@@ -1,6 +1,9 @@
 import axios from 'axios';
 import { BASE_URL } from '../constants/stringConstants';
-import { SearchResponseInterface } from '../interfaces/SearchResponseInterfaces';
+import {
+  CharacterResponseInterface,
+  SearchResponseInterface,
+} from '../interfaces/SearchResponseInterfaces';
 import { SearchParams } from '../interfaces/ParamsInterfaces';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { customCreateSearchParams } from '../utils/queryParams';
@@ -53,8 +56,9 @@ export const searchApi = createApi({
         }
       },
     }),
-    getCharacterById: builder.query<SearchResponseInterface, number>({
+    getCharacterById: builder.query<CharacterResponseInterface, number>({
       query: (id) => `/${id}`,
+      keepUnusedDataFor: 0,
     }),
   }),
 });
