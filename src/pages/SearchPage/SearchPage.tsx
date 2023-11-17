@@ -6,7 +6,6 @@ import { ErrorBoundary } from '../../components/ErrorBoundary/ErrorBoundary';
 import cn from 'classnames';
 import styles from './SearchPage.module.scss';
 import { Fallback } from '../../components/ErrorBoundary/components/ErrorButton/Fallback/Fallback';
-import PaginationComponent from '../../components/PaginationComponent/PaginationComponent';
 import { Outlet } from 'react-router-dom';
 
 export const SearchPage: FC = () => {
@@ -17,7 +16,6 @@ export const SearchPage: FC = () => {
           <SearchBar />
           <SearchList />
           <Outlet />
-          <PaginationComponent />
           <ErrorButton />
         </div>
       </ErrorBoundary>

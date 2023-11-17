@@ -5,28 +5,30 @@ import cn from 'classnames';
 import styles from './SearchBar.module.scss';
 import { SEARCH_VALUE } from '../../constants/stringConstants';
 import { useSearchParams } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import { SearchValueSlice } from '../../store/reducers/SearchValueSlice';
+import { useAppDispatch } from '../../hooks/redux';
+import { PaginationSlice } from '../../store/reducers/PaginationSlice';
 
 export const SearchBar: FC = () => {
-  // const { searchValue } = useAppSelector((state) => state.searchValueReducer);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { update } = SearchValueSlice.actions;
+  const { changeLimit } = PaginationSlice.actions;
 
   const [searchParams, setSearchParams] = useSearchParams();
   const searchParam = searchParams.get('q') || '';
 
   const [inputValue, setInputValue] = useState<string>(searchParam || '');
   const inputRef = useRef<HTMLInputElement>(null);
-  useEffect(() => {
-    handleSearchParam();
-  }, []);
 
-  const handleSearchParam = () => {
+  const handleInitialLoading = () => {
     saveToLocalStorage(SEARCH_VALUE, searchParam);
     setInputValue(searchParam);
     dispatch(update(inputValue));
   };
+
+  useEffect(() => {
+    handleInitialLoading();
+  }, []);
 
   const handleStorage = (): void => {
     if (!!inputValue) {
@@ -44,7 +46,7 @@ export const SearchBar: FC = () => {
     setSearchParams({ q: inputValue });
     handleStorage();
     dispatch(update(inputValue));
-    // getDataFromApi({ q: inputValue });
+    dispatch(changeLimit(25));
 
     inputRef.current?.blur();
     event.preventDefault();

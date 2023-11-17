@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { ChangeEvent, FC, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, FC, useEffect, useRef } from 'react';
 import styles from './PaginationComponent.module.scss';
 import cn from 'classnames';
 import { useSearchParams } from 'react-router-dom';
@@ -14,33 +14,28 @@ const PaginationComponent: FC = () => {
 
   const [searchParams, setSeachParams] = useSearchParams();
   const searchParam = searchParams.get('q') || '';
-  const pageParam = searchParams.get('page') || '';
-  const limitParam = searchParams.get('limit') || '';
-
-  const [page, setPage] = useState<number>(Number(pageParam) || 1);
-  const [limit, setLimit] = useState<number>(
-    Number(limitParam) || (pagination && pagination?.items.per_page) || 25
-  );
 
   const incrementButtonRef = useRef<HTMLButtonElement>(null);
   const decrementButtonRef = useRef<HTMLButtonElement>(null);
 
   const editedQueryParams = customCreateSearchParams({
     q: searchParam,
-    page: page.toString(),
-    limit: limit.toString(),
+    page: pagination?.current_page.toString(),
+    limit: pagination?.items.per_page.toString(),
   });
 
-  console.log(editedQueryParams);
-
   useEffect(() => {
-    if (page === 1) {
+    if (pagination?.current_page === 1) {
       decrementButtonRef.current?.setAttribute('disabled', 'true');
+    } else {
+      decrementButtonRef.current?.removeAttribute('disabled');
     }
-    if (pagination && page === pagination.last_visible_page) {
+    if (pagination && pagination.current_page === pagination.last_visible_page) {
       incrementButtonRef.current?.setAttribute('disabled', 'true');
+    } else {
+      incrementButtonRef.current?.removeAttribute('disabled');
     }
-  }, []);
+  }, [pagination?.last_visible_page, pagination?.current_page]);
 
   const renderList = (): Array<number> | null => {
     if (pagination) {
@@ -51,32 +46,24 @@ const PaginationComponent: FC = () => {
   };
 
   const handleChangePage = (page: number) => {
-    setPage(page);
     dispatch(changePage(page));
     setSeachParams({ ...editedQueryParams, page: page.toString() });
   };
 
   const handleChangeLimit = (event: ChangeEvent<HTMLSelectElement>) => {
-    setLimit(Number(event.target.value));
-    setPage(1);
     dispatch(changeLimit(Number(event.target.value)));
-    dispatch(changePage(1));
-    setSeachParams({ ...editedQueryParams, limit: event.target.value });
+    setSeachParams({ ...editedQueryParams, page: '1', limit: event.target.value });
   };
 
   const handleDecrementPage = () => {
-    if (page === 1) {
-      decrementButtonRef.current?.setAttribute('disabled', 'true');
-    } else {
-      handleChangePage(Number(page) - 1);
+    if (pagination) {
+      handleChangePage(pagination?.current_page - 1);
     }
   };
 
   const handleIncrementPage = () => {
-    if (pagination && page === pagination.last_visible_page) {
-      incrementButtonRef.current?.setAttribute('disabled', 'true');
-    } else {
-      handleChangePage(Number(page) + 1);
+    if (pagination) {
+      handleChangePage(pagination?.current_page + 1);
     }
   };
 
@@ -85,7 +72,11 @@ const PaginationComponent: FC = () => {
       <div data-testid="pagination" className={styles.pagination_container}>
         <div className={styles.limit_container}>
           <p>Item per page: </p>
-          <select value={limit} onChange={handleChangeLimit} className={styles.options_container}>
+          <select
+            value={pagination.items.per_page}
+            onChange={handleChangeLimit}
+            className={styles.options_container}
+          >
             <option value={10}>10</option>
             <option value={15}>15</option>
             <option value={20}>20</option>
@@ -134,7 +125,10 @@ const PaginationComponent: FC = () => {
               return (
                 <button
                   data-testid="page-button"
-                  className={cn(styles.pagination_btn, item === page && styles.active)}
+                  className={cn(
+                    styles.pagination_btn,
+                    item === pagination.current_page && styles.active
+                  )}
                   key={item}
                   onClick={() => handleChangePage(item)}
                 >

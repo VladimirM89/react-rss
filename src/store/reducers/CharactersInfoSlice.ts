@@ -1,16 +1,31 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { SearchResponseInterface } from '../../interfaces/SearchResponseInterfaces';
+import {
+  CharacterInterface,
+  SearchResponseInterface,
+  PaginationInterface,
+} from '../../interfaces/SearchResponseInterfaces';
 
-const initialState: SearchResponseInterface = {
+interface initialStateInterface {
+  data: Array<CharacterInterface>;
+  pagination: PaginationInterface | null;
+  isLoading: boolean;
+}
+
+const initialState: initialStateInterface = {
   data: [],
   pagination: null,
+  isLoading: false,
 };
 
 export const charactersInfoSlice = createSlice({
   name: 'charactersInfo',
   initialState,
   reducers: {
-    update(state, action: PayloadAction<SearchResponseInterface>) {
+    update(state, action: PayloadAction<boolean>) {
+      state.isLoading = action.payload;
+    },
+    updateSuccess(state, action: PayloadAction<SearchResponseInterface>) {
+      state.isLoading = false;
       state.data = action.payload.data;
       state.pagination = action.payload.pagination;
     },

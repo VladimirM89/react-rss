@@ -18,6 +18,7 @@ export const PaginationSlice = createSlice({
       state.page = action.payload;
     },
     changeLimit(state, action: PayloadAction<number>) {
+      state.page = 1;
       state.limit = action.payload;
     },
   },

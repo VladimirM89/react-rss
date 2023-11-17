@@ -17,7 +17,7 @@ const DetailCard = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const detailParam = searchParams.get('details');
   const [skip, setSkip] = useState<boolean>(true);
-  console.log('details params ', detailParam);
+  // console.log('details params ', detailParam);
 
   const { data, isLoading } = useGetCharacterByIdQuery(Number(detailParam), {
     skip,
@@ -44,7 +44,7 @@ const DetailCard = () => {
       pathname: '/',
       search: createSearchParams(paramsToSet as URLSearchParamsInit).toString(),
     });
-    console.log('params ', paramsToSet);
+    // console.log('params ', paramsToSet);
     setSearchParams(paramsToSet as URLSearchParamsInit);
   };
 

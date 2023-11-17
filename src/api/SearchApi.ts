@@ -12,29 +12,6 @@ export const searchApiAxios = axios.create({
   baseURL: BASE_URL,
 });
 
-// export async function getCharacters(
-//   params: SearchParams | null = null
-// ): Promise<SearchResponseInterface> {
-//   const checkedParams: SearchParams = {};
-
-//   if (params) {
-//     if (params.q) checkedParams.q = params.q;
-//     if (params.page) checkedParams.page = params.page;
-//     if (params.limit) checkedParams.limit = params.limit;
-//   }
-//   const response = await searchApiAxios.get<SearchResponseInterface>('', {
-//     params: checkedParams,
-//   });
-
-//   return response.data;
-// }
-
-// export async function getOneCharacter(id: number): Promise<CharacterInterface> {
-//   const response = await searchApiAxios.get<CharacterResponseInterface>(`${id}`);
-
-//   return response.data.data;
-// }
-
 export const searchApi = createApi({
   reducerPath: 'searchApi',
   baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
@@ -43,8 +20,8 @@ export const searchApi = createApi({
       query: (params?) => {
         const editedQueryParams = customCreateSearchParams({
           q: params?.q,
-          page: params?.page !== '1' ? params?.page : '',
-          limit: params?.limit !== '25' ? params?.limit : '',
+          page: params?.page,
+          limit: params?.limit,
         });
         if (!!!editedQueryParams) {
           return '';

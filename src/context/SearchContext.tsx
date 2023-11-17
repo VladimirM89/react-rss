@@ -28,25 +28,4 @@ export const useSeacrhContext = () => {
   return data;
 };
 
-// const SearchProvider: FC<ContextProps> = ({ children }) => {
-//   const [charactersInfo, setCharactersInfo] = useState<SearchState>({
-//     characters: [],
-//     pagination: null,
-//   });
-//   const [inputValue, setInputValue] = useState<string>('');
-
-//   return (
-//     <SearchContext.Provider
-//       value={{
-//         charactersInfo,
-//         setCharactersInfo,
-//         inputValue,
-//         setInputValue,
-//       }}
-//     >
-//       {children}
-//     </SearchContext.Provider>
-//   );
-// };
-
 export default SearchProvider;

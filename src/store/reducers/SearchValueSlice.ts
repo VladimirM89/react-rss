@@ -1,7 +1,13 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { getItemFromLocalStorage } from '../../utils/localStorage';
+import { SEARCH_VALUE } from '../../constants/stringConstants';
 
-const initialState = {
-  searchValue: '',
+interface initialStateInterface {
+  searchValue: string;
+}
+
+const initialState: initialStateInterface = {
+  searchValue: getItemFromLocalStorage(SEARCH_VALUE) || '',
 };
 
 export const SearchValueSlice = createSlice({
