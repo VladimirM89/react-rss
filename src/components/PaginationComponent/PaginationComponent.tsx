@@ -12,7 +12,7 @@ const PaginationComponent: FC = () => {
   const { changePage, changeLimit } = PaginationSlice.actions;
   const dispatch = useAppDispatch();
 
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSeachParams] = useSearchParams();
   const searchParam = searchParams.get('q') || '';
   const pageParam = searchParams.get('page') || '';
   const limitParam = searchParams.get('limit') || '';
@@ -32,7 +32,6 @@ const PaginationComponent: FC = () => {
   });
 
   console.log(editedQueryParams);
-  // const { data, isLoading, isSuccess } = useGetAllCharactersQuery();
 
   useEffect(() => {
     if (page === 1) {
@@ -53,16 +52,16 @@ const PaginationComponent: FC = () => {
 
   const handleChangePage = (page: number) => {
     setPage(page);
-    // getDataFromApi({ q: searchParam, page, limit });
     dispatch(changePage(page));
+    setSeachParams({ ...editedQueryParams, page: page.toString() });
   };
 
   const handleChangeLimit = (event: ChangeEvent<HTMLSelectElement>) => {
     setLimit(Number(event.target.value));
     setPage(1);
-    // getDataFromApi({ q: searchParam, page: 1, limit: Number(event.target.value) });
     dispatch(changeLimit(Number(event.target.value)));
     dispatch(changePage(1));
+    setSeachParams({ ...editedQueryParams, limit: event.target.value });
   };
 
   const handleDecrementPage = () => {
