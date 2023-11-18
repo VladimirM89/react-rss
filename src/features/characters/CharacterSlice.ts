@@ -15,10 +15,10 @@ export const characterSlice = createSlice({
   name: 'character',
   initialState,
   reducers: {
-    update(state) {
-      state.isLoading = true;
+    updateLoading(state, action: PayloadAction<boolean>) {
+      state.isLoading = action.payload;
     },
-    updateSuccess(state, action: PayloadAction<CharacterInterface>) {
+    updateSuccess(state, action: PayloadAction<CharacterInterface | null>) {
       state.isLoading = false;
       state.data = action.payload;
     },

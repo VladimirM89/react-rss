@@ -5,9 +5,9 @@ import cn from 'classnames';
 import styles from './SearchBar.module.scss';
 import { SEARCH_VALUE } from '../../constants/stringConstants';
 import { useSearchParams } from 'react-router-dom';
-import { SearchValueSlice } from '../../store/reducers/SearchValueSlice';
+import { SearchValueSlice } from '../../features/characters/SearchValueSlice';
 import { useAppDispatch } from '../../hooks/redux';
-import { PaginationSlice } from '../../store/reducers/PaginationSlice';
+import { PaginationSlice } from '../../features/characters/PaginationSlice';
 
 export const SearchBar: FC = () => {
   const dispatch = useAppDispatch();

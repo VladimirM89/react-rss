@@ -13,7 +13,7 @@ import { RootLayout } from './components/Layouts/RootLayout';
 import { NotFoundPage } from './pages/NotFoundPage/NotFoundPage';
 import { SearchPage } from './pages/SearchPage/SearchPage';
 import { Provider } from 'react-redux';
-import { setuptStore } from './store/store';
+import { setupStore } from './store/store';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -26,7 +26,7 @@ const router = createBrowserRouter(
   )
 );
 
-const store = setuptStore();
+const store = setupStore();
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   // <React.StrictMode>

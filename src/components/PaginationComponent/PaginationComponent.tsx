@@ -5,7 +5,7 @@ import cn from 'classnames';
 import { useSearchParams } from 'react-router-dom';
 import { customCreateSearchParams } from '../../utils/queryParams';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { PaginationSlice } from '../../store/reducers/PaginationSlice';
+import { PaginationSlice } from '../../features/characters/PaginationSlice';
 
 const PaginationComponent: FC = () => {
   const { pagination } = useAppSelector((state) => state.charactersInfoReducer);

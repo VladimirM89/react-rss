@@ -3,7 +3,7 @@ import { MemoryRouter } from 'react-router-dom';
 import App from '../../App';
 import userEvent from '@testing-library/user-event';
 import { SEARCH_VALUE } from '../../constants/stringConstants';
-import * as api from '../../api/SearchApi';
+import * as api from '../../features/api/apiSlice';
 
 afterAll(() => localStorage.clear());
 

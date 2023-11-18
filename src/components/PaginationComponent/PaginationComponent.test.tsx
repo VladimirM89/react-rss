@@ -3,7 +3,7 @@ import { server } from '../../test/mocks/setupServer';
 import App from '../../App';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import * as api from '../../api/SearchApi';
+import * as api from '../../features/api/apiSlice';
 
 beforeAll(() => {
   server.listen();

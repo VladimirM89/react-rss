@@ -1,33 +1,46 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
   URLSearchParamsInit,
   createSearchParams,
   useNavigate,
   useSearchParams,
 } from 'react-router-dom';
-import { useGetCharacterByIdQuery } from '../../api/SearchApi';
+import { useGetCharacterByIdQuery } from '../../features/api/apiSlice';
 
 import { LoaderComponent } from '../LoaderComponent/LoaderComponent';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import styles from './DetailCard.module.scss';
 import cn from 'classnames';
 import useOutsideClick from '../../hooks/HandleOutsideClick';
 import { customCreateSearchParams } from '../../utils/queryParams';
+import { characterSlice } from '../../features/characters/CharacterSlice';
+import { useAppDispatch } from '../../hooks/redux';
 
 const DetailCard = () => {
+  // const { data: characher } = useAppSelector((state) => state.characterSliceReducer);
+  const { updateLoading, updateSuccess } = characterSlice.actions;
+  const dispatch = useAppDispatch();
+
   const [searchParams, setSearchParams] = useSearchParams();
   const detailParam = searchParams.get('details');
-  const [skip, setSkip] = useState<boolean>(true);
-  // console.log('details params ', detailParam);
+  // const [skip, setSkip] = useState<boolean>(true);
 
-  const { data, isLoading } = useGetCharacterByIdQuery(Number(detailParam), {
-    skip,
-  });
+  const { data, isFetching } = useGetCharacterByIdQuery(Number(detailParam));
+
+  // useEffect(() => {
+  //   if (detailParam?.length) {
+  //     setSkip(false);
+  //   }
+  // }, [detailParam]);
 
   useEffect(() => {
-    if (Number(detailParam) !== 0) {
-      setSkip(false);
+    if (isFetching) {
+      dispatch(updateLoading(isFetching));
     }
-  }, [detailParam]);
+    if (data?.data) {
+      dispatch(updateSuccess(data.data));
+    }
+  }, [isFetching]);
 
   const navigate = useNavigate();
 
@@ -44,7 +57,6 @@ const DetailCard = () => {
       pathname: '/',
       search: createSearchParams(paramsToSet as URLSearchParamsInit).toString(),
     });
-    // console.log('params ', paramsToSet);
     setSearchParams(paramsToSet as URLSearchParamsInit);
   };
 
@@ -52,7 +64,7 @@ const DetailCard = () => {
 
   return (
     data?.data &&
-    (!isLoading ? (
+    (!isFetching ? (
       <>
         <div className={searchParams.has('details') ? styles.overlay : ''}></div>
         <div

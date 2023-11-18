@@ -1,23 +1,25 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import charactersInfoReducer from './reducers/CharactersInfoSlice';
-import searchValueReducer from './reducers/SearchValueSlice';
-import paginationSliceReducer from './reducers/PaginationSlice';
+import charactersInfoReducer from '../features/characters/CharactersInfoSlice';
+import searchValueReducer from '../features/characters/SearchValueSlice';
+import paginationSliceReducer from '../features/characters/PaginationSlice';
+import characterSliceReducer from '../features/characters/CharacterSlice';
 
-import { searchApi } from '../api/SearchApi';
+import { apiSlice } from '../features/api/apiSlice';
 
 const rootReducer = combineReducers({
   charactersInfoReducer,
   searchValueReducer,
   paginationSliceReducer,
-  [searchApi.reducerPath]: searchApi.reducer,
+  characterSliceReducer,
+  [apiSlice.reducerPath]: apiSlice.reducer,
 });
 
-export const setuptStore = () => {
+export const setupStore = () => {
   return configureStore({
     reducer: rootReducer,
     // Adding the api middleware enables caching, invalidation, polling,
     // and other useful features of `rtk-query`.
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(searchApi.middleware),
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(apiSlice.middleware),
   });
 };
 
@@ -26,5 +28,5 @@ export const setuptStore = () => {
 // setupListeners(store.dispatch);
 
 export type RootState = ReturnType<typeof rootReducer>;
-export type AppStore = ReturnType<typeof setuptStore>;
+export type AppStore = ReturnType<typeof setupStore>;
 export type AppDispatch = AppStore['dispatch'];
