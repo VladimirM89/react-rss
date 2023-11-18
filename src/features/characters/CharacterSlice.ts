@@ -2,25 +2,34 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { CharacterInterface } from '../../interfaces/SearchResponseInterfaces';
 
 interface initialStateInterface {
-  data: CharacterInterface | null;
+  id: number | null;
+  character: CharacterInterface | null;
   isLoading: boolean;
+  isOpened: boolean;
 }
 
 const initialState: initialStateInterface = {
-  data: null,
+  id: null,
+  character: null,
   isLoading: false,
+  isOpened: false,
 };
 
 export const characterSlice = createSlice({
   name: 'character',
   initialState,
   reducers: {
-    updateLoading(state, action: PayloadAction<boolean>) {
-      state.isLoading = action.payload;
+    setCharacterId(state, action: PayloadAction<number>) {
+      state.isLoading = true;
+      state.id = action.payload;
+      state.isOpened = true;
     },
     updateSuccess(state, action: PayloadAction<CharacterInterface | null>) {
+      state.character = action.payload;
       state.isLoading = false;
-      state.data = action.payload;
+    },
+    handleDetailView(state, action: PayloadAction<boolean>) {
+      state.isOpened = action.payload;
     },
   },
 });

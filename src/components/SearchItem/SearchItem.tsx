@@ -3,12 +3,17 @@ import { CharacterInterface } from '../../interfaces/SearchResponseInterfaces';
 import styles from './SearchItem.module.scss';
 import { useNavigate, createSearchParams, useSearchParams } from 'react-router-dom';
 import { customCreateSearchParams } from '../../utils/queryParams';
+import { useAppDispatch } from '../../hooks/redux';
+import { characterSlice } from '../../features/characters/CharacterSlice';
 
 type SearchItemProps = {
   item: CharacterInterface;
 };
 
 export const SearchItem: FC<SearchItemProps> = ({ item }) => {
+  const { setCharacterId } = characterSlice.actions;
+  const dispatch = useAppDispatch();
+
   const [searchParams] = useSearchParams();
   const searchParam = searchParams.get('q');
   const pageParam = searchParams.get('page');
@@ -22,6 +27,8 @@ export const SearchItem: FC<SearchItemProps> = ({ item }) => {
       page: pageParam || '',
       limit: limitParam || '',
     });
+
+    dispatch(setCharacterId(id));
 
     navigate({
       pathname: '/',

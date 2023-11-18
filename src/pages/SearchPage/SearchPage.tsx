@@ -6,7 +6,6 @@ import { ErrorBoundary } from '../../components/ErrorBoundary/ErrorBoundary';
 import cn from 'classnames';
 import styles from './SearchPage.module.scss';
 import { Fallback } from '../../components/ErrorBoundary/components/ErrorButton/Fallback/Fallback';
-import { Outlet } from 'react-router-dom';
 
 export const SearchPage: FC = () => {
   return (
@@ -15,7 +14,6 @@ export const SearchPage: FC = () => {
         <div className={cn('wrapper', styles.main_wrapper)}>
           <SearchBar />
           <SearchList />
-          <Outlet />
           <ErrorButton />
         </div>
       </ErrorBoundary>

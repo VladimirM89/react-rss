@@ -9,7 +9,7 @@ import { LoaderComponent } from '../LoaderComponent/LoaderComponent';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { charactersInfoSlice } from '../../features/characters/CharactersInfoSlice';
 import { customCreateSearchParams } from '../../utils/queryParams';
-import { useSearchParams } from 'react-router-dom';
+import { Outlet, useSearchParams } from 'react-router-dom';
 import PaginationComponent from '../PaginationComponent/PaginationComponent';
 
 export const SearchList: FC = () => {
@@ -47,7 +47,10 @@ export const SearchList: FC = () => {
     <LoaderComponent />
   ) : !!data?.data.length ? (
     <>
-      <ul className={cn('wrapper', styles.list_container)}>{renderedList}</ul>
+      <div className={styles.list_wrapper}>
+        <ul className={cn('wrapper', styles.list_container)}>{renderedList}</ul>
+        <Outlet />
+      </div>
       <PaginationComponent />
     </>
   ) : (
