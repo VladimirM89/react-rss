@@ -5,7 +5,7 @@ import {
   PaginationInterface,
 } from '../../interfaces/SearchResponseInterfaces';
 
-interface initialStateInterface {
+export interface initialStateInterface {
   data: Array<CharacterInterface>;
   pagination: PaginationInterface | null;
   isLoading: boolean;

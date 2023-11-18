@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { CharacterInterface } from '../../interfaces/SearchResponseInterfaces';
 
-interface initialStateInterface {
+export interface initialStateInterface {
   id: number | null;
   character: CharacterInterface | null;
   isLoading: boolean;

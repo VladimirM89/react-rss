@@ -2,7 +2,7 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { getItemFromLocalStorage } from '../../utils/localStorage';
 import { SEARCH_VALUE } from '../../constants/stringConstants';
 
-interface initialStateInterface {
+export interface initialStateInterface {
   searchValue: string;
 }
 

@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-interface initialStateInterface {
+export interface initialStateInterface {
   page: number;
   limit: number;
 }
