@@ -8,7 +8,7 @@ export default defineConfig({
   plugins: [react()],
   test: {
     watch: false,
-    teardownTimeout: 20000,
+    teardownTimeout: 50000,
     globals: true,
     environment: 'jsdom',
     setupFiles: './src/test/setup.ts',

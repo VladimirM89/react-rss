@@ -2,7 +2,7 @@ import reducer, {
   initialStateInterface,
   characterSlice,
 } from '../../features/characters/CharacterSlice';
-import { characterData } from '../mocks/mockedData';
+import { mockedCharacterData } from '../mocks/mockedData';
 
 describe('PaginationSlice tests', () => {
   const { setCharacterId, updateSuccess, handleDetailView } = characterSlice.actions;
@@ -56,9 +56,9 @@ describe('PaginationSlice tests', () => {
       isOpened: true,
     };
 
-    expect(reducer(prevState, updateSuccess(characterData))).toEqual({
+    expect(reducer(prevState, updateSuccess(mockedCharacterData))).toEqual({
       id: 1,
-      character: characterData,
+      character: mockedCharacterData,
       isLoading: false,
       isOpened: true,
     });
