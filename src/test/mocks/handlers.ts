@@ -1915,7 +1915,6 @@ export const handlers = [
 
   http.get(`1`, ({ request }) => {
     // Simulate a successful response with mock data
-    // console.log('__________________________________________________________API details card');
     const url = new URL(request.url);
     const detailsParam = url.searchParams.get('details');
 
