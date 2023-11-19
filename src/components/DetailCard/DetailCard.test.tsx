@@ -534,15 +534,16 @@ describe('Detail Card', () => {
   // const routes = createRoutesFromElements(
   //   <>
   //     <Route path="/" element={<SearchPage />}>
-  //       <Route index element={<DetailCard />} loader={spy as unknown as LoaderFunction} />
+  //       <Route index element={<DetailCard />} />
   //     </Route>
   //   </>
   // );
 
   // const router = createMemoryRouter(routes);
-  // render(<RouterProvider router={router} />);
 
   // it('Make sure the detailed card component correctly displays the detailed card data and close after press button', async () => {
+  //   renderWithProvider(<RouterProvider router={router} />);
+
   //   const items = await screen.findAllByTestId('card-link');
 
   //   expect(items.length).not.toBe(0);
@@ -550,11 +551,13 @@ describe('Detail Card', () => {
 
   //   await user.click(items[0]);
 
-  //   expect(screen.getByTestId('detail-block')).toBeInTheDocument();
-  //   expect(screen.getByText('24 min per ep')).toBeInTheDocument();
-  //   expect(screen.getByText('R - 17+ (violence & profanity)')).toBeInTheDocument();
-  //   expect(screen.getByText('TV 26 episodes')).toBeInTheDocument();
-  //   expect(screen.getByText('Finished Airing')).toBeInTheDocument();
+  //   await waitFor(() => {
+  //     expect(screen.getByTestId('detail-block')).toBeInTheDocument();
+  //     expect(screen.getByText('24 min per ep')).toBeInTheDocument();
+  //     // expect(screen.getByText('R - 17+ (violence & profanity)')).toBeInTheDocument();
+  //     // expect(screen.getByText('TV 26 episodes')).toBeInTheDocument();
+  //     // expect(screen.getByText('Finished Airing')).toBeInTheDocument();
+  //   });
 
   //   const closeButton = await screen.findByRole('button', { name: '✕' });
   //   expect(closeButton).toBeInTheDocument();
