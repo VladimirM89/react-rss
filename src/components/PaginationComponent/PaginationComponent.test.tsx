@@ -78,45 +78,6 @@ describe('Pagination component', () => {
     });
   });
 
-  // it('Make sure the component page when it is changed', async () => {
-  //   renderWithProvider(
-  //     <MemoryRouter>
-  //       <App />
-  //     </MemoryRouter>
-  //   );
-
-  //   screen.debug();
-
-  //   await waitFor(() => {
-  //     const searchParams = new URLSearchParams(location.search);
-  //     const currentPageValue = searchParams.get('page');
-
-  //     expect(currentPageValue).toBe('1');
-  //   });
-
-  //   // const defaultSelect = (await screen.findByRole('option', { name: '25' })) as HTMLOptionElement;
-  //   // expect(defaultSelect.selected).toBe(true);
-
-  //   const newSelect = (await screen.findByRole('option', { name: '10' })) as HTMLOptionElement;
-
-  //   const select = await screen.findByRole('combobox');
-  //   expect(select).toBeInTheDocument();
-
-  //   await user.selectOptions(select, newSelect);
-  //   expect(newSelect.selected).toBe(true);
-
-  //   const secondPageButton = await screen.findByRole('button', { name: '2' });
-  //   console.log('button 2 ___________________________________________________', secondPageButton);
-
-  //   await user.click(secondPageButton);
-
-  //   const newSearchParams = new URLSearchParams(location.search);
-  //   const newPageValue = newSearchParams.get('page');
-  //   console.log('new page ___________________________________________', newPageValue);
-
-  //   expect(newPageValue).toBe('2');
-  // });
-
   it('test', () => {
     expect(true).toBe(true);
   });
