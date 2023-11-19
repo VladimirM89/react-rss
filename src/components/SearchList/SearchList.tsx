@@ -15,6 +15,7 @@ import PaginationComponent from '../PaginationComponent/PaginationComponent';
 export const SearchList: FC = () => {
   const { searchValue } = useAppSelector((state) => state.searchValueReducer);
   const { page, limit } = useAppSelector((state) => state.paginationSliceReducer);
+  const { data: charactersInfo } = useAppSelector((state) => state.charactersInfoReducer);
   const { update, updateSuccess } = charactersInfoSlice.actions;
   const dispatch = useAppDispatch();
 
@@ -45,7 +46,7 @@ export const SearchList: FC = () => {
   });
   return isLoading ? (
     <LoaderComponent />
-  ) : !!data?.data.length ? (
+  ) : !!charactersInfo.length ? (
     <>
       <div className={styles.list_wrapper}>
         <ul className={cn('wrapper', styles.list_container)}>{renderedList}</ul>
