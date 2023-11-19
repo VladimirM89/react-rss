@@ -46,8 +46,8 @@ describe('Detail Card', () => {
 
     await user.click(items[0]);
 
-    await waitFor(() => {
-      expect(screen.getByTestId('detail-block')).toBeInTheDocument();
+    await waitFor(async () => {
+      expect(await screen.findByTestId('detail-block')).toBeInTheDocument();
       expect(screen.getByText('24 min per ep')).toBeInTheDocument();
       expect(screen.getByText('R - 17+ (violence & profanity)')).toBeInTheDocument();
       expect(screen.getByText('TV 26 episodes')).toBeInTheDocument();

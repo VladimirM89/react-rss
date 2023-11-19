@@ -1,4 +1,4 @@
-import { screen, waitFor } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import { server } from '../../test/mocks/setupServer';
 import { renderWithProvider } from '../../test/test-utils/test-utils';
 import { SearchItem } from './SearchItem';
@@ -80,8 +80,6 @@ describe('SearchItem component tests', () => {
 
     expect(spy).toBeCalledWith(1, { skip: false });
 
-    await waitFor(() => {
-      expect(screen.getByTestId('detail-block')).toBeInTheDocument();
-    });
+    expect(await screen.findByTestId('detail-block')).toBeInTheDocument();
   });
 });
