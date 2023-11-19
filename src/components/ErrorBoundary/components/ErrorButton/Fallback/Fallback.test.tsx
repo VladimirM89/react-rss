@@ -1,6 +1,3 @@
-// import userEvent from '@testing-library/user-event';
-// import { BrowserRouter } from 'react-router-dom';
-// import App from '../../../../../App';
 import { MemoryRouter } from 'react-router-dom';
 import { server } from '../../../../../test/mocks/setupServer';
 import { renderWithProvider } from '../../../../../test/test-utils/test-utils';

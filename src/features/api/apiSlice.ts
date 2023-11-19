@@ -15,7 +15,6 @@ export const searchApiAxios = axios.create({
 export const apiSlice = createApi({
   reducerPath: 'searchApi',
   baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
-  // tagTypes: ['character'],
   endpoints: (builder) => ({
     getAllCharacters: builder.query<SearchResponseInterface, SearchParams | void>({
       query: (params?) => {
@@ -36,11 +35,9 @@ export const apiSlice = createApi({
     }),
     getCharacterById: builder.query<CharacterResponseInterface, number>({
       query: (id) => {
-        // console.log('CALL getCharacterById query');
         return `/${id}`;
       },
-      // providesTags: ['character'],
-      // keepUnusedDataFor: 0,
+      keepUnusedDataFor: 0,
     }),
   }),
 });

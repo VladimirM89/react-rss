@@ -1877,7 +1877,6 @@ const data = [
 
 export const handlers = [
   http.get(BASE_URL, ({ request }) => {
-    // console.log('__________________________________________________________API all card');
     const url = new URL(request.url);
     const pageParam = url.searchParams.get('page');
     const limitParam = url.searchParams.get('limit');
@@ -1914,7 +1913,6 @@ export const handlers = [
   }),
 
   http.get(`1`, ({ request }) => {
-    // Simulate a successful response with mock data
     const url = new URL(request.url);
     const detailsParam = url.searchParams.get('details');
 
