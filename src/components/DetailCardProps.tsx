@@ -5,11 +5,11 @@ import useOutsideClick from '@/hooks/HandleOutsideClick';
 import cn from 'classnames';
 import styles from '../styles/DetailCard.module.scss';
 import Image from 'next/image';
-import { NotFoundItem } from '@/components/NotFoundItem';
 import { useRouter } from 'next/router';
 import { SearchParams } from '@/interfaces/ParamsInterfaces';
 import { characterSlice } from '@/features/characters/CharacterSlice';
 import { useAppDispatch } from '@/hooks/redux';
+import { NotFoundItem } from './NotFoundItem';
 type DetailCardProps = {
   detailCharacter: CharacterInterface;
 };

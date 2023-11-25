@@ -5,6 +5,8 @@ import type { NextPage } from 'next';
 import type { AppProps } from 'next/app';
 import { wrapper } from '../store/store';
 import React from 'react';
+import { ErrorBoundary } from '@/components/ErrorBoundary';
+import { Fallback } from '@/components/Fallback';
 
 export type NextPageWithLayout<P = object, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -18,6 +20,10 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   // Use the layout defined at the page level, if available
   const getLayout = Component.getLayout ?? ((page) => page);
 
-  return getLayout(<Component {...pageProps} />);
+  return getLayout(
+    <ErrorBoundary fallback={<Fallback />}>
+      <Component {...pageProps} />
+    </ErrorBoundary>
+  );
 }
 export default wrapper.withRedux(MyApp);

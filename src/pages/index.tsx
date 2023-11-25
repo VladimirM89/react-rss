@@ -9,6 +9,7 @@ import { SearchBar } from '@/components/SearchBar';
 import { customCreateSearchParams } from '@/utils/queryParams';
 import cn from 'classnames';
 import styles from '../styles/MainPage.module.scss';
+import { ErrorButton } from '@/components/ErrorButton';
 
 const Page: NextPageWithLayout<{
   characters: SearchResponseInterface;
@@ -22,6 +23,7 @@ const Page: NextPageWithLayout<{
         pagination={characters.pagination}
         detailCard={detailCharacter}
       />
+      <ErrorButton />
     </div>
   );
 };

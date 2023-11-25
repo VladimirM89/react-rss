@@ -3,13 +3,14 @@ import { SearchItem } from '../components/SearchItem';
 import cn from 'classnames';
 import styles from '../styles/SearchList.module.scss';
 import { FC, useEffect, useState } from 'react';
-import { NotFoundItem } from '../components/NotFoundItem';
+
 import { LoaderComponent } from '../components/LoaderComponent';
 import PaginationComponent from './PaginationComponent';
 import DetailCard from '../components/DetailCardProps';
 import { useAppDispatch } from '@/hooks/redux';
-import { charactersInfoSlice } from '@/features/characters/CharactersInfoSlice';
+import { charactersInfoSlice } from '../features/characters/CharactersInfoSlice';
 import { Router } from 'next/router';
+import { NotFoundItem } from './NotFoundItem';
 
 type SearchListProps = {
   characters: Array<CharacterInterface>;
