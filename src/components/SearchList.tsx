@@ -3,7 +3,6 @@ import { SearchItem } from '../components/SearchItem';
 import cn from 'classnames';
 import styles from '../styles/SearchList.module.scss';
 import { FC, useEffect, useState } from 'react';
-
 import { LoaderComponent } from '../components/LoaderComponent';
 import PaginationComponent from './PaginationComponent';
 import DetailCard from '../components/DetailCardProps';
@@ -43,37 +42,6 @@ export const SearchList: FC<SearchListProps> = ({ characters, pagination, detail
       Router.events.off('routeChangeError', end);
     };
   }, [characters, dispatch, pagination, update, updateSuccess]);
-
-  // const [charactersList, setCharactersList] = useState<Array<CharacterInterface>>(characters);
-
-  // const [searchParams] = useSearchParams();
-  // const searchParam = searchParams.get('q') || '';
-  // const pageParam = searchParams.get('page') || '';
-  // const limitParam = searchParams.get('limit') || '';
-
-  // const editedQueryParams = customCreateSearchParams({
-  //   q: searchParam || searchValue,
-  //   page: pageParam || page.toString(),
-  //   limit: limitParam || limit.toString(),
-  // });
-
-  // const { data, isLoading, isFetching } = useGetAllCharactersQuery(editedQueryParams);
-
-  // useEffect(() => {
-  //   // dispatch(update(true));
-  //   if (characters) {
-  //     dispatch(updateSuccess({ data: characters, pagination }));
-  //   }
-  // }, [characters, dispatch, pagination, update, updateSuccess]);
-
-  // useEffect(() => {
-  //   // dispatch(charactersInfoSlice.actions.updateSuccess({data: characters, pagination: null}))
-  //   if (charactersInfo.length) {
-
-  //     setCharactersList(charactersInfo)
-  //   }
-
-  // }, [charactersInfo])
 
   const renderedList = characters.map((item: CharacterInterface) => {
     return <SearchItem item={item} key={item.mal_id} />;

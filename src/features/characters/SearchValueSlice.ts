@@ -1,6 +1,4 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-// import { getItemFromLocalStorage } from '../../utils/localStorage';
-// import { SEARCH_VALUE } from '../../constants/stringConstants';
 import { HYDRATE } from 'next-redux-wrapper';
 
 export interface initialStateInterface {

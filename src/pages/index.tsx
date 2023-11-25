@@ -49,7 +49,7 @@ export const getServerSideProps = wrapper.getServerSideProps((store) => async (c
     page: page as string,
     limit: limit as string,
   });
-  // console.log('query ', correctParams);
+
   const { data } = await store.dispatch(
     apiSlice.endpoints.getAllCharacters.initiate(correctParams)
   );

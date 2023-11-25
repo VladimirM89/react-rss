@@ -4,22 +4,17 @@ import { removeItemFromLocalStorage, saveToLocalStorage } from '../utils/localSt
 import cn from 'classnames';
 import styles from '../styles/SearchBar.module.scss';
 import { SEARCH_VALUE } from '../constants/stringConstants';
-// import { useSearchParams } from 'react-router-dom';
 import { useRouter } from 'next/router';
 import { SearchValueSlice } from '../features/characters/SearchValueSlice';
 import { useAppDispatch } from '../hooks/redux';
-// import { PaginationSlice } from '../features/characters/PaginationSlice';
 
 export const SearchBar: FC = () => {
   const dispatch = useAppDispatch();
   const { update } = SearchValueSlice.actions;
-  // const { changeLimit } = PaginationSlice.actions;
-  // const response = useAppSelector((state) => state.charactersInfoReducer);
 
   const router = useRouter();
-
-  // const [searchParams, setSearchParams] = useSearchParams();
   const q = router.query?.q as string;
+  const { pathname } = router;
 
   const [inputValue, setInputValue] = useState<string>(q || '');
   const inputRef = useRef<HTMLInputElement>(null);
@@ -46,43 +41,19 @@ export const SearchBar: FC = () => {
     setInputValue(event.target.value);
   };
 
-  // eslint-disable-next-line no-undef
   const handleSearch = (event: FormEvent<HTMLFormElement | HTMLButtonElement>): void => {
-    // setSearchParams({ q: inputValue });
-    // router.query.q = inputValue;
-    const { pathname } = router;
-    // router.push(`/?q=${inputValue}`, undefined, {shallow: true})
     router.push({
       pathname,
       query: { q: inputValue },
     });
-    // router.replace({
-    //         pathname,
-    //         query: { ...query, q: inputValue }, // Add or modify query parameters as needed
-    //       });
-    handleStorage();
-    // dispatch(apiSlice.endpoints.getAllCharacters.initiate());
 
-    // dispatch(charactersInfoSlice.actions.updateSuccess(response));
+    handleStorage();
+
     dispatch(update(inputValue));
 
     inputRef.current?.blur();
     event.preventDefault();
   };
-
-  // useEffect(() => {
-  //   // Force a page refresh and rerun getServerSideProps with new query parameters
-  //   const refreshPage = () => {
-  //     const { pathname, query } = router;
-  //     router.replace({
-  //       pathname,
-  //       query: { ...query }, // Add or modify query parameters as needed
-  //     });
-  //   };
-
-  //   // Call the refresh function
-  //   refreshPage();
-  // }, [router]);
 
   return (
     <form className={styles.form_container} onSubmit={handleSearch}>

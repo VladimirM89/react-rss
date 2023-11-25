@@ -2,10 +2,6 @@
 import { type ChangeEvent, type FC, useEffect, useRef } from 'react';
 import styles from '../styles/PaginationComponent.module.scss';
 import cn from 'classnames';
-// import { useSearchParams } from 'react-router-dom';
-// import { customCreateSearchParams } from '../utils/queryParams';
-// import { useAppDispatch, useAppSelector } from '../hooks/redux';
-// import { PaginationSlice } from '../features/characters/PaginationSlice';
 import { type PaginationInterface } from '../interfaces/SearchResponseInterfaces';
 import { useRouter } from 'next/router';
 import { PaginationSlice } from '../features/characters/PaginationSlice';
@@ -16,24 +12,14 @@ interface PaginationPropsType {
 }
 
 const PaginationComponent: FC<PaginationPropsType> = ({ pagination }) => {
-  // const { pagination: paginationState } = useAppSelector((state) => state.charactersInfoReducer);
   const { changePage, changeLimit } = PaginationSlice.actions;
   const dispatch = useAppDispatch();
-
-  // const [searchParams, setSeachParams] = useSearchParams();
-  // const searchParam = searchParams.get('q') || '';
 
   const incrementButtonRef = useRef<HTMLButtonElement>(null);
   const decrementButtonRef = useRef<HTMLButtonElement>(null);
 
   const router = useRouter();
   const { pathname, query } = router;
-
-  // const editedQueryParams = customCreateSearchParams({
-  //   q: searchParam,
-  //   page: pagination?.current_page.toString(),
-  //   limit: pagination?.items.per_page.toString(),
-  // });
 
   useEffect(() => {
     dispatch(changeLimit(pagination?.items.per_page || 25));
@@ -62,7 +48,7 @@ const PaginationComponent: FC<PaginationPropsType> = ({ pagination }) => {
 
   const handleChangePage = (page: number) => {
     dispatch(changePage(page));
-    // setSeachParams({ ...editedQueryParams, page: page.toString() });
+
     router.push({
       pathname,
       query: { ...query, page },
@@ -71,7 +57,7 @@ const PaginationComponent: FC<PaginationPropsType> = ({ pagination }) => {
 
   const handleChangeLimit = (event: ChangeEvent<HTMLSelectElement>) => {
     dispatch(changeLimit(Number(event.target.value)));
-    // setSeachParams({ ...editedQueryParams, page: '1', limit: event.target.value });
+
     router.push({
       pathname,
       query: { ...query, page: 1, limit: event.target.value },

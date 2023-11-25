@@ -15,17 +15,11 @@ type DetailCardProps = {
 };
 
 const DetailCard: FC<DetailCardProps> = ({ detailCharacter }) => {
-  // console.log(detailCharacter);
   const router = useRouter();
   const { query } = router;
 
-  // const { character, id, isOpened } = useAppSelector((state) => state.characterSliceReducer);
   const { updateSuccess, handleDetailView, setCharacterId } = characterSlice.actions;
   const dispatch = useAppDispatch();
-
-  // const [searchParams, setSearchParams] = useSearchParams();
-
-  // const { data, isFetching } = useGetCharacterByIdQuery(id!, { skip: !id });
 
   useEffect(() => {
     if (detailCharacter) {
@@ -35,8 +29,6 @@ const DetailCard: FC<DetailCardProps> = ({ detailCharacter }) => {
     }
   }, [detailCharacter, dispatch, handleDetailView, updateSuccess, setCharacterId]);
 
-  // const navigate = useNavigate();
-
   const handleClose = (): void => {
     const { q, page, limit }: SearchParams = query;
     const normalizeParams = customCreateSearchParams({ q, page, limit });
@@ -45,20 +37,7 @@ const DetailCard: FC<DetailCardProps> = ({ detailCharacter }) => {
       query: { ...normalizeParams },
     });
 
-    // const searchValue = searchParams.get('q');
-    // const pageValue = searchParams.get('page');
-    // const limitValue = searchParams.get('limit');
-    // const paramsToSet = customCreateSearchParams({
-    //   q: searchValue || '',
-    //   page: pageValue || '',
-    //   limit: limitValue || '',
-    // });
     dispatch(handleDetailView(false));
-    // navigate({
-    //   pathname: '/',
-    //   search: createSearchParams(paramsToSet as URLSearchParamsInit).toString(),
-    // });
-    // setSearchParams(paramsToSet as URLSearchParamsInit);
   };
 
   const outsideRef = useOutsideClick(handleClose);

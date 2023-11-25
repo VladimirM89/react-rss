@@ -1,10 +1,6 @@
 import { FC } from 'react';
 import { CharacterInterface } from '../interfaces/SearchResponseInterfaces';
 import styles from '../styles/SearchItem.module.scss';
-// import { useNavigate, createSearchParams, useSearchParams } from 'react-router-dom';
-// import { customCreateSearchParams } from '../../utils/queryParams';
-// import { useAppDispatch } from '../hooks/redux';
-// import { characterSlice } from '../features/characters/CharacterSlice';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
@@ -15,40 +11,12 @@ type SearchItemProps = {
 export const SearchItem: FC<SearchItemProps> = ({ item }) => {
   const router = useRouter();
   const { query } = router;
-  // const { setCharacterId } = characterSlice.actions;
-  // const dispatch = useAppDispatch();
-
-  // const [searchParams] = useSearchParams();
-  // const searchParam = searchParams.get('q');
-  // const pageParam = searchParams.get('page');
-  // const limitParam = searchParams.get('limit');
-
-  // const navigate = useNavigate();
 
   const handleNavigate = (id: number) => {
-    // const {q, page, limit } = router.query;
-    // router.push({
-    //   pathname: `/details/${id}`,
-    //   query: { ...query },
-    // });
-
     router.push({
       pathname: `/`,
       query: { ...query, details: id.toString() },
     });
-
-    // const checkedParams = customCreateSearchParams({
-    //   q: searchParam || '',
-    //   page: pageParam || '',
-    //   limit: limitParam || '',
-    // });
-
-    // dispatch(setCharacterId(id));
-
-    // navigate({
-    //   pathname: '/',
-    //   search: createSearchParams({ ...checkedParams, details: `${id}` }).toString(),
-    // });
   };
 
   return (

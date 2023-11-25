@@ -20,7 +20,6 @@ export const setupStore = () => {
     reducer: rootReducer,
 
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(apiSlice.middleware),
-    // preloadedState,
   });
 };
 
