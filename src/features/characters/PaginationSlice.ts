@@ -1,4 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { HYDRATE } from 'next-redux-wrapper';
 
 export interface initialStateInterface {
   page: number;
@@ -20,6 +21,14 @@ export const PaginationSlice = createSlice({
     changeLimit(state, action: PayloadAction<number>) {
       state.page = 1;
       state.limit = action.payload;
+    },
+  },
+  extraReducers: {
+    [HYDRATE]: (state, action) => {
+      return {
+        ...state,
+        ...action.payload.auth,
+      };
     },
   },
 });

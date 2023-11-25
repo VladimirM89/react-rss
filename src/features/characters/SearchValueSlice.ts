@@ -1,13 +1,14 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { getItemFromLocalStorage } from '../../utils/localStorage';
-import { SEARCH_VALUE } from '../../constants/stringConstants';
+// import { getItemFromLocalStorage } from '../../utils/localStorage';
+// import { SEARCH_VALUE } from '../../constants/stringConstants';
+import { HYDRATE } from 'next-redux-wrapper';
 
 export interface initialStateInterface {
   searchValue: string;
 }
 
 const initialState: initialStateInterface = {
-  searchValue: getItemFromLocalStorage(SEARCH_VALUE) || '',
+  searchValue: '',
 };
 
 export const SearchValueSlice = createSlice({
@@ -16,6 +17,14 @@ export const SearchValueSlice = createSlice({
   reducers: {
     update(state, action: PayloadAction<string>) {
       state.searchValue = action.payload;
+    },
+  },
+  extraReducers: {
+    [HYDRATE]: (state, action) => {
+      return {
+        ...state,
+        ...action.payload.auth,
+      };
     },
   },
 });

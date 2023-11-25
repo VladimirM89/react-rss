@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { BASE_URL } from '../../constants/stringConstants';
 import {
   CharacterResponseInterface,
@@ -7,14 +6,16 @@ import {
 import { SearchParams } from '../../interfaces/ParamsInterfaces';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { customCreateSearchParams } from '../../utils/queryParams';
-
-export const searchApiAxios = axios.create({
-  baseURL: BASE_URL,
-});
+import { HYDRATE } from 'next-redux-wrapper';
 
 export const apiSlice = createApi({
   reducerPath: 'searchApi',
   baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
+  extractRehydrationInfo(action, { reducerPath }) {
+    if (action.type === HYDRATE) {
+      return action.payload[reducerPath];
+    }
+  },
   endpoints: (builder) => ({
     getAllCharacters: builder.query<SearchResponseInterface, SearchParams | void>({
       query: (params?) => {
@@ -23,7 +24,7 @@ export const apiSlice = createApi({
           page: params?.page,
           limit: params?.limit,
         });
-        if (!!!editedQueryParams) {
+        if (!editedQueryParams) {
           return '';
         } else {
           return {
@@ -42,4 +43,8 @@ export const apiSlice = createApi({
   }),
 });
 
-export const { useGetAllCharactersQuery, useGetCharacterByIdQuery } = apiSlice;
+export const {
+  useGetAllCharactersQuery,
+  useGetCharacterByIdQuery,
+  util: { getRunningQueriesThunk },
+} = apiSlice;

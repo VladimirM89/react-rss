@@ -4,6 +4,7 @@ import {
   SearchResponseInterface,
   PaginationInterface,
 } from '../../interfaces/SearchResponseInterfaces';
+import { HYDRATE } from 'next-redux-wrapper';
 
 export interface initialStateInterface {
   data: Array<CharacterInterface>;
@@ -28,6 +29,14 @@ export const charactersInfoSlice = createSlice({
       state.isLoading = false;
       state.data = action.payload.data;
       state.pagination = action.payload.pagination;
+    },
+  },
+  extraReducers: {
+    [HYDRATE]: (state, action) => {
+      return {
+        ...state,
+        ...action.payload.auth,
+      };
     },
   },
 });

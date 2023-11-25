@@ -1,5 +1,6 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { CharacterInterface } from '../../interfaces/SearchResponseInterfaces';
+import { HYDRATE } from 'next-redux-wrapper';
 
 export interface initialStateInterface {
   id: number | null;
@@ -30,6 +31,14 @@ export const characterSlice = createSlice({
     },
     handleDetailView(state, action: PayloadAction<boolean>) {
       state.isOpened = action.payload;
+    },
+  },
+  extraReducers: {
+    [HYDRATE]: (state, action) => {
+      return {
+        ...state,
+        ...action.payload.auth,
+      };
     },
   },
 });
