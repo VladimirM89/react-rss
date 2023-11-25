@@ -5,7 +5,7 @@ import cn from 'classnames';
 import { type PaginationInterface } from '../interfaces/SearchResponseInterfaces';
 import { useRouter } from 'next/router';
 import { PaginationSlice } from '../features/characters/PaginationSlice';
-import { useAppDispatch } from '@/hooks/redux';
+import { useAppDispatch } from '../hooks/redux';
 
 interface PaginationPropsType {
   pagination: PaginationInterface | null;

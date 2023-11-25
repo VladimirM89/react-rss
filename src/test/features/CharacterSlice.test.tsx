@@ -1,3 +1,4 @@
+import { expect, describe, test } from 'vitest';
 import reducer, {
   initialStateInterface,
   characterSlice,
@@ -7,7 +8,7 @@ import { mockedCharacterData } from '../mocks/mockedData';
 describe('PaginationSlice tests', () => {
   const { setCharacterId, updateSuccess, handleDetailView } = characterSlice.actions;
 
-  it('should return the initial state', () => {
+  test('should return the initial state', () => {
     expect(reducer(undefined, { type: undefined })).toEqual({
       id: null,
       character: null,
@@ -16,7 +17,7 @@ describe('PaginationSlice tests', () => {
     });
   });
 
-  it('update detail character values when previous state is empty', () => {
+  test('update detail character values when previous state is empty', () => {
     const prevState: initialStateInterface = {
       id: null,
       character: null,
@@ -32,7 +33,7 @@ describe('PaginationSlice tests', () => {
     });
   });
 
-  it('update detail character values when change id', () => {
+  test('update detail character values when change id', () => {
     const prevState: initialStateInterface = {
       id: 1,
       character: null,
@@ -48,7 +49,7 @@ describe('PaginationSlice tests', () => {
     });
   });
 
-  it('update detail character values when update is successed', () => {
+  test('update detail character values when update is successed', () => {
     const prevState: initialStateInterface = {
       id: 1,
       character: null,
@@ -63,7 +64,7 @@ describe('PaginationSlice tests', () => {
       isOpened: true,
     });
 
-    it('should open detailed card', () => {
+    test('should open detailed card', () => {
       const prevState: initialStateInterface = {
         id: 1,
         character: null,

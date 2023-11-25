@@ -4,17 +4,17 @@ const nextConfig = {
   reactStrictMode: true,
   sassOptions: {
     additionalData: `@import "src/styles/variables.scss";`,
- },
- images: {
-  remotePatterns: [
-    {
-      protocol: 'https',
-      hostname: 'cdn.myanimelist.net',
-      port: '',
-      pathname: '/images/anime/**',
-    },
-  ],
-},
-}
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'cdn.myanimelist.net',
+        port: '',
+        pathname: '/images/anime/**',
+      },
+    ],
+  },
+};
 
-export default nextConfig
+export default nextConfig;

@@ -1,3 +1,4 @@
+import { expect, describe, test } from 'vitest';
 import reducer, {
   initialStateInterface,
   charactersInfoSlice,
@@ -7,7 +8,7 @@ import { mockedCharacterData, mockedPagination } from '../mocks/mockedData';
 describe('CharactersInfo tests', () => {
   const { update, updateSuccess } = charactersInfoSlice.actions;
 
-  it('should return the initial state', () => {
+  test('should return the initial state', () => {
     expect(reducer(undefined, { type: undefined })).toEqual({
       data: [],
       pagination: null,
@@ -15,7 +16,7 @@ describe('CharactersInfo tests', () => {
     });
   });
 
-  it('update detail character values when previous state is empty', () => {
+  test('update detail character values when previous state is empty', () => {
     const prevState: initialStateInterface = {
       data: [],
       pagination: null,
@@ -29,7 +30,7 @@ describe('CharactersInfo tests', () => {
     });
   });
 
-  it('update loading flag', () => {
+  test('update loading flag', () => {
     const prevState: initialStateInterface = {
       data: [],
       pagination: null,
@@ -43,7 +44,7 @@ describe('CharactersInfo tests', () => {
     });
   });
 
-  it('update detail character values when update is successed', () => {
+  test('update detail character values when update is successed', () => {
     const prevState: initialStateInterface = {
       data: [],
       pagination: null,

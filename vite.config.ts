@@ -7,7 +7,7 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
   plugins: [react()],
   test: {
-    watch: false,
+    // watch: false,
     teardownTimeout: 100000,
     globals: true,
     environment: 'jsdom',

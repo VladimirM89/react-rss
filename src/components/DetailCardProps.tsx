@@ -1,14 +1,14 @@
 import { customCreateSearchParams } from '../utils/queryParams';
-import { CharacterInterface } from '@/interfaces/SearchResponseInterfaces';
+import { CharacterInterface } from '../interfaces/SearchResponseInterfaces';
 import { FC, useEffect } from 'react';
-import useOutsideClick from '@/hooks/HandleOutsideClick';
+import useOutsideClick from '../hooks/HandleOutsideClick';
 import cn from 'classnames';
 import styles from '../styles/DetailCard.module.scss';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { SearchParams } from '@/interfaces/ParamsInterfaces';
-import { characterSlice } from '@/features/characters/CharacterSlice';
-import { useAppDispatch } from '@/hooks/redux';
+import { SearchParams } from '../interfaces/ParamsInterfaces';
+import { characterSlice } from '../features/characters/CharacterSlice';
+import { useAppDispatch } from '../hooks/redux';
 import { NotFoundItem } from './NotFoundItem';
 type DetailCardProps = {
   detailCharacter: CharacterInterface;

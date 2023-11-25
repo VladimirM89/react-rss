@@ -1,15 +1,18 @@
 import { type ReactElement } from 'react';
 import Layout from '../components/layout';
 import type { NextPageWithLayout } from './_app';
-import { wrapper } from '@/store/store';
-import { apiSlice } from '@/features/api/apiSlice';
-import { SearchList } from '@/components/SearchList';
-import { CharacterInterface, SearchResponseInterface } from '@/interfaces/SearchResponseInterfaces';
-import { SearchBar } from '@/components/SearchBar';
-import { customCreateSearchParams } from '@/utils/queryParams';
+import { wrapper } from '../store/store';
+import { apiSlice } from '../features/api/apiSlice';
+import { SearchList } from '../components/SearchList';
+import {
+  CharacterInterface,
+  SearchResponseInterface,
+} from '../interfaces/SearchResponseInterfaces';
+import { SearchBar } from '../components/SearchBar';
+import { customCreateSearchParams } from '../utils/queryParams';
 import cn from 'classnames';
 import styles from '../styles/MainPage.module.scss';
-import { ErrorButton } from '@/components/ErrorButton';
+import { ErrorButton } from '../components/ErrorButton';
 
 const Page: NextPageWithLayout<{
   characters: SearchResponseInterface;

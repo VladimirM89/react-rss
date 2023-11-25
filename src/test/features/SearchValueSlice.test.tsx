@@ -2,15 +2,16 @@ import reducer, {
   initialStateInterface,
   SearchValueSlice,
 } from '../../features/characters/SearchValueSlice';
+import { describe, expect, test } from 'vitest';
 
 describe('SearchValueSlice tests', () => {
   const { update } = SearchValueSlice.actions;
 
-  it('should return the initial state', () => {
+  test('should return the initial state', () => {
     expect(reducer(undefined, { type: undefined })).toEqual({ searchValue: '' });
   });
 
-  it('update when previous value is empty', () => {
+  test('update when previous value is empty', () => {
     const prevState: initialStateInterface = {
       searchValue: '',
     };
@@ -18,7 +19,7 @@ describe('SearchValueSlice tests', () => {
     expect(reducer(prevState, update(''))).toEqual({ searchValue: '' });
   });
 
-  it('update when previous value exist', () => {
+  test('update when previous value exist', () => {
     const prevState: initialStateInterface = {
       searchValue: 'test',
     };

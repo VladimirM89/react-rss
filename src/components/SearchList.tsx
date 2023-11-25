@@ -6,7 +6,7 @@ import { FC, useEffect, useState } from 'react';
 import { LoaderComponent } from '../components/LoaderComponent';
 import PaginationComponent from './PaginationComponent';
 import DetailCard from '../components/DetailCardProps';
-import { useAppDispatch } from '@/hooks/redux';
+import { useAppDispatch } from '../hooks/redux';
 import { charactersInfoSlice } from '../features/characters/CharactersInfoSlice';
 import { Router } from 'next/router';
 import { NotFoundItem } from './NotFoundItem';
@@ -51,7 +51,7 @@ export const SearchList: FC<SearchListProps> = ({ characters, pagination, detail
       {loading ? (
         <LoaderComponent />
       ) : characters.length ? (
-        <div style={{ display: 'flex', gap: '3rem' }}>
+        <div style={{ display: 'flex', gap: '3rem' }} data-testid="list">
           <div>
             <div className={styles.list_wrapper}>
               <ul className={cn('wrapper', styles.list_container)}>{renderedList}</ul>

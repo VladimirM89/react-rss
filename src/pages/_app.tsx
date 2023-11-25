@@ -5,8 +5,8 @@ import type { NextPage } from 'next';
 import type { AppProps } from 'next/app';
 import { wrapper } from '../store/store';
 import React from 'react';
-import { ErrorBoundary } from '@/components/ErrorBoundary';
-import { Fallback } from '@/components/Fallback';
+import { ErrorBoundary } from '../components/ErrorBoundary';
+import { Fallback } from '../components/Fallback';
 
 export type NextPageWithLayout<P = object, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
