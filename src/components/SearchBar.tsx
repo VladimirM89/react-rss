@@ -12,16 +12,19 @@ export const SearchBar: FC = () => {
   const dispatch = useAppDispatch();
   const { update } = SearchValueSlice.actions;
 
+  const [inputValue, setInputValue] = useState<string>('');
+
   const router = useRouter();
-  const q = router.query?.q as string;
   const { pathname } = router;
 
-  const [inputValue, setInputValue] = useState<string>(q || '');
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleInitialLoading = () => {
-    saveToLocalStorage(SEARCH_VALUE, q);
-    setInputValue(q);
+    saveToLocalStorage(SEARCH_VALUE, inputValue);
+    if (router.query?.q) {
+      const q = router.query?.q;
+      setInputValue(q as string);
+    }
     dispatch(update(inputValue));
   };
 
