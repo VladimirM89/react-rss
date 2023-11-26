@@ -5,7 +5,7 @@ import styles from '../styles/SearchList.module.scss';
 import { FC, useEffect, useState } from 'react';
 import { LoaderComponent } from '../components/LoaderComponent';
 import PaginationComponent from './PaginationComponent';
-import DetailCard from '../components/DetailCardProps';
+import DetailCard from '../components/DetailCard';
 import { useAppDispatch } from '../hooks/redux';
 import { charactersInfoSlice } from '../features/characters/CharactersInfoSlice';
 import { Router } from 'next/router';

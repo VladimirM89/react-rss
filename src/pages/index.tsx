@@ -16,7 +16,7 @@ import { ErrorButton } from '../components/ErrorButton';
 
 const Page: NextPageWithLayout<{
   characters: SearchResponseInterface;
-  detailCharacter: CharacterInterface;
+  detailCharacter: CharacterInterface | null;
 }> = ({ characters, detailCharacter }) => {
   return (
     <div className={cn('wrapper', styles.main_wrapper)}>
