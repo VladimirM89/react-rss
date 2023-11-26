@@ -5,7 +5,7 @@ import { mockedCharacterData, mockedCharactersData, mockedPagination } from '../
 import Page from '../../pages/index';
 import { createMockedUseRoter, renderWithProvider } from '../test-utils/test-utils';
 import { RouterContext } from 'next/dist/shared/lib/router-context.shared-runtime';
-import Layout from '../../components/layout';
+import Layout from '../../components/Layout';
 
 beforeAll(() => {
   server.listen();
