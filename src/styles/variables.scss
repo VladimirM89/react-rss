@@ -1,0 +1,17 @@
+$bg-page: #565557;
+$font-main-color: #00a5ff;
+$font-secondary-color: black;
+$accent-color: white;
+$bg-card-color: rgb(27, 25, 25);
+$bg-btn-color: #00a5ff;
+$bg-auxiliary-color: #9d9d9d;
+
+:export {
+  bg-page: $bg-page;
+  font-main-color: $font-main-color;
+  font-secondary-color: $font-secondary-color;
+  accent-color: $accent-color;
+  bg-card-color: $bg-card-color;
+  bg-btn-color: $bg-btn-color;
+  bg-auxiliary-color:$bg-auxiliary-color;
+}

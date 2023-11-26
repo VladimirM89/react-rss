@@ -1,0 +1,47 @@
+@import './variables.scss';
+
+.pagination_container {
+  display: flex;
+  gap: 3rem;
+  align-items: center;
+  justify-content: center;
+  color: $font-secondary-color;
+  font-weight: 600;  font-size: 1.6rem;
+
+  @media screen and (max-width: 579px) {
+    flex-direction: column;
+  }
+}
+
+.pagination_btn{
+  padding: 0.5rem;
+  background-color: transparent;
+
+  &:disabled {
+    display: none
+  }
+}
+
+.limit_container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.options_container {
+  width: 6rem;
+  text-align: center;
+  border: none;
+  background-color: transparent;
+  font-size: inherit;
+}
+
+.page_container {
+  display: flex;
+  gap: 1rem;
+}
+
+.active {
+  border: 1px $accent-color solid;
+  border-radius: 0.5rem;
+}
