@@ -1,11 +1,11 @@
 import { type FC, type ReactNode } from 'react';
 import { Header } from './header';
 
-interface layoutProps {
+interface LayoutProps {
   children: ReactNode;
 }
 
-const Layout: FC<layoutProps> = ({ children }) => {
+const Layout: FC<LayoutProps> = ({ children }) => {
   return (
     <>
       <Header />

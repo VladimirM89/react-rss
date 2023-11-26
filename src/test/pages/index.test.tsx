@@ -35,7 +35,7 @@ describe('Home page', () => {
     expect(screen.getByTestId('search-input')).toBeInTheDocument();
     expect(screen.getByTestId('list')).toBeInTheDocument();
     const cardsList = screen.getAllByTestId('card-link');
-    expect(cardsList.length).toBe(1);
+    expect(cardsList.length).toBe(11);
     expect(screen.getByTestId('pagination')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Show Error' })).toBeInTheDocument();
   });
@@ -56,7 +56,7 @@ describe('Home page', () => {
     expect(screen.getByTestId('search-input')).toBeInTheDocument();
     expect(screen.getByTestId('list')).toBeInTheDocument();
     const cardsList = screen.getAllByTestId('card-link');
-    expect(cardsList.length).toBe(1);
+    expect(cardsList.length).toBe(11);
     expect(screen.queryByTestId('pagination')).not.toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Show Error' })).toBeInTheDocument();
   });
