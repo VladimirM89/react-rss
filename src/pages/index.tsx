@@ -1,5 +1,4 @@
 import { type ReactElement } from 'react';
-import Layout from '../components/Layout';
 import type { NextPageWithLayout } from './_app';
 import { wrapper } from '../store/store';
 import { apiSlice } from '../features/api/apiSlice';
@@ -13,6 +12,7 @@ import { customCreateSearchParams } from '../utils/queryParams';
 import cn from 'classnames';
 import styles from '../styles/MainPage.module.scss';
 import { ErrorButton } from '../components/ErrorButton';
+import Layout from '../components/Layout';
 
 const Page: NextPageWithLayout<{
   characters: SearchResponseInterface;
