@@ -30,7 +30,6 @@ const DetailCard: FC<DetailCardProps> = ({ detailCharacter }) => {
   }, [detailCharacter, dispatch, handleDetailView, updateSuccess, setCharacterId]);
 
   const handleClose = (): void => {
-    console.log('handle close');
     const { q, page, limit }: SearchParams = query;
     const normalizeParams = customCreateSearchParams({ q, page, limit });
     router.push({
