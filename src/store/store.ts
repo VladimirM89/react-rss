@@ -1,24 +1,18 @@
 import { PreloadedState, combineReducers, configureStore } from '@reduxjs/toolkit';
-import charactersInfoReducer from '../features/characters/CharactersInfoSlice';
-import searchValueReducer from '../features/characters/SearchValueSlice';
-import paginationSliceReducer from '../features/characters/PaginationSlice';
-import characterSliceReducer from '../features/characters/CharacterSlice';
-
-import { apiSlice } from '../features/api/apiSlice';
 
 const rootReducer = combineReducers({
-  charactersInfoReducer,
-  searchValueReducer,
-  paginationSliceReducer,
-  characterSliceReducer,
-  [apiSlice.reducerPath]: apiSlice.reducer,
+  // charactersInfoReducer,
+  // searchValueReducer,
+  // paginationSliceReducer,
+  // characterSliceReducer,
+  // [apiSlice.reducerPath]: apiSlice.reducer,
 });
 
 export const setupStore = (preloadedState?: PreloadedState<RootState>) => {
   return configureStore({
     reducer: rootReducer,
 
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(apiSlice.middleware),
+    // middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(apiSlice.middleware),
     preloadedState,
   });
 };

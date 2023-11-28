@@ -8,19 +8,18 @@ import {
   Route,
   RouterProvider,
 } from 'react-router-dom';
-import DetailCard from './components/DetailCard/DetailCard';
 import { RootLayout } from './components/Layouts/RootLayout';
 import { NotFoundPage } from './pages/NotFoundPage/NotFoundPage';
-import { SearchPage } from './pages/SearchPage/SearchPage';
 import { Provider } from 'react-redux';
 import { setupStore } from './store/store';
+import ControlledFormPage from './pages/ControlledFormPage/ControlledFormPage';
+import UncontrolledFormPage from './pages/UncontrolledFormPage/UncontrolledFormPage';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<RootLayout />}>
-      <Route path="/" element={<SearchPage />}>
-        <Route index element={<DetailCard />} />
-      </Route>
+      <Route path="/controlledForm" element={<ControlledFormPage />} />
+      <Route path="/uncontrolledForm" element={<UncontrolledFormPage />} />
       <Route path="*" element={<NotFoundPage />} />
     </Route>
   )

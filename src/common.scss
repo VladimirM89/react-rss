@@ -92,6 +92,10 @@ body {
   background: var(--bg-page);
   color: var(--font-main-color);
   overflow-y: scroll;
+  background-image: url('./assets/images/bg.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 #root {
@@ -121,15 +125,4 @@ main {
   max-width: 110rem;
   padding: 0 2rem;
   margin: 0 auto;
-}
-
-.btn {
-  width: 13rem;
-  min-height: 4rem;
-  max-height: 100%;
-  padding: 0 1rem;
-  background-color: var(--bg-btn-color);
-  color: var(--accent-color);
-  border-radius: 0.5rem;
-  font-size: 1.8rem;
 }
