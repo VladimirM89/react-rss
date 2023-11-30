@@ -1,18 +1,17 @@
 import { PreloadedState, combineReducers, configureStore } from '@reduxjs/toolkit';
+import controlledForm from './features/forms/FormSlice';
+import countries from './features/forms/CountriesSlice';
 
 const rootReducer = combineReducers({
-  // charactersInfoReducer,
-  // searchValueReducer,
-  // paginationSliceReducer,
-  // characterSliceReducer,
-  // [apiSlice.reducerPath]: apiSlice.reducer,
+  controlledForm,
+  countries,
 });
 
 export const setupStore = (preloadedState?: PreloadedState<RootState>) => {
   return configureStore({
     reducer: rootReducer,
 
-    // middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(apiSlice.middleware),
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
     preloadedState,
   });
 };

@@ -1,21 +1,61 @@
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { formSchema } from '../../utils/FormSchema';
-import * as yup from 'yup';
-
-type FormInterface = yup.InferType<typeof formSchema>;
+import { FileFormats, FormInterface } from '../../types/FormTypes';
+import { FormSlice } from '../../store/features/forms/FormSlice';
+import { useAppDispatch } from '../../hooks/redux';
+import { ChangeEvent, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const ControlledFormComponent = () => {
+  const [base64Img, setBase64Img] = useState('');
+
+  const dispatch = useAppDispatch();
+
+  const navigation = useNavigate();
+
+  const handleChangeFile = (event: ChangeEvent<HTMLInputElement>) => {
+    const reader = new FileReader();
+    const file = event.target.files && event.target.files[0];
+
+    if (
+      file &&
+      (file.type === FileFormats.JPEG ||
+        file.type === FileFormats.JPG ||
+        file.type === FileFormats.PNG)
+    ) {
+      reader.readAsDataURL(file);
+      reader.onloadend = () => {
+        return setBase64Img(reader.result as string);
+      };
+    }
+  };
+
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
     reset,
   } = useForm<FormInterface>({ mode: 'onChange', resolver: yupResolver(formSchema) });
 
   const onSubmit = (data: FormInterface) => {
-    console.log(data);
-    reset();
+    const resultData: Omit<FormInterface, 'file'> = {
+      name: data.name,
+      age: data.age,
+      country: data.country,
+      email: data.email,
+      password: data.password,
+      gender: data.gender,
+      agreement: false,
+      passwordConfirmation: data.passwordConfirmation,
+    };
+
+    dispatch(FormSlice.actions.updateForm({ data: resultData, base64Img }));
+
+    setTimeout(() => {
+      navigation('/');
+      reset();
+    }, 1000);
   };
 
   return (
@@ -71,7 +111,7 @@ const ControlledFormComponent = () => {
 
       <div>
         <label htmlFor="file">Choose file to upload:</label>
-        <input {...register('file')} type="file" name="file" />
+        <input {...register('file')} onChange={handleChangeFile} type="file" name="file" />
         <p>{errors.file?.message}</p>
       </div>
       <div>
@@ -79,7 +119,9 @@ const ControlledFormComponent = () => {
         <input {...register('agreement')} type="checkbox" id="agreement" />
         <p>{errors.agreement?.message}</p>
       </div>
-      <button type="submit">Submit</button>
+      <button type="submit" disabled={!isValid}>
+        Submit
+      </button>
     </form>
   );
 };

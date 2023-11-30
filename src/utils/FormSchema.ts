@@ -28,26 +28,30 @@ export const formSchema = yup.object().shape({
     .matches(/[a-z]/, 'Password should contain at least 1 lowercase letter')
     .matches(/[0-9]/, 'Password should contain at least 1 number')
     .matches(/[@$!%*?&]/, 'Password should contain at least 1 special character'),
-  passwordConfirmation: yup.string().oneOf([yup.ref('password')], 'Passwords must match'),
+  passwordConfirmation: yup
+    .string()
+    .required('Repeat the password')
+    .oneOf([yup.ref('password')], 'Passwords must match'),
   gender: yup
-    .mixed()
+    .mixed<string>()
     .required('Choose gender')
     .oneOf(['Male', 'Female'], 'Choose male or female gender'),
   file: yup
     .mixed<FileList>()
+    .required('You need to upload a file')
     .test('fileExist', 'You need to upload a file', (file) => {
       if (file && file.length) {
         return file && file.length !== 0;
       }
+      return false;
     })
     .test('fileSize', 'File should be less than 2Mb', (file) => {
-      console.log(file?.length);
       if (file && file.length) {
         return file[0].size <= 2000000;
       }
+      return false;
     })
     .test('fileExtension', 'File should be in png or jpeg format', (file) => {
-      console.log(file);
       if (file && file.length) {
         return (
           file[0].type === FileFormats.JPEG ||
@@ -55,6 +59,7 @@ export const formSchema = yup.object().shape({
           file[0].type === FileFormats.PNG
         );
       }
+      return false;
     }),
   agreement: yup.boolean().default(false).oneOf([true], 'You must accept the terms and conditions'),
 });

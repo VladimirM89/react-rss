@@ -1,6 +1,15 @@
+import { useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
+import { useAppDispatch } from '../../../hooks/redux';
+import { CountriesSlice } from '../../../store/features/forms/CountriesSlice';
+import { countriesList } from '../../../utils/countriesList';
 
 const MainPage = () => {
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(CountriesSlice.actions.setCountries(countriesList));
+  });
   return (
     <div>
       <nav>

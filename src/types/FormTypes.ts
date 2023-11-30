@@ -1,13 +1,7 @@
-// export interface FormType {
-//   name: string;
-//   age: number;
-//   email: string;
-//   password: string;
-//   repeatPassword: string;
-//   agreement: boolean;
-//   file: string;
-//   country: string;
-// }
+import * as yup from 'yup';
+import { formSchema } from '../utils/FormSchema';
+
+export type FormInterface = yup.InferType<typeof formSchema>;
 
 export enum FileFormats {
   JPEG = 'image/jpeg',
