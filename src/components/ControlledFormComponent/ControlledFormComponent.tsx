@@ -1,4 +1,4 @@
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { formSchema } from '../../utils/FormSchema';
 import { FileFormats, FormInterface } from '../../types/FormTypes';
@@ -35,6 +35,8 @@ const ControlledFormComponent = () => {
     handleSubmit,
     formState: { errors, isValid },
     reset,
+    setValue,
+    control,
   } = useForm<FormInterface>({ mode: 'onChange', resolver: yupResolver(formSchema) });
 
   const onSubmit = (data: FormInterface) => {
@@ -86,6 +88,7 @@ const ControlledFormComponent = () => {
 
       <SelectionComponent
         register={register}
+        setValue={setValue}
         name="country"
         error={errors.country?.message || ''}
       />
@@ -114,10 +117,31 @@ const ControlledFormComponent = () => {
       </div>
 
       <div>
+        <Controller
+          name="file"
+          control={control}
+          render={({ field: { onChange } }) => (
+            <>
+              <label htmlFor="file">Choose file to upload:</label>
+              <input
+                onChange={(event) => {
+                  handleChangeFile(event);
+                  onChange(event.target.files);
+                }}
+                type="file"
+                name="file"
+              />
+              <p>{errors.file?.message}</p>
+            </>
+          )}
+        />
+      </div>
+      {/*
+      <div>
         <label htmlFor="file">Choose file to upload:</label>
         <input {...register('file')} onChange={handleChangeFile} type="file" name="file" />
         <p>{errors.file?.message}</p>
-      </div>
+      </div> */}
       <div>
         <label htmlFor="agreement">T&C</label>
         <input {...register('agreement')} type="checkbox" id="agreement" name="agreement" />

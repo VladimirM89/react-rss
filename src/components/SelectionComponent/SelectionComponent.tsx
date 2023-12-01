@@ -1,16 +1,17 @@
 import { ChangeEvent, FC, MouseEvent, useRef, useState } from 'react';
 import { useAppSelector } from '../../hooks/redux';
 import styles from './SelectionComponent.module.scss';
-import { UseFormRegister } from 'react-hook-form';
+import { UseFormRegister, UseFormSetValue } from 'react-hook-form';
 import { FormInterface } from '../../types/FormTypes';
 
 type SelectionComponentType = {
   name: string;
   register: UseFormRegister<FormInterface>;
   error: string;
+  setValue: UseFormSetValue<FormInterface>;
 };
 
-const SelectionComponent: FC<SelectionComponentType> = ({ name, register, error }) => {
+const SelectionComponent: FC<SelectionComponentType> = ({ name, register, error, setValue }) => {
   const { data } = useAppSelector((state) => state.countries);
 
   const [display, setDisplay] = useState<boolean>(false);
@@ -21,11 +22,13 @@ const SelectionComponent: FC<SelectionComponentType> = ({ name, register, error 
   const handleSelect = (value: string) => {
     setInputValue(value);
     setDisplay(false);
+    setValue(name as 'country', value, { shouldValidate: true });
   };
 
   const handleType = (event: ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
     setDisplay(true);
+    setValue(name as 'country', event.target.value, { shouldValidate: true });
   };
 
   const handleOutsideClick = (event: MouseEvent<HTMLDivElement>) => {
