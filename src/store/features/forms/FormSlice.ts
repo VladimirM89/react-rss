@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { FormInterface } from '../../../types/FormTypes';
 
-type InitialStateType = {
+export type InitialStateType = {
   name: string;
   age: string;
   country: string;

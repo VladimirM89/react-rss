@@ -14,10 +14,12 @@ import { Provider } from 'react-redux';
 import { setupStore } from './store/store';
 import ControlledFormPage from './pages/ControlledFormPage/ControlledFormPage';
 import UncontrolledFormPage from './pages/UncontrolledFormPage/UncontrolledFormPage';
+import MainPage from './pages/MainPage/MainPage/MainPage';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<RootLayout />}>
+      <Route index element={<MainPage />} />
       <Route path="/controlledForm" element={<ControlledFormPage />} />
       <Route path="/uncontrolledForm" element={<UncontrolledFormPage />} />
       <Route path="*" element={<NotFoundPage />} />

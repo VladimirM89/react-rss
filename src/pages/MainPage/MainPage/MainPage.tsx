@@ -1,21 +1,17 @@
-import { useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
-import { useAppDispatch } from '../../../hooks/redux';
-import { CountriesSlice } from '../../../store/features/forms/CountriesSlice';
-import { countriesList } from '../../../utils/countriesList';
+import { useAppSelector } from '../../../hooks/redux';
+import ResultFormData from '../../../components/ResultFormData/ResultFormData';
 
 const MainPage = () => {
-  const dispatch = useAppDispatch();
+  const formData = useAppSelector((state) => state.controlledForm);
 
-  useEffect(() => {
-    dispatch(CountriesSlice.actions.setCountries(countriesList));
-  });
   return (
     <div>
       <nav>
         <NavLink to="/controlledForm">Controlled Form</NavLink>
         <NavLink to="/uncontrolledForm">Unontrolled Form</NavLink>
       </nav>
+      <ResultFormData data={formData} />
     </div>
   );
 };

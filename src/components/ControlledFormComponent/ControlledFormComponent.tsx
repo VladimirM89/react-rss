@@ -6,6 +6,7 @@ import { FormSlice } from '../../store/features/forms/FormSlice';
 import { useAppDispatch } from '../../hooks/redux';
 import { ChangeEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import SelectionComponent from '../SelectionComponent/SelectionComponent';
 
 const ControlledFormComponent = () => {
   const [base64Img, setBase64Img] = useState('');
@@ -25,9 +26,7 @@ const ControlledFormComponent = () => {
         file.type === FileFormats.PNG)
     ) {
       reader.readAsDataURL(file);
-      reader.onloadend = () => {
-        return setBase64Img(reader.result as string);
-      };
+      reader.onloadend = () => setBase64Img(reader.result as string);
     }
   };
 
@@ -65,19 +64,19 @@ const ControlledFormComponent = () => {
     >
       <div>
         <label htmlFor="name">Name </label>
-        <input {...register('name')} type="text" />
+        <input {...register('name')} type="text" name="name" />
         <p>{errors.name?.message}</p>
       </div>
 
       <div>
         <label htmlFor="age">Age </label>
-        <input {...register('age')} type="number" />
+        <input {...register('age')} type="number" name="age" />
         <p>{errors.age?.message}</p>
       </div>
 
       <div>
         <label htmlFor="gender">Gender: </label>
-        <select {...register('gender')} defaultValue="" placeholder="Select Gender">
+        <select {...register('gender')} defaultValue="" name="gender" placeholder="Select Gender">
           <option value=""></option>
           <option value="Male">Male</option>
           <option value="Female">Female</option>
@@ -85,27 +84,32 @@ const ControlledFormComponent = () => {
         <p>{errors.gender?.message}</p>
       </div>
 
-      <div>
-        <label htmlFor="country">Country: </label>
-        <input {...register('country')} type="text" autoComplete="true" />
-        <p>{errors.country?.message}</p>
-      </div>
+      <SelectionComponent
+        register={register}
+        name="country"
+        error={errors.country?.message || ''}
+      />
 
       <div>
         <label htmlFor="email">E-mail </label>
-        <input {...register('email')} type="email" placeholder="example@email.com" />
+        <input {...register('email')} type="email" name="email" placeholder="example@email.com" />
         <p>{errors.email?.message}</p>
       </div>
 
       <div>
         <label htmlFor="password">Password </label>
-        <input {...register('password')} type="password" security="true" />
+        <input {...register('password')} type="password" name="password" security="true" />
         <p>{errors.password?.message}</p>
       </div>
 
       <div>
         <label htmlFor="passwordConfirmation">Repeat password </label>
-        <input {...register('passwordConfirmation')} type="password" security="true" />
+        <input
+          {...register('passwordConfirmation')}
+          type="password"
+          name="passwordConfirmation"
+          security="true"
+        />
         <p>{errors.passwordConfirmation?.message}</p>
       </div>
 
@@ -116,7 +120,7 @@ const ControlledFormComponent = () => {
       </div>
       <div>
         <label htmlFor="agreement">T&C</label>
-        <input {...register('agreement')} type="checkbox" id="agreement" />
+        <input {...register('agreement')} type="checkbox" id="agreement" name="agreement" />
         <p>{errors.agreement?.message}</p>
       </div>
       <button type="submit" disabled={!isValid}>
