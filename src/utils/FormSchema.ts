@@ -61,5 +61,8 @@ export const formSchema = yup.object().shape({
       }
       return false;
     }),
-  agreement: yup.boolean().default(false).oneOf([true], 'You must accept the terms and conditions'),
+  agreement: yup
+    .boolean()
+    .required('You must accept the terms and conditions')
+    .oneOf([true], 'You must accept the terms and conditions'),
 });

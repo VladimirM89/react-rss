@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { FC, useEffect } from 'react';
 import { Header } from '../Header/Header';
 import { Outlet } from 'react-router-dom';
@@ -8,7 +9,6 @@ import { countriesList } from '../../utils/countriesList';
 export const RootLayout: FC = () => {
   const dispatch = useAppDispatch();
   useEffect(() => {
-    console.log('Main page');
     dispatch(CountriesSlice.actions.setCountries(countriesList));
   }, []);
 

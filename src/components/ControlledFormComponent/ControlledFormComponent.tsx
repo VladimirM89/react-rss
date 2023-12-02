@@ -64,19 +64,63 @@ const ControlledFormComponent = () => {
       onSubmit={handleSubmit(onSubmit)}
       style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}
     >
+      <Controller
+        name="name"
+        control={control}
+        defaultValue={''}
+        render={({ field }) => (
+          <div>
+            <label htmlFor={field.name}>Name: </label>
+            <input type="text" {...field} />
+            <p>{errors.name?.message}</p>
+          </div>
+        )}
+      />
+
+      {/* 
       <div>
         <label htmlFor="name">Name </label>
         <input {...register('name')} type="text" name="name" />
         <p>{errors.name?.message}</p>
-      </div>
+      </div> */}
 
-      <div>
+      <Controller
+        name="age"
+        control={control}
+        defaultValue={''}
+        render={({ field }) => (
+          <div>
+            <label htmlFor={field.name}>Age: </label>
+            <input type="number" {...field} />
+            <p>{errors.age?.message}</p>
+          </div>
+        )}
+      />
+
+      {/* <div>
         <label htmlFor="age">Age </label>
         <input {...register('age')} type="number" name="age" />
         <p>{errors.age?.message}</p>
-      </div>
+      </div> */}
 
-      <div>
+      <Controller
+        name="gender"
+        control={control}
+        defaultValue={''}
+        render={({ field }) => (
+          <div>
+            <label htmlFor={field.name}>Gender: </label>
+            <select {...field} placeholder="Select Gender">
+              <option value=""></option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>
+            <p>{errors.gender?.message}</p>
+          </div>
+        )}
+      />
+
+      {/* <div>
         <label htmlFor="gender">Gender: </label>
         <select {...register('gender')} defaultValue="" name="gender" placeholder="Select Gender">
           <option value=""></option>
@@ -84,7 +128,7 @@ const ControlledFormComponent = () => {
           <option value="Female">Female</option>
         </select>
         <p>{errors.gender?.message}</p>
-      </div>
+      </div> */}
 
       <SelectionComponent
         register={register}
@@ -93,19 +137,58 @@ const ControlledFormComponent = () => {
         error={errors.country?.message || ''}
       />
 
-      <div>
+      <Controller
+        name="email"
+        control={control}
+        defaultValue={''}
+        render={({ field }) => (
+          <div>
+            <label htmlFor={field.name}>E-mail: </label>
+            <input type="email" {...field} placeholder="example@email.com" />
+            <p>{errors.email?.message}</p>
+          </div>
+        )}
+      />
+
+      {/* <div>
         <label htmlFor="email">E-mail </label>
         <input {...register('email')} type="email" name="email" placeholder="example@email.com" />
         <p>{errors.email?.message}</p>
-      </div>
+      </div> */}
 
-      <div>
+      <Controller
+        name="password"
+        control={control}
+        defaultValue={''}
+        render={({ field }) => (
+          <div>
+            <label htmlFor={field.name}>Password: </label>
+            <input type="password" {...field} security="true" />
+            <p>{errors.password?.message}</p>
+          </div>
+        )}
+      />
+
+      {/* <div>
         <label htmlFor="password">Password </label>
         <input {...register('password')} type="password" name="password" security="true" />
         <p>{errors.password?.message}</p>
-      </div>
+      </div> */}
 
-      <div>
+      <Controller
+        name="passwordConfirmation"
+        control={control}
+        defaultValue={''}
+        render={({ field }) => (
+          <div>
+            <label htmlFor={field.name}>Repeat password: </label>
+            <input type="password" {...field} security="true" />
+            <p>{errors.passwordConfirmation?.message}</p>
+          </div>
+        )}
+      />
+
+      {/* <div>
         <label htmlFor="passwordConfirmation">Repeat password </label>
         <input
           {...register('passwordConfirmation')}
@@ -114,39 +197,52 @@ const ControlledFormComponent = () => {
           security="true"
         />
         <p>{errors.passwordConfirmation?.message}</p>
-      </div>
+      </div> */}
 
-      <div>
-        <Controller
-          name="file"
-          control={control}
-          render={({ field: { onChange } }) => (
-            <>
-              <label htmlFor="file">Choose file to upload:</label>
-              <input
-                onChange={(event) => {
-                  handleChangeFile(event);
-                  onChange(event.target.files);
-                }}
-                type="file"
-                name="file"
-              />
-              <p>{errors.file?.message}</p>
-            </>
-          )}
-        />
-      </div>
+      <Controller
+        name="file"
+        control={control}
+        render={({ field: { onChange } }) => (
+          <>
+            <label htmlFor="file">Choose file to upload:</label>
+            <input
+              onChange={(event) => {
+                handleChangeFile(event);
+                onChange(event.target.files);
+              }}
+              type="file"
+              name="file"
+            />
+            <p>{errors.file?.message}</p>
+          </>
+        )}
+      />
       {/*
       <div>
         <label htmlFor="file">Choose file to upload:</label>
         <input {...register('file')} onChange={handleChangeFile} type="file" name="file" />
         <p>{errors.file?.message}</p>
       </div> */}
-      <div>
+
+      <Controller
+        name="agreement"
+        control={control}
+        defaultValue={false}
+        render={({ field: { name, ref, onChange } }) => (
+          <div>
+            <label htmlFor={name}>T&C: </label>
+            <input type="checkbox" name={name} ref={ref} onChange={onChange} id="agreement" />
+            <p>{errors.agreement?.message}</p>
+          </div>
+        )}
+      />
+
+      {/* <div>
         <label htmlFor="agreement">T&C</label>
         <input {...register('agreement')} type="checkbox" id="agreement" name="agreement" />
         <p>{errors.agreement?.message}</p>
-      </div>
+      </div> */}
+
       <button type="submit" disabled={!isValid}>
         Submit
       </button>
