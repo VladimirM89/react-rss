@@ -1,4 +1,4 @@
-import { CountryType } from '../types/countriesType';
+import { CountryType } from '../types/CountriesType';
 
 export const countriesList: Array<CountryType> = [
   { name: 'Afghanistan', code: 'AF' },
