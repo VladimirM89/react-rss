@@ -15,6 +15,15 @@ const ControlledFormComponent = () => {
 
   const navigation = useNavigate();
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+    reset,
+    setValue,
+    control,
+  } = useForm<FormInterface>({ mode: 'onChange', resolver: yupResolver(formSchema) });
+
   const handleChangeFile = (event: ChangeEvent<HTMLInputElement>) => {
     const reader = new FileReader();
     const file = event.target.files && event.target.files[0];
@@ -29,15 +38,6 @@ const ControlledFormComponent = () => {
       reader.onloadend = () => setBase64Img(reader.result as string);
     }
   };
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isValid },
-    reset,
-    setValue,
-    control,
-  } = useForm<FormInterface>({ mode: 'onChange', resolver: yupResolver(formSchema) });
 
   const onSubmit = (data: FormInterface) => {
     const resultData: Omit<FormInterface, 'file'> = {

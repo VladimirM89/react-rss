@@ -6,9 +6,9 @@ import { FormInterface } from '../../types/FormTypes';
 
 type SelectionComponentType = {
   name: string;
-  register: UseFormRegister<FormInterface>;
-  error: string;
-  setValue: UseFormSetValue<FormInterface>;
+  register?: UseFormRegister<FormInterface> | null;
+  error?: string | null;
+  setValue?: UseFormSetValue<FormInterface> | null;
 };
 
 const SelectionComponent: FC<SelectionComponentType> = ({ name, register, error, setValue }) => {
@@ -22,13 +22,17 @@ const SelectionComponent: FC<SelectionComponentType> = ({ name, register, error,
   const handleSelect = (value: string) => {
     setInputValue(value);
     setDisplay(false);
-    setValue(name as 'country', value, { shouldValidate: true });
+    if (setValue) {
+      setValue(name as 'country', value, { shouldValidate: true });
+    }
   };
 
   const handleType = (event: ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
     setDisplay(true);
-    setValue(name as 'country', event.target.value, { shouldValidate: true });
+    if (setValue) {
+      setValue(name as 'country', event.target.value, { shouldValidate: true });
+    }
   };
 
   const handleOutsideClick = (event: MouseEvent<HTMLDivElement>) => {
@@ -43,7 +47,7 @@ const SelectionComponent: FC<SelectionComponentType> = ({ name, register, error,
       <div className={styles.content_wrapper} ref={listRef}>
         <label htmlFor={name}>Country: </label>
         <input
-          {...register(name as 'country')}
+          {...(register && { ...register(name as 'country') })}
           name={name}
           value={inputValue}
           autoComplete="true"

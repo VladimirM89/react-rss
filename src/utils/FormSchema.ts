@@ -11,8 +11,8 @@ export const formSchema = yup.object().shape({
   age: yup
     .string()
     .required('Required enter age')
-    .min(1, 'Name should be more than 1 characters')
-    .max(3, 'Name should be less than 3 characters')
+    .min(1, 'Age should be more than 1 characters')
+    .max(3, 'Age should be less than 3 characters')
     .matches(/^[1-9][0-9]*?/, 'Age should be a positive number'),
   country: yup.string().required('Choose your counrty'),
   email: yup
