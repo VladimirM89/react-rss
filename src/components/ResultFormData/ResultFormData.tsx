@@ -163,7 +163,7 @@ const ResultFormData: FC<ResultFormDataProps> = ({ data }) => {
   };
 
   return (
-    <div>
+    <>
       {data.length ? (
         <>
           <h3>Entered data</h3>
@@ -172,7 +172,7 @@ const ResultFormData: FC<ResultFormDataProps> = ({ data }) => {
       ) : (
         <h3>No entered data</h3>
       )}
-    </div>
+    </>
   );
 };
 
