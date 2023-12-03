@@ -166,7 +166,7 @@ const ResultFormData: FC<ResultFormDataProps> = ({ data }) => {
     <>
       {data.length ? (
         <>
-          <h3>Entered data</h3>
+          <h3 className={styles.title}>Entered data</h3>
           {getRenderData()}
         </>
       ) : (
