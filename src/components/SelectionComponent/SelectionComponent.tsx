@@ -3,6 +3,7 @@ import { useAppSelector } from '../../hooks/redux';
 import styles from './SelectionComponent.module.scss';
 import { UseFormRegister, UseFormSetValue } from 'react-hook-form';
 import { FormInterface } from '../../types/FormTypes';
+import cn from 'classnames';
 
 type SelectionComponentType = {
   name: string;
@@ -42,9 +43,9 @@ const SelectionComponent: FC<SelectionComponentType> = ({ name, register, error,
   };
 
   return (
-    <div>
+    <div className={styles.input_container}>
       <div className={display ? 'overlay' : 'hidden'} onClick={handleOutsideClick}></div>
-      <div className={styles.content_wrapper} ref={listRef}>
+      <div className={cn(styles.content_wrapper, styles.input_content)} ref={listRef}>
         <label htmlFor={name}>Country: </label>
         <input
           {...(register && { ...register(name as 'country') })}
@@ -71,7 +72,7 @@ const SelectionComponent: FC<SelectionComponentType> = ({ name, register, error,
               })}
         </div>
       </div>
-      <p>{error}</p>
+      <p className={styles.input_error}>{error}</p>
     </div>
   );
 };

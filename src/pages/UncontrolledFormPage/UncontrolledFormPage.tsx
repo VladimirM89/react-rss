@@ -2,10 +2,10 @@ import UncontrolledComponent from '../../components/UncontrolledComponent/Uncont
 
 const UncontrolledFormPage = () => {
   return (
-    <>
-      <h3>UncontrolledFormPage</h3>
+    <div className="form_content">
+      <h3>Uncontrolled Form</h3>
       <UncontrolledComponent />
-    </>
+    </div>
   );
 };
 

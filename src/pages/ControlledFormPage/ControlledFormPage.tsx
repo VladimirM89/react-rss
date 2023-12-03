@@ -2,8 +2,8 @@ import ControlledFormComponent from '../../components/ControlledFormComponent/Co
 
 const ControlledFormPage = () => {
   return (
-    <div>
-      <h3>ControlledFormPage</h3>
+    <div className="form_content">
+      <h3>Controlled Form</h3>
       <ControlledFormComponent />
     </div>
   );

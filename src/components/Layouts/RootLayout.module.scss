@@ -1,0 +1,32 @@
+.content_wrapper {
+  width: 40rem;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.navigation {
+  display: flex;
+  justify-content: space-evenly;
+  gap: 2rem;
+}
+
+.nav_link {
+  font-size: 2rem;
+  color: var(--accent-color);
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+}
+
+.main_content {
+  padding: 4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  background-color: var(--bg-card-color);
+  border-radius: 3rem;
+  align-items: center;
+}

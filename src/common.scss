@@ -87,6 +87,10 @@ label {
   }
 }
 
+input {
+  height: max-content
+}
+
 body {
   @include font-main();
   background: var(--bg-page);
@@ -137,4 +141,18 @@ main {
 
 .hidden {
   display: none;
+}
+
+.form_content {
+  @include flex-column(2rem, center, center)
+}
+
+.btn {
+  padding: 1rem 2rem;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }

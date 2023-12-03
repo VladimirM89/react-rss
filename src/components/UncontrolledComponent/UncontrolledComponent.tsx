@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../hooks/redux';
 import { FormSlice } from '../../store/features/forms/FormSlice';
 import SelectionComponent from '../SelectionComponent/SelectionComponent';
+import UncontrolledInputComponent from '../UncontrolledInputComponent/UncontrolledInputComponent';
+import styles from './UncontrolledComponent.module.scss';
 
 const UncontrolledComponent = () => {
   const dispatch = useAppDispatch();
@@ -92,61 +94,73 @@ const UncontrolledComponent = () => {
       onSubmit={handleSubmit}
       style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}
     >
-      <div>
-        <label htmlFor="name">Name: </label>
-        <input type="text" name="name" id="name" defaultValue="" />
-        <p>{errors.name}</p>
-      </div>
+      <UncontrolledInputComponent name="name" labelText="Name" type="text" errors={errors.name} />
 
-      <div>
-        <label htmlFor="age">Age </label>
-        <input type="number" name="age" />
-        <p>{errors.age}</p>
-      </div>
+      <UncontrolledInputComponent name="age" labelText="Age" type="number" errors={errors.age} />
 
-      <div>
-        <label htmlFor="gender">Gender: </label>
-        <select defaultValue="" name="gender" placeholder="Select Gender">
-          <option value=""></option>
-          <option value="Male">Male</option>
-          <option value="Female">Female</option>
-        </select>
-        <p>{errors.gender}</p>
+      <div className={styles.input_container}>
+        <div className={styles.input_content}>
+          <label htmlFor="gender">Gender: </label>
+          <select defaultValue="" name="gender" placeholder="Select Gender">
+            <option value=""></option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </select>
+        </div>
+        <p className={styles.input_error}>{errors.gender}</p>
       </div>
 
       <SelectionComponent name="country" error={errors.country} />
 
-      <div>
-        <label htmlFor="email">E-mail: </label>
-        <input type="email" name="email" placeholder="example@email.com" />
-        <p>{errors.email}</p>
+      <UncontrolledInputComponent
+        name="email"
+        labelText="E-mail"
+        type="email"
+        placeholder="example@email.com"
+        errors={errors.email}
+      />
+
+      <UncontrolledInputComponent
+        name="password"
+        labelText="Password"
+        type="password"
+        security="true"
+        errors={errors.password}
+      />
+
+      <UncontrolledInputComponent
+        name="passwordConfirmation"
+        labelText="Repeat password"
+        type="password"
+        security="true"
+        errors={errors.passwordConfirmation}
+      />
+
+      <div className={styles.input_container}>
+        <div className={styles.input_content}>
+          <label htmlFor="file">Upload file: </label>
+          <input
+            className={styles.input}
+            ref={fileRef}
+            onChange={handleChangeFile}
+            type="file"
+            name="file"
+          />
+        </div>
+        <p className={styles.input_error}>{errors.file}</p>
       </div>
 
-      <div>
-        <label htmlFor="password">Password: </label>
-        <input type="password" name="password" security="true" />
-        <p>{errors.password}</p>
-      </div>
+      <UncontrolledInputComponent
+        name="agreement"
+        labelText="By checking this box, you are agreeing to our terms of service"
+        type="checkbox"
+        defaultValue="false"
+        errors={errors.agreement}
+      />
 
-      <div>
-        <label htmlFor="passwordConfirmation">Repeat password: </label>
-        <input type="password" name="passwordConfirmation" security="true" />
-        <p>{errors.passwordConfirmation}</p>
-      </div>
-
-      <div>
-        <label htmlFor="file">Choose file to upload: </label>
-        <input ref={fileRef} onChange={handleChangeFile} type="file" name="file" />
-        <p>{errors.file}</p>
-      </div>
-
-      <div>
-        <label htmlFor="agreement">T&C: </label>
-        <input type="checkbox" id="agreement" name="agreement" />
-        <p>{errors.agreement}</p>
-      </div>
-
-      <button type="submit">Submit</button>
+      <button type="submit" className="btn">
+        Submit
+      </button>
     </form>
   );
 };
